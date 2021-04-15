@@ -16,16 +16,22 @@ class MyApp extends StatelessWidget {
         fontFamily: 'RockfordSans-Light.otf',
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
+
       ),
+      /*textTheme: TextTheme(
+        headline1: TextStyle(fontSize: 22.0, color: Colors.redAccent),
+        headline2: TextStyle(
+          fontSize: 24.0,
+          fontWeight: FontWeight.w700,
+          color: Colors.redAccent,
+        ),
+        bodyText1: TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
+          color: Colors.blueAccent,
+        ),
+      ),*/
       home: WelcomeScreen(),
     );
   }
 }
-
-
-
-
-
-
-
-

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homecare/Screens/BottomNavigation/bottombar.dart';
+import 'package:homecare/Screens/HomePages/home.dart';
 import 'package:homecare/Screens/Login/components/background.dart';
 import 'package:homecare/Screens/SignUp/SignUpScreen.dart';
 import 'package:homecare/components/already_have_an_account_acheck.dart';
@@ -13,7 +15,8 @@ class Body extends StatefulWidget {
 }
 
 class _State extends State<Body> {
-  static final formkey = GlobalKey<FormState>();
+  bool hidepassword = true;
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   static TextEditingController phnControlleruser = TextEditingController();
   static TextEditingController passControlleruser = TextEditingController();
   @override
@@ -28,7 +31,11 @@ class _State extends State<Body> {
             children: <Widget>[
               Text(
                 "LOGIN",
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 35),
+                // style: TextStyle(fontWeight: FontWeight.w400, fontSize: 35),
+                style: TextStyle(fontSize: 30.0,
+                          fontWeight: FontWeight.w700,
+                          color: kPrimaryColor,),
+                // style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(height: size.height * 0.03),
               SvgPicture.asset(
@@ -49,6 +56,8 @@ class _State extends State<Body> {
                   }),
                   cursorColor: kPrimaryColor,
                   decoration: InputDecoration(
+                    counterStyle: TextStyle(height: double.minPositive,),
+                    counterText: "",
                     icon: Icon(
                       Icons.phone,
                       color: kPrimaryColor,
@@ -65,9 +74,10 @@ class _State extends State<Body> {
                     if (value.isEmpty) {
                       return "Field Required!!";
                     }
+
                     return null;
                   }),
-                  obscureText: true,
+                  obscureText: hidepassword,
                   cursorColor: kPrimaryColor,
                   decoration: InputDecoration(
                     hintText: "Password",
@@ -75,8 +85,13 @@ class _State extends State<Body> {
                       Icons.lock,
                       color: kPrimaryColor,
                     ),
-                    suffixIcon: Icon(
-                      Icons.visibility,
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          hidepassword=!hidepassword;
+                        });
+                      },
+                      icon:Icon(hidepassword?Icons.visibility_off:Icons.visibility),
                       color: kPrimaryColor,
                     ),
                     border: InputBorder.none,
@@ -115,5 +130,14 @@ class _State extends State<Body> {
     );
   }
 
-  void SendLoginData(String phn, String pass) {}
+  void SendLoginData(String phn, String pass) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return BottomBar();
+        },
+      ),
+    );
+  }
 }

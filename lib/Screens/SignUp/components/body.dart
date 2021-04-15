@@ -14,7 +14,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  static final formkey = GlobalKey<FormState>();
+  bool hidepassword=true;
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   static TextEditingController compCodeController = TextEditingController();
   static TextEditingController fnameController = TextEditingController();
   static TextEditingController lnameController = TextEditingController();
@@ -22,9 +23,9 @@ class _BodyState extends State<Body> {
   static TextEditingController phnController = TextEditingController();
   static TextEditingController passController = TextEditingController();
 
-  String dayLeave=null;
+  /*String dayLeave=null;
   var dayLeaveID;
-  List DayTypeList=[{'id':'0','name':'select type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];
+  List DayTypeList=[{'id':'0','name':'select type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];*/
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class _BodyState extends State<Body> {
               "SIGNUP",
               style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
             ),
-            TextFieldContainer(
+            /*TextFieldContainer(
               child: DropdownButton(
                 isExpanded: true,
                 hint: Text("Select Leave day",
@@ -72,7 +73,7 @@ class _BodyState extends State<Body> {
                   });
                 },
               ),
-            ),
+            ),*/
             TextFieldContainer(
               child: TextFormField(
                 maxLength: 6,
@@ -87,6 +88,8 @@ class _BodyState extends State<Body> {
                 }),
                 cursorColor: kPrimaryColor,
                 decoration: InputDecoration(
+                  counterStyle: TextStyle(height: double.minPositive,),
+                  counterText: "",
                   icon: Icon(
                     Icons.code,
                     color: kPrimaryColor,
@@ -165,6 +168,8 @@ class _BodyState extends State<Body> {
                 }),
                 cursorColor: kPrimaryColor,
                 decoration: InputDecoration(
+                  counterStyle: TextStyle(height: double.minPositive,),
+                  counterText: "",
                   icon: Icon(
                     Icons.phone,
                     color: kPrimaryColor,
@@ -183,7 +188,7 @@ class _BodyState extends State<Body> {
                   }
                   return null;
                 }),
-                obscureText: true,
+                obscureText: hidepassword,
                 cursorColor: kPrimaryColor,
                 decoration: InputDecoration(
                   hintText: "Password",
@@ -191,8 +196,13 @@ class _BodyState extends State<Body> {
                     Icons.lock,
                     color: kPrimaryColor,
                   ),
-                  suffixIcon: Icon(
-                    Icons.visibility,
+                  suffixIcon: IconButton(
+                    onPressed: (){
+                      setState(() {
+                        hidepassword=!hidepassword;
+                      });
+                    },
+                    icon:Icon(hidepassword?Icons.visibility_off:Icons.visibility),
                     color: kPrimaryColor,
                   ),
                   border: InputBorder.none,

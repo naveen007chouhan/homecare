@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
 import 'package:homecare/components/rounded_button.dart';
 import 'package:homecare/components/spinner_field_container.dart';
 import 'package:homecare/components/text_field_container.dart';
@@ -134,89 +135,102 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Card(
-                        // color: Colors.green,
-                        elevation: 8.0,
-                        margin: new EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 6.0),
-                        child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white54,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)
-                                      // topRight: Radius.circular(10.0),
-                                      // bottomRight: Radius.circular(10.0),
-                                      // topLeft: Radius.circular(10.0),
-                                      // bottomLeft: Radius.circular(10.0),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TaskDetail()));
+                        },
+                        child: Card(
+
+                          // color: Colors.green,
+                          elevation: 8.0,
+                          margin: new EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 6.0),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white54,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)
+                                  // topRight: Radius.circular(10.0),
+                                  // bottomRight: Radius.circular(10.0),
+                                  // topLeft: Radius.circular(10.0),
+                                  // bottomLeft: Radius.circular(10.0),
+                                ),
+                              ),
+                              margin: const EdgeInsets.only(
+                                  top: 5, left: 2, bottom: 5, right: 2),
+                              child: Column(
+                                children: [
+                                  ListTile(
+
+                                    leading:Card(
+                                      color: kPrimaryColor,
+                                      elevation: 5,
+
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Text("Processing",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.orangeAccent)),
                                       ),
-                            ),
-                            margin: const EdgeInsets.only(
-                                top: 5, left: 2, bottom: 5, right: 2),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  leading:Card(
-                                    color: kPrimaryColor,
-                                    elevation: 5,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Text("Processing",
+                                    ),
+                                  ),
+                                  Divider(
+                                    height: 1,
+                                    color: Colors.grey,
+                                  ),
+                                  ListTile(
+                                      title: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "Type : ",
+                                          style: TextStyle(
+                                              color: Colors.grey[700],
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "Alot Date : ",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      trailing: Icon(
+                                          Icons.keyboard_arrow_right_rounded,
+                                          color: Colors.grey[600],
+                                          size: 30.0)),
+                                  Divider(
+                                    height: 1,
+                                    color: kSecondaryLightColor,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    child:Padding(
+
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text("Dead Line : ",
                                           style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.orangeAccent)),
+                                              color: Colors.red)),
                                     ),
                                   ),
-                                ),
-                                Divider(
-                                  height: 1,
-                                  color: Colors.grey,
-                                ),
-                                ListTile(
-                                    title: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Text(
-                                        "Type : ",
-                                        style: TextStyle(
-                                            color: Colors.grey[700],
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Text(
-                                        "Alot Date : ",
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    trailing: Icon(
-                                        Icons.keyboard_arrow_right_rounded,
-                                        color: Colors.grey[600],
-                                        size: 30.0)),
-                                Divider(
-                                  height: 1,
-                                  color: kSecondaryLightColor,
-                                ),
-                                Container(
-                                  alignment: Alignment.topRight,
-                                  child:Padding(
-
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("Dead Line : ",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.red)),
-                                  ),
-                                ),
-
-                              ],
-                            )),
+                                ],
+                              )
+                          ),
+                        ),
                       )
+
                     ],
                   ),
                 ),

@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "HomeCare",
       theme: ThemeData(
-        fontFamily: 'RockfordSans-Light.otf',
+        fontFamily: 'Raleway',
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
 

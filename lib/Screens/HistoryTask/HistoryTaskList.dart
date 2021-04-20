@@ -1,19 +1,13 @@
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
-import 'package:homecare/components/rounded_button.dart';
 import 'package:homecare/components/spinner_field_container.dart';
-import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
 
-class HomePage extends StatefulWidget {
+class TaskListHistory extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _TaskListHistoryState createState() => _TaskListHistoryState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _TaskListHistoryState extends State<TaskListHistory> {
   String dayLeave=null;
   var dayLeaveID;
   List DayTypeList=[{'id':'0','name':'Choose Type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];
@@ -25,14 +19,15 @@ class _HomePageState extends State<HomePage> {
           Column(
             children: [
               Container(
-                height: 210,
-                decoration: BoxDecoration(
+                height: 200,
+                color: Colors.white,
+                /*decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [kSecondaryLightColor, kSecondaryColor]),
-                ),
+                ),*/
                 child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 20, right: 20.0, top: 30),
+                  const EdgeInsets.only(left: 20, right: 20.0, top: 30),
                   child: Column(
                     children: [
                       SizedBox(
@@ -40,71 +35,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Row(
                         children: [
-                          Container(
-                            width: 80.0,
-                            height: 80.0,
-                            decoration: BoxDecoration(
-                              color: kSecondaryColor,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.1),
-                                    blurRadius: 8,
-                                    spreadRadius: 3)
-                              ],
-                              border: Border.all(
-                                width: 1.5,
-                                color: Colors.white,
-                              ),
-                              borderRadius: BorderRadius.circular(40.0),
-                            ),
-                            padding: EdgeInsets.all(5),
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "https://images.pexels.com/photos/2167673/pexels-photo-2167673.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
+                                "Task List",
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54),
+                              ),
+                             /* Text(
                                 "Naveen Chouhan",
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.camera_front,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "\$200",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      /*children: [
-                                          TextSpan(
-                                              text: ".50",
-                                              style: TextStyle(
-                                                  color: Colors.white38))
-                                        ]*/
-                                    ),
-                                  )
-                                ],
-                              )
+                              ),*/
+
+
                             ],
                           )
                         ],
@@ -116,31 +65,24 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
-                  color: Colors.grey.shade100,
+                  color: Colors.white,
+                  /*decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [kSecondaryLightColor, kSecondaryColor]),
+                  ),*/
+                  // color: Colors.white60,
                   child: ListView(
                     /*margin: new EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 6.0),*/
-                    padding: EdgeInsets.only(top: 50),
+                    padding: EdgeInsets.only(top: 30),
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 11.0),
-                        child: Text(
-                          "Today Task",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
+
                       GestureDetector(
                         onTap: (){
-                          Navigator.push(
+                         /* Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TaskDetail()));
+                                  builder: (context) => TaskDetail()));*/
                         },
                         child: Card(
 
@@ -238,17 +180,19 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           Positioned(
-            top: 140,
+            top: 90,
             right: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               // width: MediaQuery.of(context).size.width * 0.7,
               height: 115,
               decoration: BoxDecoration(
-                  color: Colors.white,
+                 // color: Colors.white,
+                  gradient: LinearGradient(
+                      colors: [kSecondaryLightColor, kSecondaryColor]),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(.05),
+                      color: Colors.black.withOpacity(.09),
                       blurRadius: 8,
                       spreadRadius: 3,
                       offset: Offset(0, 10),
@@ -272,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 "Task Filter",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Colors.grey.shade200,
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
@@ -318,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                     /* Container(width: 1, height: 50, color: Colors.grey),*/
+                      /* Container(width: 1, height: 50, color: Colors.grey),*/
 
                     ],
                   ),
@@ -368,6 +312,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+
     );
   }
 }

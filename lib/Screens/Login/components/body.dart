@@ -17,6 +17,7 @@ class Body extends StatefulWidget {
 class _State extends State<Body> {
   bool hidepassword = true;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  FocusNode focusNode = new FocusNode();
   static TextEditingController phnControlleruser = TextEditingController();
   static TextEditingController passControlleruser = TextEditingController();
   @override
@@ -33,8 +34,8 @@ class _State extends State<Body> {
                 "LOGIN",
                 // style: TextStyle(fontWeight: FontWeight.w400, fontSize: 35),
                 style: TextStyle(fontSize: 30.0,
-                          fontWeight: FontWeight.w700,
-                          color: kPrimaryColor,),
+                  fontWeight: FontWeight.w700,
+                  color: kPrimaryColor,),
                 // style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(height: size.height * 0.03),
@@ -62,7 +63,7 @@ class _State extends State<Body> {
                       Icons.phone,
                       color: kPrimaryColor,
                     ),
-                    hintText: "Phone No",
+                    labelText: "Phone No",
                     border: InputBorder.none,
                   ),
                 ),
@@ -80,7 +81,7 @@ class _State extends State<Body> {
                   obscureText: hidepassword,
                   cursorColor: kPrimaryColor,
                   decoration: InputDecoration(
-                    hintText: "Password",
+                    labelText: "Password",
                     icon: Icon(
                       Icons.lock,
                       color: kPrimaryColor,
@@ -104,7 +105,19 @@ class _State extends State<Body> {
                     if (formkey.currentState.validate()) {
                       var phn = phnControlleruser.text;
                       var pass = passControlleruser.text;
+                      FocusScope.of(context).requestFocus(focusNode);
+                      final snackbar =SnackBar(content: Text('Success',
+                        style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
+                      ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
+                      /*FocusScope.of(context).requestFocus(focusNode);
+                      final snackBar = SnackBar(content: Text('Success Full Login',
+                        style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.orange,);
+
+
+                      // Find the ScaffoldMessenger in the widget tree
+                      // and use it to show a SnackBar.
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
                       print("phn --> " + phn);
                       print("pass --> " + pass);
                       SendLoginData(phn, pass);

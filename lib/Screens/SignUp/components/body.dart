@@ -33,20 +33,20 @@ class _BodyState extends State<Body> {
     return Background(
       child: SingleChildScrollView(
           child: Form(
-        key: formkey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SvgPicture.asset(
-              "assets/icons/signup.svg",
-              height: size.height * 0.20,
-            ),
-            SizedBox(height: size.height * 0.03),
-            Text(
-              "SIGNUP",
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-            ),
-            /*TextFieldContainer(
+            key: formkey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset(
+                  "assets/icons/signup.svg",
+                  height: size.height * 0.20,
+                ),
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  All_Lan().register,
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+                ),
+                /*TextFieldContainer(
               child: DropdownButton(
                 isExpanded: true,
                 hint: Text("Select Leave day",
@@ -74,177 +74,195 @@ class _BodyState extends State<Body> {
                 },
               ),
             ),*/
-            TextFieldContainer(
-              child: TextFormField(
-                maxLength: 6,
-                textCapitalization: TextCapitalization.characters,
-                controller: compCodeController,
-                // keyboardType:TextInputType.number ,
-                validator: ((value) {
-                  if (value.isEmpty) {
-                    return "Field Required!!";
-                  }
-                  return null;
-                }),
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  counterStyle: TextStyle(height: double.minPositive,),
-                  counterText: "",
-                  icon: Icon(
-                    Icons.code,
-                    color: kPrimaryColor,
+                TextFieldContainer(
+                  child: TextFormField(
+                    maxLength: 6,
+                    textCapitalization: TextCapitalization.characters,
+                    controller: compCodeController,
+                    // keyboardType:TextInputType.number ,
+                    validator: ((value) {
+                      if (value.isEmpty) {
+                        return "Field Required!!";
+                      }
+                      return null;
+                    }),
+                    cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      counterStyle: TextStyle(height: double.minPositive,),
+                      counterText: "",
+                      icon: Icon(
+                        Icons.code,
+                        color: kPrimaryColor,
+                      ),
+                      labelText: All_Lan().companycode,
+                      border: InputBorder.none,
+                    ),
                   ),
-                  hintText: "Company Code",
-                  border: InputBorder.none,
                 ),
-              ),
-            ),
-            TextFieldContainer(
-              child: TextFormField(
-                controller: fnameController,
-                validator: ((value) {
-                  if (value.isEmpty) {
-                    return "Field Required!!";
-                  }
-                  return null;
-                }),
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.person,
-                    color: kPrimaryColor,
-                  ),
-                  hintText: "First Name",
-                  border: InputBorder.none,
+
+                Row(
+
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: TextFieldContainer(
+                        child: TextFormField(
+                          controller: fnameController,
+                          validator: ((value) {
+                            if (value.isEmpty) {
+                              return "Field Required!!";
+                            }
+                            return null;
+                          }),
+                          cursorColor: kPrimaryColor,
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.person,
+                              color: kPrimaryColor,
+                            ),
+                            // hintText: "First Name",
+                            border: InputBorder.none,
+                            // border: OutlineInputBorder(
+                            //   borderRadius: BorderRadius.circular(0),
+                            // ),
+                            labelText: "First Name",
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: TextFieldContainer(
+                        child: TextFormField(
+                          controller: lnameController,
+                          validator: ((value) {
+                            if (value.isEmpty) {
+                              return "Field Required!!";
+                            }
+                            return null;
+                          }),
+                          cursorColor: kPrimaryColor,
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.person,
+                              color: kPrimaryColor,
+                            ),
+                            labelText: "Last Name",
+                            // labelText: "First Name",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            TextFieldContainer(
-              child: TextFormField(
-                controller: lnameController,
-                validator: ((value) {
-                  if (value.isEmpty) {
-                    return "Field Required!!";
-                  }
-                  return null;
-                }),
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.person,
-                    color: kPrimaryColor,
+
+                TextFieldContainer(
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    validator: validateEmail,
+                    cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.email_rounded,
+                        color: kPrimaryColor,
+                      ),
+                      labelText: "Email Id",
+                      border: InputBorder.none,
+                    ),
                   ),
-                  hintText: "Last Name",
-                  border: InputBorder.none,
                 ),
-              ),
-            ),
-            TextFieldContainer(
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                controller: emailController,
-                validator: validateEmail,
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.email_rounded,
-                    color: kPrimaryColor,
+                TextFieldContainer(
+                  child: TextFormField(
+                    keyboardType: TextInputType.phone,
+                    controller: phnController,
+                    maxLength: 10,
+                    validator: ((value) {
+                      if (value.isEmpty) {
+                        return "Field Required!!";
+                      }
+                      return null;
+                    }),
+                    cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      counterStyle: TextStyle(height: double.minPositive,),
+                      counterText: "",
+                      icon: Icon(
+                        Icons.phone,
+                        color: kPrimaryColor,
+                      ),
+                      labelText: "Phone No",
+                      border: InputBorder.none,
+                    ),
                   ),
-                  hintText: "Email Id",
-                  border: InputBorder.none,
                 ),
-              ),
-            ),
-            TextFieldContainer(
-              child: TextFormField(
-                keyboardType: TextInputType.phone,
-                controller: phnController,
-                maxLength: 10,
-                validator: ((value) {
-                  if (value.isEmpty) {
-                    return "Field Required!!";
-                  }
-                  return null;
-                }),
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  counterStyle: TextStyle(height: double.minPositive,),
-                  counterText: "",
-                  icon: Icon(
-                    Icons.phone,
-                    color: kPrimaryColor,
+                TextFieldContainer(
+                  child: TextFormField(
+                    controller: passController,
+                    validator: ((value) {
+                      if (value.isEmpty) {
+                        return "Field Required!!";
+                      }
+                      return null;
+                    }),
+                    obscureText: hidepassword,
+                    cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      icon: Icon(
+                        Icons.lock,
+                        color: kPrimaryColor,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: (){
+                          setState(() {
+                            hidepassword=!hidepassword;
+                          });
+                        },
+                        icon:Icon(hidepassword?Icons.visibility_off:Icons.visibility),
+                        color: kPrimaryColor,
+                      ),
+                      border: InputBorder.none,
+                    ),
                   ),
-                  hintText: "Phone No",
-                  border: InputBorder.none,
                 ),
-              ),
-            ),
-            TextFieldContainer(
-              child: TextFormField(
-                controller: passController,
-                validator: ((value) {
-                  if (value.isEmpty) {
-                    return "Field Required!!";
-                  }
-                  return null;
-                }),
-                obscureText: hidepassword,
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  icon: Icon(
-                    Icons.lock,
-                    color: kPrimaryColor,
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: (){
-                      setState(() {
-                        hidepassword=!hidepassword;
-                      });
-                    },
-                    icon:Icon(hidepassword?Icons.visibility_off:Icons.visibility),
-                    color: kPrimaryColor,
-                  ),
-                  border: InputBorder.none,
+                RoundedButton(
+                  text: "SIGNUP",
+                  press: () {
+                    if (formkey.currentState.validate()) {
+                      var compcode = compCodeController.text;
+                      var fname = fnameController.text;
+                      var lname = lnameController.text;
+                      var email = emailController.text;
+                      var phn = phnController.text;
+                      var pass = passController.text;
+                      print("compcode --> " + compcode);
+                      print("First Name --> " + fname);
+                      print("Last Name --> " + lname);
+                      print("Email --> " + email);
+                      print("phn --> " + phn);
+                      print("pass --> " + pass);
+                      SendRegisterData(compcode,fname,lname,email,phn,pass);
+                    }
+                  },
                 ),
-              ),
-            ),
-            RoundedButton(
-              text: "SIGNUP",
-              press: () {
-                if (formkey.currentState.validate()) {
-                  var compcode = compCodeController.text;
-                  var fname = fnameController.text;
-                  var lname = lnameController.text;
-                  var email = emailController.text;
-                  var phn = phnController.text;
-                  var pass = passController.text;
-                  print("compcode --> " + compcode);
-                  print("First Name --> " + fname);
-                  print("Last Name --> " + lname);
-                  print("Email --> " + email);
-                  print("phn --> " + phn);
-                  print("pass --> " + pass);
-                  SendRegisterData(compcode,fname,lname,email,phn,pass);
-                }
-              },
-            ),
-            SizedBox(height: size.height * 0.03),
-            AlreadyHaveAnAccountCheck(
-              login: false,
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: size.height * 0.03),
-            /*OrDivider(),
+                SizedBox(height: size.height * 0.03),
+                AlreadyHaveAnAccountCheck(
+                  login: false,
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: size.height * 0.03),
+                /*OrDivider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -262,9 +280,9 @@ class _BodyState extends State<Body> {
                 ),
               ],
             )*/
-          ],
-        ),
-      )),
+              ],
+            ),
+          )),
     );
   }
   String validateEmail(String value) {

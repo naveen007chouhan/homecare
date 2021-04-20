@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homecare/Screens/HistoryTask/HistoryTaskList.dart';
 import 'package:homecare/Screens/HomePages/home.dart';
 import 'package:homecare/Screens/NotificationPages/NotificationScreen.dart';
 import 'package:homecare/Screens/ProfilePages/ProfileScreen.dart';
@@ -13,7 +14,7 @@ class _HomePageState extends State<BottomBar> {
   int _selectedItemIndex = 0;
   final List pages = [
     HomePage(),
-    null,
+    TaskListHistory(),
     null,
     NotificationScreens(),
     Profile(),
@@ -25,7 +26,7 @@ class _HomePageState extends State<BottomBar> {
         children: [
 
           buildNavBarItem(Icons.home, 0),
-          buildNavBarItem(Icons.card_giftcard, 1),
+          buildNavBarItem(Icons.history_edu_outlined, 1),
           buildNavBarItem(Icons.camera, 2),
           buildNavBarItem(Icons.notification_important, 3),
           buildNavBarItem(Icons.person, 4),

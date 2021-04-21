@@ -1,12 +1,17 @@
+import 'dart:convert';
+import 'package:homecare/Screens/loading.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homecare/API/Api.dart';
 import 'package:homecare/Screens/Login/Login.dart';
 import 'package:homecare/Screens/SignUp/components/background.dart';
 import 'package:homecare/components/already_have_an_account_acheck.dart';
 import 'package:homecare/components/rounded_button.dart';
 import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -14,8 +19,11 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  bool hidepassword=true;
+  bool hidepassword = true;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  FocusNode focusNode = new FocusNode();
+  ProgressDialog pr;
+  bool progress =false;
   static TextEditingController compCodeController = TextEditingController();
   static TextEditingController fnameController = TextEditingController();
   static TextEditingController lnameController = TextEditingController();
@@ -29,9 +37,10 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     return Background(
-      child: SingleChildScrollView(
+      child: progress==true?Loading(): SingleChildScrollView(
           child: Form(
             key: formkey,
             child: Column(
@@ -86,13 +95,13 @@ class _BodyState extends State<Body> {
                       }
                       return null;
                     }),
-                    cursorColor: kPrimaryColor,
+                    cursorColor: kSecondaryLightColor,
                     decoration: InputDecoration(
                       counterStyle: TextStyle(height: double.minPositive,),
                       counterText: "",
                       icon: Icon(
                         Icons.code,
-                        color: kPrimaryColor,
+                        color: kSecondaryLightColor,
                       ),
                       labelText: All_Lan().companycode,
                       border: InputBorder.none,
@@ -104,7 +113,7 @@ class _BodyState extends State<Body> {
 
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: TextFieldContainer(
                         child: TextFormField(
                           controller: fnameController,
@@ -114,11 +123,11 @@ class _BodyState extends State<Body> {
                             }
                             return null;
                           }),
-                          cursorColor: kPrimaryColor,
+                          cursorColor: kSecondaryLightColor,
                           decoration: InputDecoration(
                             icon: Icon(
                               Icons.person,
-                              color: kPrimaryColor,
+                              color: kSecondaryLightColor,
                             ),
                             // hintText: "First Name",
                             border: InputBorder.none,
@@ -131,7 +140,7 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: TextFieldContainer(
                         child: TextFormField(
                           controller: lnameController,
@@ -141,11 +150,11 @@ class _BodyState extends State<Body> {
                             }
                             return null;
                           }),
-                          cursorColor: kPrimaryColor,
+                          cursorColor: kSecondaryLightColor,
                           decoration: InputDecoration(
                             icon: Icon(
                               Icons.person,
-                              color: kPrimaryColor,
+                              color: kSecondaryLightColor,
                             ),
                             labelText: "Last Name",
                             // labelText: "First Name",
@@ -162,11 +171,11 @@ class _BodyState extends State<Body> {
                     keyboardType: TextInputType.emailAddress,
                     controller: emailController,
                     validator: validateEmail,
-                    cursorColor: kPrimaryColor,
+                    cursorColor: kSecondaryLightColor,
                     decoration: InputDecoration(
                       icon: Icon(
                         Icons.email_rounded,
-                        color: kPrimaryColor,
+                        color: kSecondaryLightColor,
                       ),
                       labelText: "Email Id",
                       border: InputBorder.none,
@@ -184,13 +193,13 @@ class _BodyState extends State<Body> {
                       }
                       return null;
                     }),
-                    cursorColor: kPrimaryColor,
+                    cursorColor: kSecondaryLightColor,
                     decoration: InputDecoration(
                       counterStyle: TextStyle(height: double.minPositive,),
                       counterText: "",
                       icon: Icon(
                         Icons.phone,
-                        color: kPrimaryColor,
+                        color: kSecondaryLightColor,
                       ),
                       labelText: "Phone No",
                       border: InputBorder.none,
@@ -207,12 +216,12 @@ class _BodyState extends State<Body> {
                       return null;
                     }),
                     obscureText: hidepassword,
-                    cursorColor: kPrimaryColor,
+                    cursorColor: kSecondaryLightColor,
                     decoration: InputDecoration(
                       labelText: "Password",
                       icon: Icon(
                         Icons.lock,
-                        color: kPrimaryColor,
+                        color: kSecondaryLightColor,
                       ),
                       suffixIcon: IconButton(
                         onPressed: (){
@@ -221,7 +230,7 @@ class _BodyState extends State<Body> {
                           });
                         },
                         icon:Icon(hidepassword?Icons.visibility_off:Icons.visibility),
-                        color: kPrimaryColor,
+                        color: kSecondaryLightColor,
                       ),
                       border: InputBorder.none,
                     ),
@@ -297,7 +306,42 @@ class _BodyState extends State<Body> {
       return null;
   }
 
-  void SendRegisterData(String compcode, String fname, String lname, String email, String phn, String pass) {
+  void SendRegisterData(String compcode, String fname, String lname, String email, String phn, String pass) async{
 
+    setState(() {
+      progress=true;
+      // pr.show();
+
+    });
+    var regurl= All_API().baseurl+All_API().api_register;
+    print("reg_url -->" +regurl);
+    var body=jsonEncode({"firstname":fname,"lastname":lname,"email_id":email,"password":pass,"mobile_no":phn,"company_code":compcode});
+    print("reg_body -->" +body);
+    Map<String, String> headers = {
+      All_API().key: All_API().keyvalue,
+    };
+    var response = await http.post(regurl,body:body,headers: headers);
+    print("reg_body_response -->" +response.body);
+    try{
+      if(response.statusCode==200){
+        setState(() {
+          // pr.hide();
+          progress=false;
+        });
+        FocusScope.of(context).requestFocus(focusNode);
+        final snackBar = SnackBar(content: Text('Your Are Successfuly Register ,Now You Can Login',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }else{
+        setState(() {
+          // pr.hide();
+          progress=false;
+          FocusScope.of(context).requestFocus(focusNode);
+          final snackBar = SnackBar(content: Text('Your Are Not Register ,Please Register First',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+      }
+    }catch(e){
+      return e;
+    }
   }
 }

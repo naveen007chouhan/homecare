@@ -23,4 +23,5 @@ class All_Lan{
   final dont_have_an_account="Ich habe kein Konto";
   final welcome_to_home_care="Willkommen in der häuslichen Pflege";
   final tasklist="Aufgabenliste";
+  final pleasewait="Please wait...";
 }

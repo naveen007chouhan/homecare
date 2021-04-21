@@ -55,13 +55,13 @@ class _State extends State<Body> {
                     }
                     return null;
                   }),
-                  cursorColor: kPrimaryColor,
+                  cursorColor: kSecondaryLightColor,
                   decoration: InputDecoration(
                     counterStyle: TextStyle(height: double.minPositive,),
                     counterText: "",
                     icon: Icon(
                       Icons.phone,
-                      color: kPrimaryColor,
+                      color: kSecondaryLightColor,
                     ),
                     labelText: "Phone No",
                     border: InputBorder.none,
@@ -84,7 +84,7 @@ class _State extends State<Body> {
                     labelText: "Password",
                     icon: Icon(
                       Icons.lock,
-                      color: kPrimaryColor,
+                      color: kSecondaryLightColor,
                     ),
                     suffixIcon: IconButton(
                       onPressed: (){
@@ -93,7 +93,7 @@ class _State extends State<Body> {
                         });
                       },
                       icon:Icon(hidepassword?Icons.visibility_off:Icons.visibility),
-                      color: kPrimaryColor,
+                      color: kSecondaryLightColor,
                     ),
                     border: InputBorder.none,
                   ),

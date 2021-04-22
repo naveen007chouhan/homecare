@@ -18,8 +18,8 @@ class Loading extends StatelessWidget {
           ),
           SizedBox(height: 10,),
           Center(
-           child: Text(All_Lan().pleasewait,style: TextStyle(fontSize: 20.0,
-             fontWeight: FontWeight.w700,),),
+            child: Text(All_Lan().pleasewait,style: TextStyle(fontSize: 20.0,
+              fontWeight: FontWeight.w700,),),
           )
         ],
 

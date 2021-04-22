@@ -1,13 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:homecare/API/Api.dart';
 import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskDetail extends StatefulWidget {
   @override
@@ -16,20 +21,26 @@ class TaskDetail extends StatefulWidget {
 
 class _TaskDetailState extends State<TaskDetail> {
   bool _status = false;
-  String result = "Hey there !";
+  String barcoderesult = "Hey there !";
   static TextEditingController feedmsgController = TextEditingController();
   // File scannedDocument;
   File uploadPDFimage;
   File uploadBILLimage;
-
+  bool progress =false;
+  FocusNode focusNode = new FocusNode();
   bool isCameraPermissionAccepted;
-
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  Position _currentPosition;
+  SharedPreferences sharedPreferences;
+  String latitude;
+  String longitude;
   @override
   void initState() {
     // checkCameraPermission();
     // ScannedImage.fromJson(
     //     '{rectangleCoordinates: {bottomLeft: {x: 133.0, y: 718.0}, bottomRight: {x: 439.0, y: 699.0}, topLeft: {x: 95.0, y: 106.0}, topRight: {x: 407.0, y: 93.0}}, croppedImage: file:///data/user/0/com.example.document_scanner_example/cache/documents/aad9bed5-68ea-4bb9-a7a2-13c57b38949f.jpg, width: 500, initialImage: file:///data/user/0/com.example.document_scanner_example/cache/documents/919a73f2-2590-4148-b0c7-212dcfffaf94.jpg, height: 888}');
     super.initState();
+    getPermission();
   }
 
   @override
@@ -390,32 +401,31 @@ class _TaskDetailState extends State<TaskDetail> {
     try {
       String qrResult = await BarcodeScanner.scan();
       setState(() {
-        _status = true;
-        result = qrResult;
-        print(result);
-        // chech_in_out();
+        barcoderesult = qrResult;
+        print("barcode-->"+barcoderesult);
+        chech_in_out();
       });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          result = "Camera permission was denied";
-          print(result);
+          barcoderesult = "Camera permission was denied";
+          print(barcoderesult);
         });
       } else {
         setState(() {
-          result = "Unknown Error $ex";
-          print(result);
+          barcoderesult = "Unknown Error $ex";
+          print(barcoderesult);
         });
       }
     } on FormatException {
       setState(() {
-        result = "You pressed the back button before scanning anything";
-        print(result);
+        barcoderesult = "You pressed the back button before scanning anything";
+        print(barcoderesult);
       });
     } catch (ex) {
       setState(() {
-        result = "Unknown Error $ex";
-        print(result);
+        barcoderesult = "Unknown Error $ex";
+        print(barcoderesult);
       });
     }
   }
@@ -449,7 +459,57 @@ class _TaskDetailState extends State<TaskDetail> {
           .showSnackBar(SnackBar(content: Text('Please Select Bill Image !!')));
     }
   }
+  _getCurrentLocation() {
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+        //print("Position : "+_currentPosition.toString());
+        sharedPreferences.setString("lat", _currentPosition.latitude.toString());
+        sharedPreferences.setString("long", _currentPosition.longitude.toString());
+      });
 
+      // _getAddressFromLatLng();
+    }).catchError((e) {
+      print(e);
+    });
+  }
+  Future<void> getPermission() async{
+    sharedPreferences=await SharedPreferences.getInstance();
+    PermissionStatus permission=await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.location);
+
+    if(permission==PermissionStatus.denied)
+    {
+      await PermissionHandler()
+          .requestPermissions([PermissionGroup.locationAlways]);
+    }
+
+    var geolocator=Geolocator();
+
+    GeolocationStatus geolocationStatus=await geolocator.checkGeolocationPermissionStatus();
+
+    switch(geolocationStatus)
+    {
+      case GeolocationStatus.disabled:
+        print('Disabled');
+        break;
+      case GeolocationStatus.restricted:
+        print('Restricted');
+        break;
+      case GeolocationStatus.denied:
+        print('Denied');
+        break;
+      case GeolocationStatus.unknown:
+        print('Unknown');
+        break;
+      case GeolocationStatus.granted:
+        print('Granted --> ');
+        _getCurrentLocation();
+        break;
+    }
+  }
 // void _clickbillDoc() async{
 //   isCameraPermissionAccepted == null
 //       ? Center(
@@ -513,4 +573,100 @@ class _TaskDetailState extends State<TaskDetail> {
 /*Widget _getQrCode() {
     return new
   }*/
+
+  void chech_in_out() async{
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    setState(() {
+      progress=true;
+      // pr.show();
+
+    });
+    String username = All_API().keyuser;
+    String password = All_API().keypassvalue;
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    print("log_basicAuth--> "+basicAuth);
+
+    var logurl= All_API().baseurl+All_API().api_login;
+    print("login_url -->" +logurl);
+
+    /*var body=jsonEncode({"firstname":fname,"lastname":lname,"email_id":email,"password":pass,"mobile_no":phn,"company_code":compcode});*/
+
+    Map<String, String> headers = {
+      All_API().key: All_API().keyvalue,
+      'authorization': basicAuth,
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(logurl));
+    latitude=sharedPreferences.getString("lat");
+    longitude=sharedPreferences.getString("long");
+    request.fields.addAll({
+
+      'employee_id': "id",
+      'task_id': '2',
+      'qr_code': barcoderesult,
+      'latitude': latitude,
+      'longitude': longitude,
+    });
+
+    request.headers.addAll(headers);
+    http.StreamedResponse streamedResponse = await request.send();
+
+    var response = await http.Response.fromStream(streamedResponse);
+    print("log_body_response -->" +response.body);
+
+    var  jasonData = jsonDecode(response.body);
+    // print("log_statuscode_response -->" +jasonData.statusCode);
+
+
+    // final Map<String, String> jasonData = jsonDecode(response.body);
+    // String msg=jasonData['error'];
+    // print("MSG--> "+ msg );
+    try{
+
+      if(response.statusCode==200){
+        var  jasonData = jsonDecode(response.body);
+
+        setState(() {
+          // pr.hide();
+          progress=false;
+          _status = true;
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) {
+          //       return BottomBar();
+          //     },
+          //   ),
+          // );
+        });
+        FocusScope.of(context).requestFocus(focusNode);
+        final snackBar = SnackBar(content: Text('Your Are Successfuly Login ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return null;
+      }else{
+        setState(() {
+          // pr.hide();
+          progress=false;
+          /*Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return BottomBar();
+              },
+            ),
+          );*/
+          FocusScope.of(context).requestFocus(focusNode);
+          final snackBar = SnackBar(content: Text(/*msg*/"Invalid mobile no or password ",style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+      }
+
+    }catch(e){
+      return e;
+    }
+  }
+
+
 }
+
+

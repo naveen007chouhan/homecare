@@ -403,7 +403,7 @@ class _TaskDetailState extends State<TaskDetail> {
       setState(() {
         barcoderesult = qrResult;
         print("barcode-->"+barcoderesult);
-        chech_in_out();
+        chech_QRcode();
       });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
@@ -574,7 +574,7 @@ class _TaskDetailState extends State<TaskDetail> {
     return new
   }*/
 
-  void chech_in_out() async{
+  void chech_QRcode() async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     setState(() {
       progress=true;
@@ -587,8 +587,8 @@ class _TaskDetailState extends State<TaskDetail> {
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     print("log_basicAuth--> "+basicAuth);
 
-    var logurl= All_API().baseurl+All_API().api_login;
-    print("login_url -->" +logurl);
+    var scan_qrcode_url= All_API().baseurl+All_API().api_scan_qrcode;
+    print("scan_qrcode_url -->" +scan_qrcode_url);
 
     /*var body=jsonEncode({"firstname":fname,"lastname":lname,"email_id":email,"password":pass,"mobile_no":phn,"company_code":compcode});*/
 
@@ -596,12 +596,13 @@ class _TaskDetailState extends State<TaskDetail> {
       All_API().key: All_API().keyvalue,
       'authorization': basicAuth,
     };
-    var request = http.MultipartRequest('POST', Uri.parse(logurl));
+    var request = http.MultipartRequest('POST', Uri.parse(scan_qrcode_url));
     latitude=sharedPreferences.getString("lat");
     longitude=sharedPreferences.getString("long");
+    print("taskdetail_lat_long--> " + latitude+" "+longitude);
     request.fields.addAll({
 
-      'employee_id': "id",
+      'employee_id': "5",
       'task_id': '2',
       'qr_code': barcoderesult,
       'latitude': latitude,
@@ -612,9 +613,11 @@ class _TaskDetailState extends State<TaskDetail> {
     http.StreamedResponse streamedResponse = await request.send();
 
     var response = await http.Response.fromStream(streamedResponse);
-    print("log_body_response -->" +response.body);
+    print("scanner_body_response -->" +response.body);
 
     var  jasonData = jsonDecode(response.body);
+    String msg=jasonData['message'];
+    print("scanner_MSG--> "+ msg );
     // print("log_statuscode_response -->" +jasonData.statusCode);
 
 
@@ -640,7 +643,7 @@ class _TaskDetailState extends State<TaskDetail> {
           // );
         });
         FocusScope.of(context).requestFocus(focusNode);
-        final snackBar = SnackBar(content: Text('Your Are Successfuly Login ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
+        final snackBar = SnackBar(content: Text(msg,style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         return null;
       }else{
@@ -656,7 +659,7 @@ class _TaskDetailState extends State<TaskDetail> {
             ),
           );*/
           FocusScope.of(context).requestFocus(focusNode);
-          final snackBar = SnackBar(content: Text(/*msg*/"Invalid mobile no or password ",style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
+          final snackBar = SnackBar(content: Text(msg,style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         });
       }

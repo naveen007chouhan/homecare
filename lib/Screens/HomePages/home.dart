@@ -1,12 +1,16 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homecare/API/Api.dart';
 import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
-import 'package:homecare/components/rounded_button.dart';
+
 import 'package:homecare/components/spinner_field_container.dart';
-import 'package:homecare/components/text_field_container.dart';
+
 import 'package:homecare/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,7 +20,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String dayLeave=null;
   var dayLeaveID;
-  List DayTypeList=[{'id':'0','name':'Choose Type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];
+  FocusNode focusNode = new FocusNode();
+  String AssignedDate= 'assigned_date';
+  String DeadlineDate= 'deadline_date';
+  List DayTypeList=[{'id':'0','name':'Choose Type'},{'id':'1','name':'DeadlineDate'},{'id':'2','name':'AssignedDate'}];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,14 +120,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+
               Expanded(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
-                  color: Colors.grey.shade100,
+                  color: Colors.white,
                   child: ListView(
                     /*margin: new EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 6.0),*/
-                    padding: EdgeInsets.only(top: 50),
+                    padding: EdgeInsets.only(top: 60),
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 11.0),
@@ -369,5 +377,81 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+  Future homeTaskList() async{
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+
+    String username = All_API().keyuser;
+    String password = All_API().keypassvalue;
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    print("log_basicAuth--> "+basicAuth);
+
+    var all_task_list_url= All_API().baseurl+All_API().api_all_task_list;
+    print("all_task_list_url -->" +all_task_list_url);
+
+
+
+    Map<String, String> headers = {
+      All_API().key: All_API().keyvalue,
+      'authorization': basicAuth,
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(all_task_list_url));
+
+    // print("taskdetail_lat_long--> " + latitude+" "+longitude);
+    request.fields.addAll({
+
+      'employee_id': "5",
+      'date_field': AssignedDate,
+      /*'start_date': barcoderesult,
+      'end_date': latitude,*/
+    });
+
+    request.headers.addAll(headers);
+    http.StreamedResponse streamedResponse = await request.send();
+
+    var response = await http.Response.fromStream(streamedResponse);
+    print("scanner_body_response -->" +response.body);
+
+    var  jasonData = jsonDecode(response.body);
+    String msg=jasonData['message'];
+    print("scanner_MSG--> "+ msg );
+    // print("log_statuscode_response -->" +jasonData.statusCode);
+
+
+    // final Map<String, String> jasonData = jsonDecode(response.body);
+    // String msg=jasonData['error'];
+    // print("MSG--> "+ msg );
+    try{
+
+      if(response.statusCode==200){
+        var  jasonData = jsonDecode(response.body);
+
+
+        FocusScope.of(context).requestFocus(focusNode);
+        final snackBar = SnackBar(content: Text(msg,style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return null;
+      }else{
+        setState(() {
+          // pr.hide();
+          // progress=false;
+          /*Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return BottomBar();
+              },
+            ),
+          );*/
+          FocusScope.of(context).requestFocus(focusNode);
+          final snackBar = SnackBar(content: Text(msg,style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+      }
+
+    }catch(e){
+      return e;
+    }
   }
 }

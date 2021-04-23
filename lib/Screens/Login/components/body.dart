@@ -12,6 +12,7 @@ import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
 import 'package:homecare/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class Body extends StatefulWidget {
   @override
   _State createState() => _State();
@@ -22,6 +23,7 @@ class _State extends State<Body> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   FocusNode focusNode = new FocusNode();
   bool progress =false;
+  String fcmID;
   static TextEditingController phnControlleruser = TextEditingController();
   static TextEditingController passControlleruser = TextEditingController();
   @override
@@ -164,7 +166,7 @@ class _State extends State<Body> {
     var logurl= All_API().baseurl+All_API().api_login;
     print("login_url -->" +logurl);
 
-    /*var body=jsonEncode({"firstname":fname,"lastname":lname,"email_id":email,"password":pass,"mobile_no":phn,"company_code":compcode});*/
+
 
     Map<String, String> headers = {
       All_API().key: All_API().keyvalue,
@@ -183,8 +185,9 @@ class _State extends State<Body> {
     print("log_body_response -->" +response.body);
 
     var  jasonData = jsonDecode(response.body);
-    // print("log_statuscode_response -->" +jasonData.statusCode);
+    String msg=jasonData['message'];
 
+    // print("log_statuscode_response -->" +jasonData.statusCode);
 
     // final Map<String, String> jasonData = jsonDecode(response.body);
     // String msg=jasonData['error'];
@@ -192,12 +195,59 @@ class _State extends State<Body> {
     try{
 
       if(response.statusCode==200){
-        var  jasonData = jsonDecode(response.body);
-
-        setState(() {
-          // pr.hide();
+        print("MSG--> "+ msg );
+        var employeeId = jasonData['data']['id'];
+        print("MSG=2--> "+employeeId);
+        var employeeSlug = jasonData['data']['slug'];
+        var companyId = jasonData['data']['company_id'];
+        var firstname = jasonData['data']['first_name'];
+        var lastname = jasonData['data']['last_name'];
+        var employeeEmail = jasonData['data']['email'];
+        var employeeMobileNo = jasonData['data']['mobile_no'];
+        var employeepassword = jasonData['data']['password'];
+        var employeeprofileImg = jasonData['data']['profile_img'];
+        var verifyToken = jasonData['data']['verifi_token'];
+        var tokenExpire = jasonData['data']['token_expire'];
+        var verificationRetries = jasonData['data']['verification_retries'];
+        var address = jasonData['data']['address'];
+        var country = jasonData['data']['country'];
+        var state = jasonData['data']['state'];
+        var city = jasonData['data']['city'];
+        var zip = jasonData['data']['zip'];
+        var createdAt = jasonData['data']['created_at'];
+        var employeeStatus = jasonData['data']['status'];
+        var deleted = jasonData['data']['deleted'];
+        var deletedAt = jasonData['data']['deleted_at'];
+        var updatedAt = jasonData['data']['updated_at'];
+        print(employeeId+"-----"+employeeSlug+"--------"+companyId+"-------"+firstname+"-----"+lastname+"--------"+employeeEmail+"------"+employeeMobileNo);
+        SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+        sharedPreferences.setString("employeeId", employeeId);
+        sharedPreferences.setString("employeeSlug", employeeSlug);
+        sharedPreferences.setString("companyId", companyId);
+        sharedPreferences.setString("firstname", firstname);
+        sharedPreferences.setString("lastname", lastname);
+        sharedPreferences.setString("employeeEmail", employeeEmail);
+        sharedPreferences.setString("employeeMobileNo", employeeMobileNo);
+        sharedPreferences.setString("employeepassword", employeepassword);
+        sharedPreferences.setString("employeeprofileImg", employeeprofileImg);
+        sharedPreferences.setString("verifyToken", verifyToken);
+        sharedPreferences.setString("tokenExpire", tokenExpire);
+        sharedPreferences.setString("verificationRetries", verificationRetries);
+        sharedPreferences.setString("address", address);
+        sharedPreferences.setString("country", country);
+        sharedPreferences.setString("state", state);
+        sharedPreferences.setString("city", city);
+        sharedPreferences.setString("zip", zip);
+        sharedPreferences.setString("createdAt", createdAt);
+        sharedPreferences.setString("employeeStatus", employeeStatus);
+        sharedPreferences.setString("deleted", deleted);
+        sharedPreferences.setString("deletedAt", deletedAt);
+        sharedPreferences.setString("updatedAt", updatedAt);
+        if(employeeId.toString().isNotEmpty){
+          sharedPreferences.setBool("loggedIn", true);
           progress=false;
-          Navigator.push(
+
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) {
@@ -205,7 +255,9 @@ class _State extends State<Body> {
               },
             ),
           );
-        });
+        }
+
+
         FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(content: Text('Your Are Successfuly Login ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);

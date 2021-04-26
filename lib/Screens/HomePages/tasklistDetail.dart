@@ -15,6 +15,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskDetail extends StatefulWidget {
+  String taskid;
+  String employid;
+  String alotdate;
+  String deadlinedate;
+  String addrs;
+  TaskDetail({this.employid,this.taskid,this.alotdate,this.deadlinedate,this.addrs});
   @override
   _TaskDetailState createState() => _TaskDetailState();
 }
@@ -58,7 +64,7 @@ class _TaskDetailState extends State<TaskDetail> {
             children: <Widget>[
               Container(
                   padding: EdgeInsets.only(left: 10.0),
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.4,
                   decoration: new BoxDecoration(
                     image: new DecorationImage(
                       image: new NetworkImage(
@@ -67,8 +73,8 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                   )),
               Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                padding: EdgeInsets.all(40.0),
+                height: MediaQuery.of(context).size.height * 0.4,
+                padding: EdgeInsets.all(20.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(58, 66, 86, .9),
@@ -79,7 +85,7 @@ class _TaskDetailState extends State<TaskDetail> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(height: 90.0),
+                      SizedBox(height: 70.0),
                       Icon(
                         Icons.home_repair_service_sharp,
                         color: Colors.white,
@@ -96,30 +102,28 @@ class _TaskDetailState extends State<TaskDetail> {
                       ),
                       SizedBox(height: 30.0),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Expanded(
-                            flex: 1,
-                            child: Padding(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  /*lesson.*/ "Alot Date",
-                                  style: TextStyle(color: Colors.white),
-                                )),
+                            child: Container(
+                              child: Text(
+                                /*lesson.*/ "Alot Date : "+widget.alotdate,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
                           ),
                           Expanded(
-                              flex: 1,
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(7.0),
                                 decoration: new BoxDecoration(
-                                    border: new Border.all(color: Colors.white),
+                                    border: new Border.all(color: kPrimaryColor),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: new Text(
                                   // "\$20",
                                   /*"\$" + lesson.price.toString()*/
-                                  "Dead Line",
-                                  style: TextStyle(color: Colors.white),
+                                  "Dead Line : "+ widget.deadlinedate,
+                                  style: TextStyle(color: Colors.red),
                                 ),
                               ))
                         ],
@@ -157,31 +161,7 @@ class _TaskDetailState extends State<TaskDetail> {
                   Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Text(
-                      /*lesson.*/ "kjbvjbadkjvbkjbvkjadbv"
-                        "VBAJKAv kjadb v"
-                        "dva h dkd avhk dva"
-                        "advjh avh ad da"
-                        " hvhd v;hda v;adB kjABVKJCB"
-                        "v hjd V;hd vhd "
-                        "db vsdb naveebeebanawevbibavjnaveencajkjcajcAvASCHLhsvac''"
-                        "ASVCiACAC'ivVCSiuvsbsabaSBASBacASCacsa ACJ lcA"
-                        "A C A: as;kACS;ca ;aC  aKC hac ckaS"
-                        "AHC ;A;hA  :KshuvcHvhA"
-                        "ACLHcaHc ah h; A"
-                        "ACLhbCbiCbicaBc:"
-                        "iAIBlhBA"
-                        "ICPiPipA"
-                        "ACSBUIibS:"
-                        "kjbvjbadkjvbkjbvkjadbv"
-                        "VBAJKAv kjadb v"
-                        "dva h dkd avhk dva"
-                        "advjh avh ad da"
-                        " hvhd v;hda v;adB kjABVKJCB"
-                        "v hjd V;hd vhd "
-                        "db vsdb naveebeebanawevbibavjnaveencajkjcajcAvASCHLhsvac''"
-                        "ASVCiACAC'ivVCSiuvsbsabaSBASBacASCacsa ACJ lcA"
-                        "A C A: as;kACS;ca ;aC  aKC hac ckaS"
-                        "AHC ;A;hA  :KshuvcHvhA",
+                      widget.addrs,
                       style: TextStyle(fontSize: 18.0),
                     ),
                   ),
@@ -599,11 +579,11 @@ class _TaskDetailState extends State<TaskDetail> {
     var request = http.MultipartRequest('POST', Uri.parse(scan_qrcode_url));
     latitude=sharedPreferences.getString("lat");
     longitude=sharedPreferences.getString("long");
-    print("taskdetail_lat_long--> " + latitude+" "+longitude);
+    print("taskdetail_lat_long--> "+ widget.employid+" "+widget.taskid +" "+barcoderesult+" "+ latitude+" "+longitude);
     request.fields.addAll({
 
-      'employee_id': "5",
-      'task_id': '2',
+      'employee_id': widget.employid,
+      'task_id': widget.taskid,
       'qr_code': barcoderesult,
       'latitude': latitude,
       'longitude': longitude,

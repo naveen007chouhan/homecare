@@ -185,7 +185,7 @@ class _State extends State<Body> {
     print("log_body_response -->" +response.body);
 
     var  jasonData = jsonDecode(response.body);
-    String msg=jasonData['message'];
+    // String msg=jasonData['message'];
 
     // print("log_statuscode_response -->" +jasonData.statusCode);
 
@@ -195,7 +195,7 @@ class _State extends State<Body> {
     try{
 
       if(response.statusCode==200){
-        print("MSG--> "+ msg );
+        // print("MSG--> "+ msg );
         var employeeId = jasonData['data']['id'];
         print("MSG=2--> "+employeeId);
         var employeeSlug = jasonData['data']['slug'];
@@ -266,14 +266,7 @@ class _State extends State<Body> {
         setState(() {
           // pr.hide();
           progress=false;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return BottomBar();
-              },
-            ),
-          );
+
           FocusScope.of(context).requestFocus(focusNode);
           final snackBar = SnackBar(content: Text(/*msg*/"Invalid mobile no or password ",style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);

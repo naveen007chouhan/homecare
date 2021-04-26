@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homecare/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -9,10 +10,33 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+
+  String employeeMobileNo;
+  String emailid;
+  String firstname;
+  String lastname;
+  String employeename;
+  String state;
+  String city;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getData();
+  }
+  void getData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      employeeMobileNo = sharedPreferences.getString("employeeMobileNo");
+      emailid = sharedPreferences.getString("employeeEmail");
+      firstname = sharedPreferences.getString("firstname");
+      lastname = sharedPreferences.getString("lastname");
+      state = sharedPreferences.getString("state");
+      city = sharedPreferences.getString("city");
+      employeename = firstname + " " + lastname;
+      print("employeename -> " + employeename);
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -136,7 +160,7 @@ class _ProfileState extends State<Profile> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Name',
+                                        employeename==null?"Your Name":employeename.toUpperCase(),
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -156,6 +180,7 @@ class _ProfileState extends State<Profile> {
                                       decoration: const InputDecoration(
                                         hintText: "Enter Your Name",
                                       ),
+
                                       enabled: !_status,
                                       autofocus: !_status,
 
@@ -174,7 +199,7 @@ class _ProfileState extends State<Profile> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Email ID',
+                              emailid==null?"Email Id":emailid,
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -209,7 +234,7 @@ class _ProfileState extends State<Profile> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Mobile',
+                                        employeeMobileNo==null?"Phone No":employeeMobileNo,
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -243,7 +268,7 @@ class _ProfileState extends State<Profile> {
                                   Expanded(
                                     child: Container(
                                       child: new Text(
-                                        'Pin Code',
+                                        state==null?"State":state,
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -254,7 +279,7 @@ class _ProfileState extends State<Profile> {
                                   Expanded(
                                     child: Container(
                                       child: new Text(
-                                        'State',
+                                        city==null?"City":city,
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -276,7 +301,7 @@ class _ProfileState extends State<Profile> {
                                       padding: EdgeInsets.only(right: 10.0),
                                       child: new TextField(
                                         decoration: const InputDecoration(
-                                            hintText: "Enter Pin Code"),
+                                            hintText: "Enter State"),
                                         enabled: !_status,
                                       ),
                                     ),
@@ -285,7 +310,7 @@ class _ProfileState extends State<Profile> {
                                   Flexible(
                                     child: new TextField(
                                       decoration: const InputDecoration(
-                                          hintText: "Enter State"),
+                                          hintText: "Enter City"),
                                       enabled: !_status,
                                     ),
                                     flex: 2,

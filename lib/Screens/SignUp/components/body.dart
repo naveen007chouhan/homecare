@@ -376,8 +376,11 @@ class _BodyState extends State<Body> {
 
     var response = await http.Response.fromStream(streamedResponse);
     print("reg_body_response -->" + response.body);
-    /*var jasonData = jsonDecode(response.body);
-            String msg = jasonData['error'];
+    Map<String, dynamic> map = json.decode(response.body);
+    var msg = map["message"];
+    print("REG_MSG--> "+msg);
+    /*Map jasonData = jsonDecode(response.body);
+            String msg = jasonData['message'];
             print("MSG--> " + msg);*/
     // final Map<String, String> jasonData = jsonDecode(response.body);
     // String msg=jasonData['error'];
@@ -391,7 +394,8 @@ class _BodyState extends State<Body> {
         FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(
-            'Your Are Successfuly Register ,Now You Can Login',
+            msg
+           /* 'Your Are Successfuly Register ,Now You Can Login'*/,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.green,
@@ -402,15 +406,40 @@ class _BodyState extends State<Body> {
         setState(() {
           // pr.hide();
           progress = false;
-          FocusScope.of(context).requestFocus(focusNode);
-          final snackBar = SnackBar(
-            content: Text(
-              /*msg*/ "Your Are Not Register ,Plzz ",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: Colors.red,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          if(msg=="Invalid Compnay Code Please try another code"){
+            FocusScope.of(context).requestFocus(focusNode);
+            final snackBar = SnackBar(
+              content: Text(
+                msg/*"Your Are Not Register ,Plzz "*/,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              backgroundColor: Colors.red,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }else if( msg["mobile"] == "Mobile No is Alerday Exits"){
+            FocusScope.of(context).requestFocus(focusNode);
+            final snackBar = SnackBar(
+              content: Text(
+                msg["mobile"]/*"Your Are Not Register ,Plzz "*/,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              backgroundColor: Colors.red,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }else if( msg["email"] == "Email id is Alerday Exits"){
+            FocusScope.of(context).requestFocus(focusNode);
+            final snackBar = SnackBar(
+              content: Text(
+                msg["email"]/*"Your Are Not Register ,Plzz "*/,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              backgroundColor: Colors.red,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+
+
+
         });
       }
     } catch (e) {

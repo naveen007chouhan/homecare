@@ -31,13 +31,14 @@ class _HomePageState extends State<HomePage> {
   bool progress = true;
   var dayLeaveID;
   FocusNode focusNode = new FocusNode();
-  TextEditingController _textEditingControllerToDate =TextEditingController();
-  TextEditingController _textEditingControllerFromDate =TextEditingController();
-  String AssinDeadlineDate= "assigned_date";
+  TextEditingController _textEditingControllerToDate = TextEditingController();
+  TextEditingController _textEditingControllerFromDate =
+      TextEditingController();
+  String AssinDeadlineDate = "assigned_date";
 
   DateTime currentDate = DateTime.now();
-  String StartDate ;
-  String EndDate ;
+  String StartDate;
+  String EndDate;
 
   List DayTypeList = [
     {'id': '0', 'name': 'Choose Type'},
@@ -62,14 +63,15 @@ class _HomePageState extends State<HomePage> {
       print("employeename -> " + employeename);
     });
   }
+
   getfromCurrentDate() async {
-     getData();
+    getData();
     String formatted = DateFormat("yyyy-MM-dd").format(DateTime.now());
     StartDate = formatted;
     print("DateTime_Formate:--> " + formatted);
-     String formatted1 = DateFormat("yyyy-MM-dd").format(DateTime.now());
-     EndDate = formatted1;
-     print("DateTime_Formate:--> " + formatted1);
+    String formatted1 = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    EndDate = formatted1;
+    print("DateTime_Formate:--> " + formatted1);
 
     setState(() {
       /*sharedPreferences.setString("dateCurrent", formatted);
@@ -130,7 +132,9 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                employeename==null?"Your Name":employeename.toUpperCase(),
+                                employeename == null
+                                    ? "Your Name"
+                                    : employeename.toUpperCase(),
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
@@ -173,7 +177,136 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+
+              //Container design From Date && Too Date
               Container(
+                padding: EdgeInsets.only(top: 65),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 20),
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          elevation: 4.0,
+                          onPressed: () async {
+                            DateTime date = DateTime(1900);
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+                            date = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100));
+                            currentDate = date;
+                            var str = currentDate.toString();
+                            var Strdate = str.split(" ");
+                            var dateFrom = Strdate[0].trim();
+                            StartDate =
+                                _textEditingControllerFromDate.text = dateFrom;
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 50.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.calendar_today,
+                                            color: kSecondaryLightColor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            StartDate,
+                                            style: TextStyle(
+                                              color: kSecondaryLightColor,
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                    Text(
+                      'To',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 20),
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          elevation: 4.0,
+                          onPressed: () async {
+                            DateTime date = DateTime(1900);
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+                            date = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100));
+                            currentDate = date;
+                            var str = currentDate.toString();
+                            var Strdate = str.split(" ");
+                            var dateTo = Strdate[0].trim();
+                            EndDate =
+                                _textEditingControllerToDate.text = dateTo;
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 50.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.calendar_today,
+                                            color: kSecondaryLightColor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            EndDate,
+                                            style: TextStyle(
+                                                color: kSecondaryLightColor,
+                                                fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+
+              //Text Field From Date && Too Date
+              /*Container(
                 padding: EdgeInsets.only(top: 65),
                 child: Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -181,7 +314,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Container(
                         child: ListTile(
-                            // leading: const Icon(Icons.calendar_today),
+                          // leading: const Icon(Icons.calendar_today),
                             title: TextFormField(
                               controller: _textEditingControllerFromDate,
                               decoration: InputDecoration(
@@ -217,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Container(
                         child: ListTile(
-                            // leading: const Icon(Icons.calendar_today),
+                          // leading: const Icon(Icons.calendar_today),
                             title: TextFormField(
                               controller: _textEditingControllerToDate,
                               decoration: InputDecoration(
@@ -252,8 +385,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              ),
-
+              ),*/
 
               Expanded(
                 child: Container(
@@ -267,7 +399,8 @@ class _HomePageState extends State<HomePage> {
                       // padding: EdgeInsets.only(top: 60),
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 11.0,vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 11.0, vertical: 10),
                           child: Container(
                             alignment: Alignment.topLeft,
                             child: Text(
@@ -282,145 +415,185 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(
                           height: 10,
                         ),
-                       FutureBuilder<TodayTaskListModel>(
+                        FutureBuilder<TodayTaskListModel>(
                             future: homeTaskList(),
                             builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data.data.length,
-                                        itemBuilder: (context, index) {
-                                          var tasklist = snapshot.data.data[index];
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data.data.length,
+                                    itemBuilder: (context, index) {
+                                      var tasklist = snapshot.data.data[index];
 
-                                          var alotdatetime =tasklist.assignedDate.toString();
-                                          var alotdate=alotdatetime.split(" ");
-                                          var ALOTdate = alotdate[0].trim();
-                                          var ALOttime = alotdate[1].trim();
+                                      var alotdatetime =
+                                          tasklist.assignedDate.toString();
+                                      var alotdate = alotdatetime.split(" ");
+                                      var ALOTdate = alotdate[0].trim();
+                                      var ALOttime = alotdate[1].trim();
 
-                                          var daadlinedatetime =tasklist.deadlineDate.toString();
-                                          var daadlinedate=daadlinedatetime.split(" ");
-                                          var DEADLindate = daadlinedate[0].trim();
-                                          var DEADLintime = daadlinedate[1].trim();
-                                          var empid= tasklist.employeeId.toString();
-                                          var tskid= tasklist.taskId.toString();
-                                          var addrs= tasklist.address.toString();
-                                          print("ID Checking--> "+empid+" "+tskid+" "+addrs);
-                                          return GestureDetector(
-
-                                            onTap: (){
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => TaskDetail(employid: empid,taskid: tskid,alotdate: ALOTdate,deadlinedate: DEADLindate, addrs: addrs,)));
-                                            },
-                                            child: Card(
-
-                                              // color: Colors.green,
-                                              elevation: 8.0,
-                                              margin: new EdgeInsets.symmetric(
-                                                  horizontal: 10.0, vertical: 6.0),
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white54,
-                                                    borderRadius:
-                                                    BorderRadius.all(Radius.circular(10.0)
-                                                      // topRight: Radius.circular(10.0),
-                                                      // bottomRight: Radius.circular(10.0),
-                                                      // topLeft: Radius.circular(10.0),
-                                                      // bottomLeft: Radius.circular(10.0),
+                                      var daadlinedatetime =
+                                          tasklist.deadlineDate.toString();
+                                      var daadlinedate =
+                                          daadlinedatetime.split(" ");
+                                      var DEADLindate = daadlinedate[0].trim();
+                                      var DEADLintime = daadlinedate[1].trim();
+                                      var empid =
+                                          tasklist.employeeId.toString();
+                                      var tskid = tasklist.taskId.toString();
+                                      var addrs = tasklist.address.toString();
+                                      print("ID Checking--> " +
+                                          empid +
+                                          " " +
+                                          tskid +
+                                          " " +
+                                          addrs);
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TaskDetail(
+                                                        employid: empid,
+                                                        taskid: tskid,
+                                                        alotdate: ALOTdate,
+                                                        deadlinedate:
+                                                            DEADLindate,
+                                                        addrs: addrs,
+                                                      )));
+                                        },
+                                        child: Card(
+                                          // color: Colors.green,
+                                          elevation: 8.0,
+                                          margin: new EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 6.0),
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white54,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10.0)
+                                                    // topRight: Radius.circular(10.0),
+                                                    // bottomRight: Radius.circular(10.0),
+                                                    // topLeft: Radius.circular(10.0),
+                                                    // bottomLeft: Radius.circular(10.0),
+                                                    ),
+                                              ),
+                                              margin: const EdgeInsets.only(
+                                                  top: 5,
+                                                  left: 2,
+                                                  bottom: 5,
+                                                  right: 2),
+                                              child: Column(
+                                                children: [
+                                                  ListTile(
+                                                    leading: Card(
+                                                      color: kPrimaryColor,
+                                                      elevation: 5,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(6.0),
+                                                        child: Text(
+                                                            tasklist.status,
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .orangeAccent)),
+                                                      ),
                                                     ),
                                                   ),
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5, left: 2, bottom: 5, right: 2),
-                                                  child: Column(
-                                                    children: [
-                                                      ListTile(
-
-                                                        leading:Card(
-                                                          color: kPrimaryColor,
-                                                          elevation: 5,
-
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(6.0),
-                                                            child: Text(tasklist.status,
-                                                                style: TextStyle(
-                                                                    fontSize: 16,
-                                                                    fontWeight: FontWeight.bold,
-                                                                    color: Colors.orangeAccent)),
-                                                          ),
+                                                  Divider(
+                                                    height: 1,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  ListTile(
+                                                      title: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          "Type : ",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .grey[700],
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
-                                                      Divider(
-                                                        height: 1,
-                                                        color: Colors.grey,
-                                                      ),
-                                                      ListTile(
-                                                          title: Padding(
-                                                            padding: const EdgeInsets.all(5.0),
-                                                            child: Text(
-                                                              "Type : ",
-                                                              style: TextStyle(
-                                                                  color: Colors.grey[700],
-                                                                  fontWeight: FontWeight.bold),
-                                                            ),
-                                                          ),
-                                                          // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+                                                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-                                                          subtitle: Padding(
-                                                            padding: const EdgeInsets.all(5.0),
-                                                            child: Text(
-                                                              "Alot Date : "+ALOTdate,
-                                                              style: TextStyle(
-                                                                  color: Colors.grey,
-                                                                  fontWeight: FontWeight.bold),
-                                                            ),
-                                                          ),
-                                                          trailing: Icon(
-                                                              Icons.keyboard_arrow_right_rounded,
-                                                              color: Colors.grey[600],
-                                                              size: 30.0)),
-                                                      Divider(
-                                                        height: 1,
-                                                        color: kSecondaryLightColor,
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.topRight,
-                                                        child:Padding(
-
-                                                          padding: const EdgeInsets.all(10.0),
-                                                          child: Text("Dead Line : "+DEADLindate,
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Colors.red)),
+                                                      subtitle: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: Text(
+                                                          "Alot Date : " +
+                                                              ALOTdate,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
-
-                                                    ],
-                                                  )
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  } else {
-                                    return Center(
-                                      child: Card(
-                                        color: Colors.blue[1000],
-                                        elevation: 10,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_API().no_data_found,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.orange,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                                      trailing: Icon(
+                                                          Icons
+                                                              .keyboard_arrow_right_rounded,
+                                                          color:
+                                                              Colors.grey[600],
+                                                          size: 30.0)),
+                                                  Divider(
+                                                    height: 1,
+                                                    color: kSecondaryLightColor,
+                                                  ),
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Text(
+                                                          "Dead Line : " +
+                                                              DEADLindate,
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.red)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
                                         ),
+                                      );
+                                    });
+                              } else {
+                                return Center(
+                                  child: Card(
+                                    color: Colors.blue[1000],
+                                    elevation: 10,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        All_API().no_data_found,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.orange,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                    );
-                                  }
+                                    ),
+                                  ),
+                                );
+                              }
                               /*}*/
                             }),
                       ],
@@ -503,11 +676,10 @@ class _HomePageState extends State<HomePage> {
                               onChanged: (value) {
                                 setState(() {
                                   dayLeave = value;
-                                  print("value------->>"+value);
-                                  if(dayLeaveID == "2" ){
+                                  print("value------->>" + value);
+                                  if (dayLeaveID == "2") {
                                     AssinDeadlineDate = "assigned_date";
-                                  }
-                                  else if(dayLeaveID == "1"){
+                                  } else if (dayLeaveID == "1") {
                                     AssinDeadlineDate = 'deadline_date';
                                   }
                                   if (dayLeaveID == 0) {
@@ -587,7 +759,14 @@ class _HomePageState extends State<HomePage> {
     };
     var request = http.MultipartRequest('POST', Uri.parse(all_task_list_url));
 
-    print("AllTaskList_Field--> " + employeeId+" "+AssinDeadlineDate+" "+StartDate+" "+EndDate);
+    print("AllTaskList_Field--> " +
+        employeeId +
+        " " +
+        AssinDeadlineDate +
+        " " +
+        StartDate +
+        " " +
+        EndDate);
     request.fields.addAll({
       'employee_id': employeeId,
       'date_field': AssinDeadlineDate,
@@ -612,8 +791,8 @@ class _HomePageState extends State<HomePage> {
     var jasonDataNotification = jsonDecode(response.body);
     try {
       if (response.statusCode == 200) {
-        progress=false;
-       /* FocusScope.of(context).requestFocus(focusNode);
+        progress = false;
+        /* FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(
             msg,
@@ -628,7 +807,7 @@ class _HomePageState extends State<HomePage> {
       } else {
         setState(() {
           // pr.hide();
-          progress=false;
+          progress = false;
           /*Navigator.push(
             context,
             MaterialPageRoute(
@@ -637,7 +816,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           );*/
-         /* FocusScope.of(context).requestFocus(focusNode);
+          /* FocusScope.of(context).requestFocus(focusNode);
           final snackBar = SnackBar(
             content: Text(
               msg,

@@ -49,6 +49,7 @@ class Datum {
     this.compMessege,
     this.deadlineDate,
     this.status,
+    this.taskMode,
     this.assignedDate,
     this.completedDate,
     this.isQrVerify,
@@ -75,14 +76,15 @@ class Datum {
   String compMessege;
   DateTime deadlineDate;
   String status;
+  String taskMode;
   DateTime assignedDate;
   dynamic completedDate;
   String isQrVerify;
-  DateTime qrVerifyTime;
+  dynamic qrVerifyTime;
   String latitude;
   String longitude;
   String isApproved;
-  DateTime updatedAt;
+  dynamic updatedAt;
   DateTime createdAt;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -101,14 +103,15 @@ class Datum {
     compMessege: json["comp_messege"],
     deadlineDate: DateTime.parse(json["deadline_date"]),
     status: json["status"],
+    taskMode: json["task_mode"],
     assignedDate: DateTime.parse(json["assigned_date"]),
     completedDate: json["completed_date"],
     isQrVerify: json["is_qr_verify"],
-    qrVerifyTime: DateTime.parse(json["qr_verify_time"]),
+    qrVerifyTime: json["qr_verify_time"],
     latitude: json["latitude"],
     longitude: json["longitude"],
     isApproved: json["is_approved"],
-    updatedAt: DateTime.parse(json["updated_at"]),
+    updatedAt: json["updated_at"],
     createdAt: DateTime.parse(json["created_at"]),
   );
 
@@ -128,14 +131,15 @@ class Datum {
     "comp_messege": compMessege,
     "deadline_date": deadlineDate.toIso8601String(),
     "status": status,
+    "task_mode": taskMode,
     "assigned_date": assignedDate.toIso8601String(),
     "completed_date": completedDate,
     "is_qr_verify": isQrVerify,
-    "qr_verify_time": qrVerifyTime.toIso8601String(),
+    "qr_verify_time": qrVerifyTime,
     "latitude": latitude,
     "longitude": longitude,
     "is_approved": isApproved,
-    "updated_at": updatedAt.toIso8601String(),
+    "updated_at": updatedAt,
     "created_at": createdAt.toIso8601String(),
   };
 }

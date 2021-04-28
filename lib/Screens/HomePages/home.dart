@@ -424,7 +424,7 @@ class _HomePageState extends State<HomePage> {
                                     itemCount: snapshot.data.data.length,
                                     itemBuilder: (context, index) {
                                       var tasklist = snapshot.data.data[index];
-
+                                      print("all_task_list_tasklist--> " + tasklist.status);
                                       var alotdatetime =
                                           tasklist.assignedDate.toString();
                                       var alotdate = alotdatetime.split(" ");
@@ -583,7 +583,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: Text(
-                                        All_API().no_data_found,
+                                        All_API().no_task_found,
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.orange,
@@ -744,14 +744,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<TodayTaskListModel> homeTaskList() async {
+    var all_task_list_url = All_API().baseurl + All_API().api_all_task_list;
+    print("all_task_list_url -->" + all_task_list_url);
     String username = All_API().keyuser;
     String password = All_API().keypassvalue;
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     print("all_task_list_basicAuth--> " + basicAuth);
 
-    var all_task_list_url = All_API().baseurl + All_API().api_all_task_list;
-    print("all_task_list_url -->" + all_task_list_url);
+
 
     Map<String, String> headers = {
       All_API().key: All_API().keyvalue,
@@ -782,7 +783,7 @@ class _HomePageState extends State<HomePage> {
 
     var jasonData = jsonDecode(response.body);
     String msg = jasonData['message'];
-    print("all_task_list_MSG--> " + msg);
+
     // print("log_statuscode_response -->" +jasonData.statusCode);
 
     // final Map<String, String> jasonData = jsonDecode(response.body);
@@ -792,6 +793,7 @@ class _HomePageState extends State<HomePage> {
     try {
       if (response.statusCode == 200) {
         progress = false;
+        print("all_task_list_MSG--> " + msg);
         /* FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(

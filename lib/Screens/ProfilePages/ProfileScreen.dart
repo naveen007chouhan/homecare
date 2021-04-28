@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:homecare/API/Api.dart';
 import 'package:homecare/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -19,6 +22,17 @@ class _ProfileState extends State<Profile> {
   String state;
   String city;
 
+  TextEditingController _textEditingControllerFName = TextEditingController();
+  TextEditingController _textEditingControllerLName = TextEditingController();
+  TextEditingController _textEditingControllerEmailId = TextEditingController();
+  TextEditingController _textEditingControllerPhoneNo = TextEditingController();
+  TextEditingController _textEditingControllerCountry = TextEditingController();
+  TextEditingController _textEditingControllerState = TextEditingController();
+  TextEditingController _textEditingControllerCity = TextEditingController();
+  TextEditingController _textEditingControllerAddress = TextEditingController();
+  TextEditingController _textEditingControllerPostalCode = TextEditingController();
+
+  bool progress = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -174,17 +188,28 @@ class _ProfileState extends State<Profile> {
                                   left: 25.0, right: 25.0, top: 2.0),
                               child: new Row(
                                 mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  new Flexible(
-                                    child: new TextField(
-                                      decoration: const InputDecoration(
-                                        hintText: "Enter Your Name",
+                                  Flexible(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 10.0),
+                                      child: new TextField(
+                                        controller: _textEditingControllerFName,
+                                        decoration: const InputDecoration(
+                                            hintText: "First Name"),
+                                        enabled: !_status,
                                       ),
-
-                                      enabled: !_status,
-                                      autofocus: !_status,
-
                                     ),
+                                    flex: 2,
+                                  ),
+                                  Flexible(
+                                    child: new TextField(
+                                      controller: _textEditingControllerLName,
+                                      decoration: const InputDecoration(
+                                          hintText: "Last Name"),
+                                      enabled: !_status,
+                                    ),
+                                    flex: 2,
                                   ),
                                 ],
                               )),
@@ -216,6 +241,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   new Flexible(
                                     child: new TextField(
+                                      controller: _textEditingControllerEmailId,
                                       decoration: const InputDecoration(
                                           hintText: "Enter Email ID"),
                                       enabled: !_status,
@@ -251,6 +277,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   new Flexible(
                                     child: new TextField(
+                                      controller: _textEditingControllerPhoneNo,
                                       decoration: const InputDecoration(
                                           hintText: "Enter Mobile Number"),
                                       enabled: !_status,
@@ -268,7 +295,7 @@ class _ProfileState extends State<Profile> {
                                   Expanded(
                                     child: Container(
                                       child: new Text(
-                                        state==null?"State":state,
+                                        state==null?"Country":state,
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -279,7 +306,7 @@ class _ProfileState extends State<Profile> {
                                   Expanded(
                                     child: Container(
                                       child: new Text(
-                                        city==null?"City":city,
+                                        state==null?"State":state,
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -300,8 +327,9 @@ class _ProfileState extends State<Profile> {
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 10.0),
                                       child: new TextField(
+                                        controller: _textEditingControllerCountry,
                                         decoration: const InputDecoration(
-                                            hintText: "Enter State"),
+                                            hintText: "Enter Country"),
                                         enabled: !_status,
                                       ),
                                     ),
@@ -309,8 +337,70 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   Flexible(
                                     child: new TextField(
+                                      controller: _textEditingControllerState,
                                       decoration: const InputDecoration(
-                                          hintText: "Enter City"),
+                                          hintText: "Enter State"),
+                                      enabled: !_status,
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      child: new Text(
+                                        city==null?"City":city,
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: new Text(
+                                        city==null?"Postal Code":city,
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Flexible(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 10.0),
+                                      child: new TextField(
+                                        controller: _textEditingControllerCity,
+                                        decoration: const InputDecoration(
+                                            hintText: "Enter City"),
+                                        enabled: !_status,
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Flexible(
+                                    child: new TextField(
+                                      controller: _textEditingControllerPostalCode,
+                                      decoration: const InputDecoration(
+                                          hintText: "Enter Postal Code"),
                                       enabled: !_status,
                                     ),
                                     flex: 2,
@@ -346,6 +436,7 @@ class _ProfileState extends State<Profile> {
       },
     );
   }
+
   @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
@@ -403,5 +494,46 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
+  }
+
+  void UpdateEmployeeProfile() async{
+    var employee_update_url = All_API().baseurl + All_API().api_employee_update;
+    print("employee_update_url -->" + employee_update_url);
+    String username = All_API().keyuser;
+    String password = All_API().keypassvalue;
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    print("employee_update_basicAuth--> " + basicAuth);
+    var headers = {
+      All_API().key: All_API().keyvalue,
+      'authorization': basicAuth,
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(employee_update_url));
+    request.fields.addAll({
+      'employee_id': '8',
+      'firstname': 'TestNaveen',
+      'lastname': 'Chouhan',
+      'mobile_no': '1234567812',
+      'company_code': '',
+      'password': '',
+      'email_id': 'testchouhan@gmail.com',
+      'country': 'india',
+      'state': 'rajasthan',
+      'city': 'ajmer',
+      'zip': '305001',
+      'address': 'New Chandar Nagar'
+    });
+    // request.files.add(await http.MultipartFile.fromPath('file', ));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+    print(await response.stream.bytesToString());
+    }
+    else {
+    print(response.reasonPhrase);
+    }
+
   }
 }

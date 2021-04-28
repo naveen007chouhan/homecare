@@ -17,6 +17,25 @@ class _NotificationScreensState extends State<NotificationScreens> {
       child: Scaffold(
         body: ListView(
           children: [
+            Padding(
+                padding: EdgeInsets.only(left: 20.0, top: 20.0,bottom: 20.0),
+                child: new Row(
+                  children: [
+                    Text(
+                      "Notification",
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: kSecondaryLightColor),
+                    ),
+                    SizedBox(width: 10,),
+                    Icon(
+                      Icons.notification_important_outlined,
+                      color: kSecondaryLightColor,
+                      size: 22.0,
+                    )
+                  ],
+                )),
             Card(
               elevation: 8.0,
               margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),

@@ -35,17 +35,10 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     // TODO: implement initState
-    getDevice();
     super.initState();
   }
 
-  getDevice() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    userdeviceId = await _getId();
-    setState(() {
-      sharedPreferences.setString("userdevice", userdeviceId);
-    });
-  }
+
   /*String dayLeave=null;
   var dayLeaveID;
   List DayTypeList=[{'id':'0','name':'select type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];*/
@@ -57,21 +50,21 @@ class _BodyState extends State<Body> {
       child: progress == true
           ? Loading()
           : SingleChildScrollView(
-              child: Form(
-              key: formkey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset(
-                    "assets/icons/signup.svg",
-                    height: size.height * 0.20,
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  Text(
-                    All_Lan().register,
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-                  ),
-                  /*TextFieldContainer(
+          child: Form(
+            key: formkey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset(
+                  "assets/icons/signup.svg",
+                  height: size.height * 0.20,
+                ),
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  All_Lan().register,
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+                ),
+                /*TextFieldContainer(
               child: DropdownButton(
                 isExpanded: true,
                 hint: Text("Select Leave day",
@@ -99,200 +92,200 @@ class _BodyState extends State<Body> {
                 },
               ),
             ),*/
-                  TextFieldContainer(
-                    child: TextFormField(
-                      maxLength: 12,
-                      // autovalidate: true,
-                      textCapitalization: TextCapitalization.characters,
-                      controller: compCodeController,
-                      // keyboardType:TextInputType.number ,
-                      validator: ((value) {
-                        if (value.isEmpty) {
-                          return "Field Required!!";
-                        }
-                        return null;
-                      }),
-                      cursorColor: kSecondaryLightColor,
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(
-                          height: double.minPositive,
-                        ),
-                        counterText: "",
-                        icon: Icon(
-                          Icons.code,
-                          color: kSecondaryLightColor,
-                        ),
-                        labelText: All_Lan().companycode,
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: TextFieldContainer(
-                          child: TextFormField(
-                            controller: fnameController,
-                            validator: ((value) {
-                              if (value.isEmpty) {
-                                return "Field Required!!";
-                              }
-                              return null;
-                            }),
-                            cursorColor: kSecondaryLightColor,
-                            decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.person,
-                                color: kSecondaryLightColor,
-                              ),
-                              // hintText: "First Name",
-                              border: InputBorder.none,
-                              // border: OutlineInputBorder(
-                              //   borderRadius: BorderRadius.circular(0),
-                              // ),
-                              labelText: "First Name",
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: TextFieldContainer(
-                          child: TextFormField(
-                            controller: lnameController,
-                            validator: ((value) {
-                              if (value.isEmpty) {
-                                return "Field Required!!";
-                              }
-                              return null;
-                            }),
-                            cursorColor: kSecondaryLightColor,
-                            decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.person,
-                                color: kSecondaryLightColor,
-                              ),
-                              labelText: "Last Name",
-                              // labelText: "First Name",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextFieldContainer(
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: emailController,
-                      validator: validateEmail,
-                      cursorColor: kSecondaryLightColor,
-                      decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.email_rounded,
-                          color: kSecondaryLightColor,
-                        ),
-                        labelText: "Email Id",
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  TextFieldContainer(
-                    child: TextFormField(
-                      keyboardType: TextInputType.phone,
-                      controller: phnController,
-                      maxLength: 10,
-                      validator: ((value) {
-                        if (value.isEmpty) {
-                          return "Field Required!!";
-                        }
-                        return null;
-                      }),
-                      cursorColor: kSecondaryLightColor,
-                      decoration: InputDecoration(
-                        counterStyle: TextStyle(
-                          height: double.minPositive,
-                        ),
-                        counterText: "",
-                        icon: Icon(
-                          Icons.phone,
-                          color: kSecondaryLightColor,
-                        ),
-                        labelText: "Phone No",
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  TextFieldContainer(
-                    child: TextFormField(
-                      controller: passController,
-                      validator: ((value) {
-                        if (value.isEmpty) {
-                          return "Field Required!!";
-                        }
-                        return null;
-                      }),
-                      obscureText: hidepassword,
-                      cursorColor: kSecondaryLightColor,
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        icon: Icon(
-                          Icons.lock,
-                          color: kSecondaryLightColor,
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              hidepassword = !hidepassword;
-                            });
-                          },
-                          icon: Icon(hidepassword
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          color: kSecondaryLightColor,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  RoundedButton(
-                    text: "SIGNUP",
-                    press: () {
-                      if (formkey.currentState.validate()) {
-                        var compcode = compCodeController.text;
-                        var fname = fnameController.text;
-                        var lname = lnameController.text;
-                        var email = emailController.text;
-                        var phn = phnController.text;
-                        var pass = passController.text;
-                        print("compcode --> " + compcode);
-                        print("First Name --> " + fname);
-                        print("Last Name --> " + lname);
-                        print("Email --> " + email);
-                        print("phn --> " + phn);
-                        print("pass --> " + pass);
-                        SendRegisterData(
-                            compcode, fname, lname, email, phn, pass);
+                TextFieldContainer(
+                  child: TextFormField(
+                    maxLength: 12,
+                    // autovalidate: true,
+                    textCapitalization: TextCapitalization.characters,
+                    controller: compCodeController,
+                    // keyboardType:TextInputType.number ,
+                    validator: ((value) {
+                      if (value.isEmpty) {
+                        return "Field Required!!";
                       }
-                    },
+                      return null;
+                    }),
+                    cursorColor: kSecondaryLightColor,
+                    decoration: InputDecoration(
+                      counterStyle: TextStyle(
+                        height: double.minPositive,
+                      ),
+                      counterText: "",
+                      icon: Icon(
+                        Icons.code,
+                        color: kSecondaryLightColor,
+                      ),
+                      labelText: All_Lan().companycode,
+                      border: InputBorder.none,
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.03),
-                  AlreadyHaveAnAccountCheck(
-                    login: false,
-                    press: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return LoginScreen();
-                          },
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextFieldContainer(
+                        child: TextFormField(
+                          controller: fnameController,
+                          validator: ((value) {
+                            if (value.isEmpty) {
+                              return "Field Required!!";
+                            }
+                            return null;
+                          }),
+                          cursorColor: kSecondaryLightColor,
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.person,
+                              color: kSecondaryLightColor,
+                            ),
+                            // hintText: "First Name",
+                            border: InputBorder.none,
+                            // border: OutlineInputBorder(
+                            //   borderRadius: BorderRadius.circular(0),
+                            // ),
+                            labelText: "First Name",
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: TextFieldContainer(
+                        child: TextFormField(
+                          controller: lnameController,
+                          validator: ((value) {
+                            if (value.isEmpty) {
+                              return "Field Required!!";
+                            }
+                            return null;
+                          }),
+                          cursorColor: kSecondaryLightColor,
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.person,
+                              color: kSecondaryLightColor,
+                            ),
+                            labelText: "Last Name",
+                            // labelText: "First Name",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                TextFieldContainer(
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    validator: validateEmail,
+                    cursorColor: kSecondaryLightColor,
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.email_rounded,
+                        color: kSecondaryLightColor,
+                      ),
+                      labelText: "Email Id",
+                      border: InputBorder.none,
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.03),
-                  /*OrDivider(),
+                ),
+                TextFieldContainer(
+                  child: TextFormField(
+                    keyboardType: TextInputType.phone,
+                    controller: phnController,
+                    maxLength: 10,
+                    validator: ((value) {
+                      if (value.isEmpty) {
+                        return "Field Required!!";
+                      }
+                      return null;
+                    }),
+                    cursorColor: kSecondaryLightColor,
+                    decoration: InputDecoration(
+                      counterStyle: TextStyle(
+                        height: double.minPositive,
+                      ),
+                      counterText: "",
+                      icon: Icon(
+                        Icons.phone,
+                        color: kSecondaryLightColor,
+                      ),
+                      labelText: "Phone No",
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                TextFieldContainer(
+                  child: TextFormField(
+                    controller: passController,
+                    validator: ((value) {
+                      if (value.isEmpty) {
+                        return "Field Required!!";
+                      }
+                      return null;
+                    }),
+                    obscureText: hidepassword,
+                    cursorColor: kSecondaryLightColor,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      icon: Icon(
+                        Icons.lock,
+                        color: kSecondaryLightColor,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            hidepassword = !hidepassword;
+                          });
+                        },
+                        icon: Icon(hidepassword
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        color: kSecondaryLightColor,
+                      ),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                RoundedButton(
+                  text: "SIGNUP",
+                  press: () {
+                    if (formkey.currentState.validate()) {
+                      var compcode = compCodeController.text;
+                      var fname = fnameController.text;
+                      var lname = lnameController.text;
+                      var email = emailController.text;
+                      var phn = phnController.text;
+                      var pass = passController.text;
+                      print("compcode --> " + compcode);
+                      print("First Name --> " + fname);
+                      print("Last Name --> " + lname);
+                      print("Email --> " + email);
+                      print("phn --> " + phn);
+                      print("pass --> " + pass);
+                      SendRegisterData(
+                          compcode, fname, lname, email, phn, pass);
+                    }
+                  },
+                ),
+                SizedBox(height: size.height * 0.03),
+                AlreadyHaveAnAccountCheck(
+                  login: false,
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: size.height * 0.03),
+                /*OrDivider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -310,9 +303,9 @@ class _BodyState extends State<Body> {
                 ),
               ],
             )*/
-                ],
-              ),
-            )),
+              ],
+            ),
+          )),
     );
   }
 
@@ -378,7 +371,7 @@ class _BodyState extends State<Body> {
     print("reg_body_response -->" + response.body);
     Map<String, dynamic> map = json.decode(response.body);
     var msg = map["message"];
-    print("REG_MSG--> "+msg);
+    // print("REG_MSG--> "+msg);
     /*Map jasonData = jsonDecode(response.body);
             String msg = jasonData['message'];
             print("MSG--> " + msg);*/
@@ -390,12 +383,20 @@ class _BodyState extends State<Body> {
         setState(() {
           // pr.hide();
           progress = false;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return LoginScreen();
+              },
+            ),
+          );
         });
         FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(
             msg
-           /* 'Your Are Successfuly Register ,Now You Can Login'*/,
+            /* 'Your Are Successfuly Register ,Now You Can Login'*/,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.green,

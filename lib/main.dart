@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:homecare/Screens/WelcomePages/WelcomeScreen.dart';
+import 'package:homecare/Screens/SplashScreen/SplashPage.dart';
 import 'package:homecare/constants.dart';
 
 void main() {
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           color: Colors.blueAccent,
         ),
       ),*/
-      home: WelcomeScreen(),
+      home: Splash(),
     );
   }
 }

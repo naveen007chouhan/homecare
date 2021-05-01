@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:homecare/API/Api.dart';
+import 'package:homecare/Screens/WelcomePages/WelcomeScreen.dart';
 import 'package:homecare/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -14,23 +15,27 @@ class _ProfileState extends State<Profile> {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
 
+  String employeeId;
   String employeeMobileNo;
   String emailid;
   String firstname;
   String lastname;
   String employeename;
   String state;
+  String country;
   String city;
+  String address;
+  String postalcode;
 
-  TextEditingController _textEditingControllerFName = TextEditingController();
-  TextEditingController _textEditingControllerLName = TextEditingController();
-  TextEditingController _textEditingControllerEmailId = TextEditingController();
-  TextEditingController _textEditingControllerPhoneNo = TextEditingController();
-  TextEditingController _textEditingControllerCountry = TextEditingController();
-  TextEditingController _textEditingControllerState = TextEditingController();
-  TextEditingController _textEditingControllerCity = TextEditingController();
-  TextEditingController _textEditingControllerAddress = TextEditingController();
-  TextEditingController _textEditingControllerPostalCode = TextEditingController();
+  TextEditingController _textEditingControllerFName ;
+  TextEditingController _textEditingControllerLName;
+  TextEditingController _textEditingControllerEmailId;
+  TextEditingController _textEditingControllerPhoneNo ;
+  TextEditingController _textEditingControllerCountry ;
+  TextEditingController _textEditingControllerState ;
+  TextEditingController _textEditingControllerCity ;
+  TextEditingController _textEditingControllerAddress ;
+  TextEditingController _textEditingControllerPostalCode ;
 
   bool progress = true;
   @override
@@ -42,19 +47,59 @@ class _ProfileState extends State<Profile> {
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
+      employeeId = sharedPreferences.getString("employeeId");
       employeeMobileNo = sharedPreferences.getString("employeeMobileNo");
       emailid = sharedPreferences.getString("employeeEmail");
       firstname = sharedPreferences.getString("firstname");
       lastname = sharedPreferences.getString("lastname");
+      country = sharedPreferences.getString("country");
       state = sharedPreferences.getString("state");
       city = sharedPreferences.getString("city");
+      address = sharedPreferences.getString("address");
+      postalcode = sharedPreferences.getString("zip");
       employeename = firstname + " " + lastname;
       print("employeename -> " + employeename);
+      _textEditingControllerFName =  TextEditingController(text: firstname);
+      _textEditingControllerLName =  TextEditingController(text: lastname);
+      _textEditingControllerEmailId =  TextEditingController(text: emailid);
+      _textEditingControllerPhoneNo =  TextEditingController(text: employeeMobileNo);
+      _textEditingControllerCountry =  TextEditingController(text: country);
+      _textEditingControllerState =  TextEditingController(text: state);
+      _textEditingControllerCity =  TextEditingController(text: city);
+      _textEditingControllerPostalCode =  TextEditingController(text: postalcode);
+      _textEditingControllerAddress =  TextEditingController(text: address);
     });
   }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          // brightness: Brightness.dark,
+          backgroundColor: kSecondaryLightColor,
+          elevation: 8,
+          /*leading: IconButton(
+        icon: Icon(Icons.menu),
+        color: Colors.white,
+        onPressed: () {},
+      ),*/
+          title: Text(
+            'PROFILE',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+
+            IconButton(
+              icon: Icon(Icons.logout),
+              color: Colors.white,
+              onPressed: () {
+                showAlertDialog(context);
+              },
+            ),
+          ],
+        ),
         body: new Container(
           color: Colors.white,
           child: new ListView(
@@ -66,27 +111,7 @@ class _ProfileState extends State<Profile> {
                     color: Colors.white,
                     child: new Column(
                       children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(left: 20.0, top: 20.0),
-                            child: new Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Colors.black,
-                                  size: 22.0,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 25.0),
-                                  child: new Text('PROFILE',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          fontFamily: 'RockfordSans-Light',
-                                          color: Colors.black)),
-                                )
-                              ],
-                            )),
+
                         Padding(
                           padding: EdgeInsets.only(top: 20.0),
                           child: new Stack(fit: StackFit.loose, children: <Widget>[
@@ -163,26 +188,7 @@ class _ProfileState extends State<Profile> {
                                   )
                                 ],
                               )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  new Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      new Text(
-                                        employeename==null?"Your Name":employeename.toUpperCase(),
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )),
+
                           Padding(
                               padding: EdgeInsets.only(
                                   left: 25.0, right: 25.0, top: 2.0),
@@ -192,191 +198,72 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Flexible(
                                     child: Padding(
-                                      padding: EdgeInsets.only(right: 10.0),
+                                      padding: EdgeInsets.all(8.0),
                                       child: new TextField(
                                         controller: _textEditingControllerFName,
                                         decoration: const InputDecoration(
-                                            hintText: "First Name"),
+                                            hintText: "Naveen"),
                                         enabled: !_status,
                                       ),
                                     ),
                                     flex: 2,
                                   ),
                                   Flexible(
-                                    child: new TextField(
-                                      controller: _textEditingControllerLName,
-                                      decoration: const InputDecoration(
-                                          hintText: "Last Name"),
-                                      enabled: !_status,
-                                    ),
-                                    flex: 2,
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  new Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      new Text(
-                              emailid==null?"Email Id":emailid,
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 2.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  new Flexible(
-                                    child: new TextField(
-                                      controller: _textEditingControllerEmailId,
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter Email ID"),
-                                      enabled: !_status,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  new Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      new Text(
-                                        employeeMobileNo==null?"Phone No":employeeMobileNo,
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 2.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  new Flexible(
-                                    child: new TextField(
-                                      controller: _textEditingControllerPhoneNo,
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter Mobile Number"),
-                                      enabled: !_status,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      child: new Text(
-                                        state==null?"Country":state,
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: new Text(
-                                        state==null?"State":state,
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                ],
-                              )),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 2.0),
-                              child: new Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Flexible(
                                     child: Padding(
-                                      padding: EdgeInsets.only(right: 10.0),
+                                      padding: const EdgeInsets.all(8.0),
                                       child: new TextField(
-                                        controller: _textEditingControllerCountry,
+                                        controller: _textEditingControllerLName,
                                         decoration: const InputDecoration(
-                                            hintText: "Enter Country"),
+                                            hintText: "Chouhan"),
                                         enabled: !_status,
                                       ),
                                     ),
                                     flex: 2,
                                   ),
-                                  Flexible(
-                                    child: new TextField(
-                                      controller: _textEditingControllerState,
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter State"),
-                                      enabled: !_status,
-                                    ),
-                                    flex: 2,
-                                  ),
                                 ],
                               )),
+
                           Padding(
                               padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
+                                  left: 25.0, right: 25.0, top: 2.0),
                               child: new Row(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      child: new Text(
-                                        city==null?"City":city,
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
+                                  new Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: new TextField(
+                                        controller: _textEditingControllerEmailId,
+                                        decoration: const InputDecoration(
+
+                                            hintText: "naveen@gmail.com"),
+                                        enabled: !_status,
                                       ),
                                     ),
-                                    flex: 2,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: new Text(
-                                        city==null?"Postal Code":city,
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    flex: 2,
                                   ),
                                 ],
                               )),
+
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: new TextField(
+                                        controller: _textEditingControllerPhoneNo,
+                                        decoration: const InputDecoration(
+                                            hintText: "7891234569"),
+                                        enabled: !_status,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
+
                           Padding(
                               padding: EdgeInsets.only(
                                   left: 25.0, right: 25.0, top: 2.0),
@@ -387,21 +274,61 @@ class _ProfileState extends State<Profile> {
                                   Flexible(
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 10.0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: new TextField(
+                                          controller: _textEditingControllerCountry,
+                                          decoration: const InputDecoration(
+                                              hintText: "India"),
+                                          enabled: !_status,
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: new TextField(
+                                        controller: _textEditingControllerState,
+                                        decoration: const InputDecoration(
+                                            hintText: "Rajasthan"),
+                                        enabled: !_status,
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              )),
+
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: new TextField(
                                         controller: _textEditingControllerCity,
                                         decoration: const InputDecoration(
-                                            hintText: "Enter City"),
+                                            hintText: "Jodhpur"),
                                         enabled: !_status,
                                       ),
                                     ),
                                     flex: 2,
                                   ),
                                   Flexible(
-                                    child: new TextField(
-                                      controller: _textEditingControllerPostalCode,
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter Postal Code"),
-                                      enabled: !_status,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: new TextField(
+                                        controller: _textEditingControllerPostalCode,
+                                        decoration: const InputDecoration(
+                                            hintText: "305001"),
+                                        enabled: !_status,
+                                      ),
                                     ),
                                     flex: 2,
                                   ),
@@ -443,7 +370,48 @@ class _ProfileState extends State<Profile> {
     myFocusNode.dispose();
     super.dispose();
   }
+  showAlertDialog(BuildContext context) {
 
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () async{
+        if (employeeId.toString().isNotEmpty) {
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          sharedPreferences.setBool("loggedIn", false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => WelcomeScreen()),
+            ModalRoute.withName('/'),
+          );
+          /*Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WelcomeScreen(),
+            ),
+          );*/
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Logout"),
+      content: Text("Are You Shure, You Want To Logout..",style: TextStyle(fontSize: 12),),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   Widget _getActionButtons() {
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),

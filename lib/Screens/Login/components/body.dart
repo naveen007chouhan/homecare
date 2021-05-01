@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homecare/API/Api.dart';
 import 'package:homecare/Screens/BottomNavigation/bottombar.dart';
+import 'package:homecare/Screens/ForgetPassPage/ForgetScreen.dart';
 import 'package:homecare/Screens/Login/components/background.dart';
 import 'package:homecare/Screens/SignUp/SignUpScreen.dart';
 import 'package:homecare/components/already_have_an_account_acheck.dart';
@@ -24,8 +27,22 @@ class _State extends State<Body> {
   FocusNode focusNode = new FocusNode();
   bool progress =false;
   String fcmID;
+  String userdeviceId;
   static TextEditingController phnControlleruser = TextEditingController();
   static TextEditingController passControlleruser = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    getDevice();
+  }
+  getDevice() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userdeviceId = await _getId();
+    print("User_Device_Id -->" +userdeviceId);
+    setState(() {
+      sharedPreferences.setString("userdevice", userdeviceId);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -47,10 +64,11 @@ class _State extends State<Body> {
                 // style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
+              Image.asset("assets/images/easyyhomecarelogo.png", height: size.height * 0.25,),
+              /*SvgPicture.asset(
                 "assets/icons/login.svg",
                 height: size.height * 0.25,
-              ),
+              ),*/
               SizedBox(height: size.height * 0.03),
               TextFieldContainer(
                 child: TextFormField(
@@ -109,7 +127,7 @@ class _State extends State<Body> {
               ),
               RoundedButton(
                   text: "LOGIN",
-                  press: () {
+                  press: () async{
                     if (formkey.currentState.validate()) {
                       var phn = phnControlleruser.text;
                       var pass = passControlleruser.text;
@@ -126,11 +144,35 @@ class _State extends State<Body> {
                       // Find the ScaffoldMessenger in the widget tree
                       // and use it to show a SnackBar.
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
-                      print("phn --> " + phn);
+                      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                      sharedPreferences.setBool("loggedIn", true);
+                      progress=false;
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context) => BottomBar()),
+                        ModalRoute.withName('/'),
+                      );
+                     /* print("phn --> " + phn);
                       print("pass --> " + pass);
-                      SendLoginData(phn, pass);
+                      print("userdeviceId --> " + userdeviceId);
+                      SendLoginData(phn, pass,userdeviceId);*/
                     }
                   }),
+              SizedBox(height: size.height * 0.03),
+
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ForgetPassword();
+                      },
+                    ),
+                  );
+                },
+                  child: Text("Forget Password ??",style: TextStyle(color:kSecondaryLightColor))),
+
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
                 press: () {
@@ -150,12 +192,22 @@ class _State extends State<Body> {
       ),
     );
   }
-
-  void SendLoginData(String phn, String pass)async {
+  Future<String> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
+  }
+  void SendLoginData(String phn, String pass,String Deviceiduser)async {
     setState(() {
       progress=true;
       // pr.show();
-
+      fcmID="1234";
     });
     String username = All_API().keyuser;
     String password = All_API().keypassvalue;
@@ -165,6 +217,9 @@ class _State extends State<Body> {
 
     var logurl= All_API().baseurl+All_API().api_login;
     print("login_url -->" +logurl);
+    print("login_Deviceiduser -->" +Deviceiduser);
+
+
 
 
 
@@ -176,18 +231,22 @@ class _State extends State<Body> {
     request.fields.addAll({
       'password': pass,
       'mobile_no': phn,
+      'fcm_id': fcmID,
+      'device_id': Deviceiduser,
     });
 
     request.headers.addAll(headers);
     http.StreamedResponse streamedResponse = await request.send();
 
     var response = await http.Response.fromStream(streamedResponse);
-    print("log_body_response -->" +response.body);
+    print("log_body_response -->" +response.body.toString());
 
     var  jasonData = jsonDecode(response.body);
+
+    String msg=jasonData['message'];
     // String msg=jasonData['message'];
 
-    // print("log_statuscode_response -->" +jasonData.statusCode);
+    print("log_statuscode_response -->" +msg);
 
     // final Map<String, String> jasonData = jsonDecode(response.body);
     // String msg=jasonData['error'];
@@ -246,15 +305,19 @@ class _State extends State<Body> {
         if(employeeId.toString().isNotEmpty){
           sharedPreferences.setBool("loggedIn", true);
           progress=false;
-
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => BottomBar()),
+            ModalRoute.withName('/'),
+          );
+          /*Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) {
                 return BottomBar();
               },
             ),
-          );
+          );*/
         }
 
 

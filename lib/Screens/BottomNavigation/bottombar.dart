@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:homecare/Screens/ClientPages/ClientList.dart';
 import 'package:homecare/Screens/HistoryTask/HistoryTaskList.dart';
 import 'package:homecare/Screens/HomePages/home.dart';
+import 'package:homecare/Screens/MessagingPages/MessagingList.dart';
 import 'package:homecare/Screens/NotificationPages/NotificationScreen.dart';
 import 'package:homecare/Screens/ProfilePages/ProfileScreen.dart';
 import 'package:homecare/constants.dart';
@@ -16,7 +16,7 @@ class _HomePageState extends State<BottomBar> {
   final List pages = [
     HomePage(),
     TaskListHistory(),
-    ClientScreen(),
+    MessagingScreen(),
     NotificationScreens(),
     Profile(),
   ];

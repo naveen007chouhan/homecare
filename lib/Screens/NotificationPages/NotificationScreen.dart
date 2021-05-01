@@ -13,101 +13,103 @@ class NotificationScreens extends StatefulWidget {
 class _NotificationScreensState extends State<NotificationScreens> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: ListView(
-          children: [
-            Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 20.0,bottom: 20.0),
-                child: new Row(
-                  children: [
-                    Text(
-                      "Notification",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: kSecondaryLightColor),
-                    ),
-                    SizedBox(width: 10,),
-                    Icon(
-                      Icons.notification_important_outlined,
-                      color: kSecondaryLightColor,
-                      size: 22.0,
-                    )
-                  ],
-                )),
-            Card(
-              elevation: 8.0,
-              margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white54,
-                  border: Border.all(
-                    color: kSecondaryLightColor, // red as border color
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)
-                      // topRight: Radius.circular(10.0),
-                      // bottomRight: Radius.circular(10.0),
-                      // topLeft: Radius.circular(10.0),
-                      // bottomLeft: Radius.circular(10.0),
-                      ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        // brightness: Brightness.dark,
+        backgroundColor: kSecondaryLightColor,
+        elevation: 8,
+        /*leading: IconButton(
+        icon: Icon(Icons.menu),
+        color: Colors.white,
+        onPressed: () {},
+      ),*/
+        title: Text(
+          'Notification',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.notification_important_outlined),
+          color: Colors.white,
+          onPressed: () {},
+        ),
+      ],
+      ),
+      body: ListView(
+        children: [
+
+          Card(
+            elevation: 8.0,
+            margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                // color: Color.fromRGBO(64, 75, 96, .9),
+                border: Border.all(
+                  color: kSecondaryLightColor, // red as border color
                 ),
-
-                // margin:const EdgeInsets.only(top: 5,left: 5,bottom: 5,right: 5),
-                child: ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-
-                  title: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      "title",
-                      style: TextStyle(
-                          color: Colors.black54, fontWeight: FontWeight.bold),
+                borderRadius: BorderRadius.all(Radius.circular(5.0)
+                    // topRight: Radius.circular(10.0),
+                    // bottomRight: Radius.circular(10.0),
+                    // topLeft: Radius.circular(10.0),
+                    // bottomLeft: Radius.circular(10.0),
                     ),
-                  ),
-                  // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+              ),
 
-                  subtitle: Column(
-                    children: <Widget>[
-                      Text(
-                        "message",
-                        textDirection: TextDirection.ltr,
-                        style: TextStyle(color: Colors.black45),
-                        softWrap: true,
+              // margin:const EdgeInsets.only(top: 5,left: 5,bottom: 5,right: 5),
+              child:Column(
+                children: [
+                  ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                      leading: Container(
+                        padding: EdgeInsets.only(right: 12.0),
+                        decoration: new BoxDecoration(
+                            border: new Border(
+                                right: new BorderSide(width: 1.0, color: Colors.white24))),
+                        child: Image.network("https://images.pexels.com/photos/2167673/pexels-photo-2167673.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"),
                       ),
-                      SizedBox(
-                        height: 20,
-                        width: 10,
+                      title: Text(
+                        "Plumbing Task",
+                        style: TextStyle(color: kSecondaryLightColor, fontWeight: FontWeight.bold),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Date : ",
-                            textDirection: TextDirection.ltr,
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.black54),
-                            softWrap: true,
-                          ),
-                          Text(
-                            "Time : ",
-                            textDirection: TextDirection.ltr,
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.black54),
-                            softWrap: true,
-                          ),
+                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                      subtitle: Row(
+                        children: <Widget>[
+                          Text(" You Successfully completed your task", style: TextStyle(color: Colors.grey[400]),maxLines: 2,)
                         ],
                       ),
-                    ],
                   ),
-                  // trailing:
-                  //  Icon(Icons.keyboard_arrow_right_rounded, color: Colors.white, size: 30.0)),
-                ),
-              ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          'Date: 2021-05-5',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14.0,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          'Time : 12:15 PM',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

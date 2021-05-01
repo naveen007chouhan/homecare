@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
+import 'package:homecare/components/oval_top_border.dart';
 import 'package:homecare/components/spinner_field_container.dart';
 import 'package:homecare/constants.dart';
 
@@ -8,309 +10,484 @@ class TaskListHistory extends StatefulWidget {
 }
 
 class _TaskListHistoryState extends State<TaskListHistory> {
-  String dayLeave=null;
+ /* String dayLeave=null;
   var dayLeaveID;
-  List DayTypeList=[{'id':'0','name':'Choose Type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                height: 200,
-                color: Colors.white,
-                /*decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [kSecondaryLightColor, kSecondaryColor]),
-                ),*/
-                child: Padding(
-                  padding:
-                  const EdgeInsets.only(left: 20, right: 20.0, top: 30),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Task List",
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54),
-                              ),
-                             /* Text(
-                                "Naveen Chouhan",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              ),*/
-
-
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  color: Colors.white,
-                  /*decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [kSecondaryLightColor, kSecondaryColor]),
-                  ),*/
-                  // color: Colors.white60,
-                  child: ListView(
-                    /*margin: new EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 6.0),*/
-                    padding: EdgeInsets.only(top: 30),
-                    children: [
-
-                      GestureDetector(
-                        onTap: (){
-                         /* Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TaskDetail()));*/
-                        },
-                        child: Card(
-
-                          // color: Colors.green,
-                          elevation: 8.0,
-                          margin: new EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 6.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white54,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)
-                                  // topRight: Radius.circular(10.0),
-                                  // bottomRight: Radius.circular(10.0),
-                                  // topLeft: Radius.circular(10.0),
-                                  // bottomLeft: Radius.circular(10.0),
-                                ),
-                              ),
-                              margin: const EdgeInsets.only(
-                                  top: 5, left: 2, bottom: 5, right: 2),
-                              child: Column(
-                                children: [
-                                  ListTile(
-
-                                    leading:Card(
-                                      color: kPrimaryColor,
-                                      elevation: 5,
-
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Text("Processing",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orangeAccent)),
-                                      ),
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 1,
-                                    color: Colors.grey,
-                                  ),
-                                  ListTile(
-                                      title: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "Type : ",
-                                          style: TextStyle(
-                                              color: Colors.grey[700],
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "Alot Date : ",
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      trailing: Icon(
-                                          Icons.keyboard_arrow_right_rounded,
-                                          color: Colors.grey[600],
-                                          size: 30.0)),
-                                  Divider(
-                                    height: 1,
-                                    color: kSecondaryLightColor,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topRight,
-                                    child:Padding(
-
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text("Dead Line : ",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.red)),
-                                    ),
-                                  ),
-
-                                ],
-                              )
-                          ),
-                        ),
-                      )
-
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-          Positioned(
-            top: 90,
-            right: 0,
+  List DayTypeList=[{'id':'0','name':'Choose Type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];*/
+  void _showModalSheet() {
+    showModalBottomSheet(
+        backgroundColor: Colors.white70.withOpacity(0.0),
+        context: context,
+        builder: (builder) {
+          return new ClipPath(
+            clipper: OvalTopBorderClipper(),
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              // width: MediaQuery.of(context).size.width * 0.7,
-              height: 115,
+              alignment: Alignment.bottomCenter,
+              height: 250,
               decoration: BoxDecoration(
-                 // color: Colors.white,
-                  gradient: LinearGradient(
-                      colors: [kSecondaryLightColor, kSecondaryColor]),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(.09),
-                      blurRadius: 8,
-                      spreadRadius: 3,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(50),
-                  )),
+                boxShadow: [
+                  BoxShadow(
+                      blurRadius: 5.0,
+                      color: Colors.grey.shade700,
+                      spreadRadius: 80.0),
+                ],
+                color: Colors.white,
+              ),
+              padding:
+              EdgeInsets.only(left: 20.0, right: 20.0, top: 70.0, bottom: 5.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Task Filter",
-                                style: TextStyle(
-                                    color: Colors.grey.shade200,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(
-                                Icons.filter_1,
-                                color: Color(0XFF00838F),
-                              )
-                            ],
-                          ),
-                          SpinnerFieldContainer(
-                            child: DropdownButton(
-                              underline: SizedBox(),
-                              isExpanded: true,
-                              hint: Text("Choose Type",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,color: Colors.orange)),
-                              value: dayLeave,
-                              style: new TextStyle(
-                                color: Colors.orange,
-                              ),
-                              items: DayTypeList.map((explist) {
-                                return DropdownMenuItem(
-                                  value: explist['name'],
-                                  child: Text(explist['name']),
-                                  onTap: (){
-                                    dayLeaveID = explist['id'];
-                                    print("leavess-->"+explist['id']);
-                                  },
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  dayLeave = value;
-                                  if(dayLeaveID==0){
-                                    dayLeave = null;
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ],
+                    children: <Widget>[
+                      Text("Pending"),
+                      Text(
+                        "5" ,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, color: Colors.orange),
                       ),
-                      /* Container(width: 1, height: 50, color: Colors.grey),*/
-
                     ],
                   ),
-                  /*SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: 10.0,
                   ),
-                  Text(
-                    "You spent \$ 1,494 this month",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontStyle: FontStyle.italic,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Rejected"),
+                      Text(
+                        "5" ,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, color: Colors.orange),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    height: 3,
+                    height: 10.0,
                   ),
-                  Text(
-                    "Let's see the cost statistics for this period",
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 1,
-                    width: double.maxFinite,
-                    color: Colors.grey.withOpacity(0.5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Approved"),
+                      Text(
+                        "5" ,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, color: Colors.orange),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10.0,
                   ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Tell me more",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0XFF00B686)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Completed"),
+                      Text(
+                        "5" ,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, color: Colors.orange),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  RaisedButton(
+                    color: kSecondaryLightColor,
+                    onPressed: () {
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text("Apply",
+                            style: TextStyle(color: Colors.white)),
+
+                        // Text("Rs.", style: TextStyle(color: Colors.white)),
+                      ],
                     ),
-                  )*/
+                  )
                 ],
               ),
             ),
-          )
-        ],
+          );
+        });
+  }
+  List Demotask = [
+    {'id': '1', 'name': 'Plumbing','task':'Pipe fitting','client':'Jack Jonson','deadline':'2021-04-30','Date':'2021-04-27','status':'Processing','image':'https://st.depositphotos.com/1010613/2860/i/600/depositphotos_28608021-stock-photo-young-plumber-fixing-a-sink.jpg'},
+    {'id': '2', 'name': 'Plumbing','task':'Leak repairing','client':'Nick Jonson','deadline':'2021-04-30','Date':'2021-04-27','status':'Approved','image':'https://st.depositphotos.com/1010613/2860/i/600/depositphotos_28608021-stock-photo-young-plumber-fixing-a-sink.jpg'},
+    {'id': '3', 'name': 'Plumbing','task':'Pressure settlement','client':'Mick Williem','deadline':'2021-04-30','Date':'2021-04-27','status':'Rejected','image':'https://st.depositphotos.com/1010613/2860/i/600/depositphotos_28608021-stock-photo-young-plumber-fixing-a-sink.jpg'},
+    {'id': '4', 'name': 'Plumbing','task':'Cleaning ','client':'Post Malon ','deadline':'2021-04-30','Date':'2021-04-27','status':'Pending','image':'https://st.depositphotos.com/1010613/2860/i/600/depositphotos_28608021-stock-photo-young-plumber-fixing-a-sink.jpg'},
+    {'id': '5', 'name': 'Plumbing','task':'Accessory Changes','client':'Jackey','deadline':'2021-04-30','Date':'2021-04-27','status':'Processing','image':'https://st.depositphotos.com/1010613/2860/i/600/depositphotos_28608021-stock-photo-young-plumber-fixing-a-sink.jpg'},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              Container(
+                color: Colors.grey[200],
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 90,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        child: TextField(
+                          // controller: TextEditingController(text: locations[0]),
+                          cursorColor: Theme.of(context).primaryColor,
+                          style: TextStyle(color: Colors.black, fontSize: 18),
+                          decoration: InputDecoration(
+                              hintText: "Search Client",
+                              hintStyle: TextStyle(
+                                  color: kSecondaryLightColor, fontSize: 16),
+                              prefixIcon: Material(
+                                elevation: 0.0,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                                child: Icon(Icons.search,color: kSecondaryLightColor,),
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 13)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.symmetric(vertical:180,horizontal:10),
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 4.0,
+                          onPressed:_showModalSheet,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 30.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.person_add,
+                                            color: kSecondaryLightColor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "Client",
+                                            style: TextStyle(
+                                                color: kSecondaryLightColor,
+                                                fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                    Container(
+                        padding: const EdgeInsets.symmetric(vertical:180,horizontal:10),
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 4.0,
+                          onPressed:_showModalSheet,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 30.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.category,
+                                            color: kSecondaryLightColor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "Category",
+                                            style: TextStyle(
+                                                color: kSecondaryLightColor,
+                                                fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                    Container(
+                        padding: const EdgeInsets.symmetric(vertical:180,horizontal:10),
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 4.0,
+                          onPressed:_showModalSheet,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 30.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.account_tree_outlined,
+                                            color: kSecondaryLightColor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "Status",
+                                            style: TextStyle(
+                                                color: kSecondaryLightColor,
+                                                fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                    Container(
+                        padding: const EdgeInsets.symmetric(vertical:180,horizontal:10),
+                        child: RaisedButton(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 4.0,
+                          onPressed:_showModalSheet,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 30.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.timelapse_rounded,
+                                            color: kSecondaryLightColor,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "Deadline",
+                                            style: TextStyle(
+                                                color: kSecondaryLightColor,
+                                                fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 245),
+                height: MediaQuery.of(context).size.height,
+                width: double.infinity,
+                child: ListView.builder(
+                    itemCount: Demotask.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TaskDetail(
+                                        employid: "5",
+                                        taskid: "2",
+                                        alotdate: "ALOTdate",
+                                        deadlinedate:
+                                        "DEADLindate",
+                                        addrs: "addrs",
+                                      )));
+                        },
+                        child: Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Stack(
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 200.0,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0),
+                                        ),
+                                        image: DecorationImage(
+                                          image: NetworkImage(Demotask[index]['image']),
+                                          fit: BoxFit.cover,
+                                        )),
+                                  ),
+                                  SizedBox(height: 15,),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(
+                                      // padding: const EdgeInsets.all(16.0),
+                                      padding: EdgeInsets.symmetric(horizontal: 15),
+                                      child: Text(
+                                        Demotask[index]['name'],
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 10,),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          Demotask[index]['client'],
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "Task: "+Demotask[index]['task'],
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                ],
+                              ),
+                              Positioned(
+                                top: 10,
+                                left: 20.0,
+                                child: Container(
+                                  color: Colors.green,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    Demotask[index]['status'],
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 170,
+                                left: 5.0,
+                                child: Container(
+                                  color: Colors.orange,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Date :"+Demotask[index]['Date'],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 170,
+                                right: 5.0,
+                                child: Container(
+                                  color: Colors.orange,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "Deadline :"+Demotask[index]['deadline'],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+
+            ],
+          ),
+        ),
       ),
 
     );

@@ -369,6 +369,7 @@ class _BodyState extends State<Body> {
 
     var response = await http.Response.fromStream(streamedResponse);
     print("reg_body_response -->" + response.body);
+    print("StatussssCode--> "+ response.statusCode.toString());
     Map<String, dynamic> map = json.decode(response.body);
     var msg = map["message"];
     // print("REG_MSG--> "+msg);
@@ -377,8 +378,9 @@ class _BodyState extends State<Body> {
             print("MSG--> " + msg);*/
     // final Map<String, String> jasonData = jsonDecode(response.body);
     // String msg=jasonData['error'];
-    // print("MSG--> "+ msg );
+    print("MSG--> "+ msg );
     try {
+
       if (response.statusCode == 200) {
         setState(() {
           // pr.hide();
@@ -417,11 +419,25 @@ class _BodyState extends State<Body> {
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }else if( msg["mobile"] == "Mobile No is Alerday Exits"){
+          }else{
+            setState(() {
+              progress = false;
+            });
             FocusScope.of(context).requestFocus(focusNode);
             final snackBar = SnackBar(
               content: Text(
-                msg["mobile"]/*"Your Are Not Register ,Plzz "*/,
+                  msg,//*"Your Are Not Register ,Plzz "*//*,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+                backgroundColor: Colors.red,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+          /*else if( msg["message"] == "Mobile No is Alerday Exits"){
+            FocusScope.of(context).requestFocus(focusNode);
+            final snackBar = SnackBar(
+              content: Text(
+                msg["mobile"]*//*"Your Are Not Register ,Plzz "*//*,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               backgroundColor: Colors.red,
@@ -431,13 +447,13 @@ class _BodyState extends State<Body> {
             FocusScope.of(context).requestFocus(focusNode);
             final snackBar = SnackBar(
               content: Text(
-                msg["email"]/*"Your Are Not Register ,Plzz "*/,
+                msg["email"]*//*"Your Are Not Register ,Plzz "*//*,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
+          }*/
 
 
 

@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-// final notificationModel = notificationModelFromJson(jsonString);
+//     final notificationModel = notificationModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -11,23 +11,23 @@ String notificationModelToJson(NotificationModel data) => json.encode(data.toJso
 class NotificationModel {
   NotificationModel({
     this.status,
-    this.msg,
+    this.message,
     this.data,
   });
 
   bool status;
-  String msg;
+  String message;
   List<Datum> data;
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
     status: json["status"],
-    msg: json["msg"],
+    message: json["message"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "msg": msg,
+    "message": message,
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
@@ -35,43 +35,55 @@ class NotificationModel {
 class Datum {
   Datum({
     this.id,
-    this.userid,
-    this.title,
+    this.slug,
+    this.taskId,
+    this.companyId,
+    this.employeeId,
     this.message,
-    this.type,
-    this.status,
+    this.createdAt,
     this.deleted,
-    this.date,
+    this.deletedAt,
+    this.employeefirstName,
+    this.employeelastName,
   });
 
   String id;
-  String userid;
-  String title;
+  String slug;
+  String taskId;
+  String companyId;
+  String employeeId;
   String message;
-  String type;
-  String status;
+  String createdAt;
   String deleted;
-  DateTime date;
+  dynamic deletedAt;
+  String employeefirstName;
+  String employeelastName;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    userid: json["userid"],
-    title: json["title"],
+    slug: json["slug"],
+    taskId: json["task_id"],
+    companyId: json["company_id"],
+    employeeId: json["employee_id"],
     message: json["message"],
-    type: json["type"],
-    status: json["status"],
+    createdAt: json["created_at"],
     deleted: json["deleted"],
-    date: DateTime.parse(json["date"]),
+    deletedAt: json["deleted_at"],
+    employeefirstName: json["EmployeefirstName"],
+    employeelastName: json["EmployeelastName"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "userid": userid,
-    "title": title,
+    "slug": slug,
+    "task_id": taskId,
+    "company_id": companyId,
+    "employee_id": employeeId,
     "message": message,
-    "type": type,
-    "status": status,
+    "created_at": createdAt,
     "deleted": deleted,
-    "date": date.toIso8601String(),
+    "deleted_at": deletedAt,
+    "EmployeefirstName": employeefirstName,
+    "EmployeelastName": employeelastName,
   };
 }

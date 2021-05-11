@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "247498854912",
+    "project_id": "adiyogi-homecare-firebase",
+    "storage_bucket": "adiyogi-homecare-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247498854912:android:932324cbfe9a2c93d37ee5",
+        "android_client_info": {
+          "package_name": "com.example.homecare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247498854912-uh6ml0d72ul2alv6qn3b2dqcau9qtvks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVC8N4i4F1VJTFRXVqlXPXo90NRw9daCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247498854912-uh6ml0d72ul2alv6qn3b2dqcau9qtvks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

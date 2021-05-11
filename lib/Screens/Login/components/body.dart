@@ -34,6 +34,7 @@ class _State extends State<Body> {
   void initState() {
     super.initState();
     getDevice();
+    getData();
   }
   getDevice() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -41,6 +42,14 @@ class _State extends State<Body> {
     print("User_Device_Id -->" +userdeviceId);
     setState(() {
       sharedPreferences.setString("userdevice", userdeviceId);
+    });
+  }
+  void getData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      fcmID = sharedPreferences.getString("fcmID");
+      print("User_fcmID -->" +fcmID);
+
     });
   }
   @override
@@ -132,30 +141,12 @@ class _State extends State<Body> {
                       var phn = phnControlleruser.text;
                       var pass = passControlleruser.text;
                       FocusScope.of(context).requestFocus(focusNode);
-                      /*final snackbar =SnackBar(content: Text('Success',
-                        style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
-                      ScaffoldMessenger.of(context).showSnackBar(snackbar);*/
 
-                      /*FocusScope.of(context).requestFocus(focusNode);
-                      final snackBar = SnackBar(content: Text('Success Full Login',
-                        style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.orange,);
-
-
-                      // Find the ScaffoldMessenger in the widget tree
-                      // and use it to show a SnackBar.
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
-                      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-                      sharedPreferences.setBool("loggedIn", true);
-                      progress=false;
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (BuildContext context) => BottomBar()),
-                        ModalRoute.withName('/'),
-                      );
-                     /* print("phn --> " + phn);
+                      print("phn --> " + phn);
                       print("pass --> " + pass);
                       print("userdeviceId --> " + userdeviceId);
-                      SendLoginData(phn, pass,userdeviceId);*/
+                      print("fcm_Id --> " + fcmID);
+                      SendLoginData(phn, pass,userdeviceId,fcmID);
                     }
                   }),
               SizedBox(height: size.height * 0.03),
@@ -203,11 +194,11 @@ class _State extends State<Body> {
       return androidDeviceInfo.androidId; // unique ID on Android
     }
   }
-  void SendLoginData(String phn, String pass,String Deviceiduser)async {
+  void SendLoginData(String phn, String pass,String Deviceiduser,String fcmemid)async {
     setState(() {
       progress=true;
       // pr.show();
-      fcmID="1234";
+      // fcmID="1234";
     });
     String username = All_API().keyuser;
     String password = All_API().keypassvalue;
@@ -218,6 +209,7 @@ class _State extends State<Body> {
     var logurl= All_API().baseurl+All_API().api_login;
     print("login_url -->" +logurl);
     print("login_Deviceiduser -->" +Deviceiduser);
+    print("login_fcmID -->" +fcmemid);
 
 
 
@@ -231,7 +223,7 @@ class _State extends State<Body> {
     request.fields.addAll({
       'password': pass,
       'mobile_no': phn,
-      'fcm_id': fcmID,
+      'fcm_id': fcmemid,
       'device_id': Deviceiduser,
     });
 
@@ -243,7 +235,7 @@ class _State extends State<Body> {
 
     var  jasonData = jsonDecode(response.body);
 
-    String msg=jasonData['message'];
+    var msg=jasonData['message'];
     // String msg=jasonData['message'];
 
     print("log_statuscode_response -->" +msg);
@@ -265,6 +257,7 @@ class _State extends State<Body> {
         var employeeMobileNo = jasonData['data']['mobile_no'];
         var employeepassword = jasonData['data']['password'];
         var employeeprofileImg = jasonData['data']['profile_img'];
+        var employeeprofilepath = jasonData['data']['path'];
         var verifyToken = jasonData['data']['verifi_token'];
         var tokenExpire = jasonData['data']['token_expire'];
         var verificationRetries = jasonData['data']['verification_retries'];
@@ -278,7 +271,7 @@ class _State extends State<Body> {
         var deleted = jasonData['data']['deleted'];
         var deletedAt = jasonData['data']['deleted_at'];
         var updatedAt = jasonData['data']['updated_at'];
-        print(employeeId+"-----"+employeeSlug+"--------"+companyId+"-------"+firstname+"-----"+lastname+"--------"+employeeEmail+"------"+employeeMobileNo);
+        print(employeeId+"-----"+employeeSlug+"--------"+companyId+"-------"+firstname+"-----"+lastname+"--------"+employeeEmail+"------"+employeeMobileNo+"--------"+employeeprofileImg+"------"+employeeprofilepath);
         SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
         sharedPreferences.setString("employeeId", employeeId);
         sharedPreferences.setString("employeeSlug", employeeSlug);
@@ -289,6 +282,7 @@ class _State extends State<Body> {
         sharedPreferences.setString("employeeMobileNo", employeeMobileNo);
         sharedPreferences.setString("employeepassword", employeepassword);
         sharedPreferences.setString("employeeprofileImg", employeeprofileImg);
+        sharedPreferences.setString("employeeprofilepath", employeeprofilepath);
         sharedPreferences.setString("verifyToken", verifyToken);
         sharedPreferences.setString("tokenExpire", tokenExpire);
         sharedPreferences.setString("verificationRetries", verificationRetries);

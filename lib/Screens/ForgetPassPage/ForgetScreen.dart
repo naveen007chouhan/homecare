@@ -128,7 +128,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     };
     var request = http.MultipartRequest('POST', Uri.parse(forgetPassurl));
     request.fields.addAll({
-      'email': emailforget,
+      'email_id': emailforget,
 
     });
 

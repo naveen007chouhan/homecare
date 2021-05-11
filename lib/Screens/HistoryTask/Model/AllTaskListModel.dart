@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final todayTaskListModel = todayTaskListModelFromJson(jsonString);
+//     final allTaskListModel = allTaskListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TodayTaskListModel todayTaskListModelFromJson(String str) => TodayTaskListModel.fromJson(json.decode(str));
+AllTaskListModel allTaskListModelFromJson(String str) => AllTaskListModel.fromJson(json.decode(str));
 
-String todayTaskListModelToJson(TodayTaskListModel data) => json.encode(data.toJson());
+String allTaskListModelToJson(AllTaskListModel data) => json.encode(data.toJson());
 
-class TodayTaskListModel {
-  TodayTaskListModel({
+class AllTaskListModel {
+  AllTaskListModel({
     this.status,
     this.message,
     this.data,
@@ -19,7 +19,7 @@ class TodayTaskListModel {
   String message;
   List<Datum> data;
 
-  factory TodayTaskListModel.fromJson(Map<String, dynamic> json) => TodayTaskListModel(
+  factory AllTaskListModel.fromJson(Map<String, dynamic> json) => AllTaskListModel(
     status: json["status"],
     message: json["message"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
@@ -34,7 +34,9 @@ class TodayTaskListModel {
 
 class Datum {
   Datum({
-    this.id,
+    this.logId,
+    this.logSlug,
+    this.taskName,
     this.taskId,
     this.companyId,
     this.clientId,
@@ -49,19 +51,35 @@ class Datum {
     this.compMessege,
     this.deadlineDate,
     this.status,
-    this.taskMode,
     this.assignedDate,
     this.completedDate,
     this.isQrVerify,
     this.qrVerifyTime,
     this.latitude,
+    this.taskMode,
+    this.taskModeName,
     this.longitude,
     this.isApproved,
     this.updatedAt,
     this.createdAt,
+    this.empFirstname,
+    this.emplastname,
+    this.companyName,
+    this.clientfirstName,
+    this.clientlastName,
+    this.countryname,
+    this.stateName,
+    this.cityName,
+    this.categoryName,
+    this.taskAttachments,
+    this.taskpath,
+    this.taskImagemode,
+    this.taskImage,
   });
 
-  String id;
+  String logId;
+  String logSlug;
+  String taskName;
   String taskId;
   String companyId;
   String clientId;
@@ -76,19 +94,35 @@ class Datum {
   String compMessege;
   DateTime deadlineDate;
   String status;
-  String taskMode;
   DateTime assignedDate;
-  dynamic completedDate;
+  String completedDate;
   String isQrVerify;
-  dynamic qrVerifyTime;
+  String qrVerifyTime;
   String latitude;
+  String taskMode;
+  String taskModeName;
   String longitude;
   String isApproved;
-  dynamic updatedAt;
+  String updatedAt;
   DateTime createdAt;
+  String empFirstname;
+  String emplastname;
+  String companyName;
+  String clientfirstName;
+  String clientlastName;
+  String countryname;
+  String stateName;
+  String cityName;
+  String categoryName;
+  String taskAttachments;
+  String taskpath;
+  int taskImagemode;
+  String taskImage;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["id"],
+    logId: json["log_id"],
+    logSlug: json["log_slug"],
+    taskName: json["task_name"],
     taskId: json["task_id"],
     companyId: json["company_id"],
     clientId: json["client_id"],
@@ -103,20 +137,36 @@ class Datum {
     compMessege: json["comp_messege"],
     deadlineDate: DateTime.parse(json["deadline_date"]),
     status: json["status"],
-    taskMode: json["task_mode"],
     assignedDate: DateTime.parse(json["assigned_date"]),
     completedDate: json["completed_date"],
     isQrVerify: json["is_qr_verify"],
     qrVerifyTime: json["qr_verify_time"],
     latitude: json["latitude"],
+    taskMode: json["task_mode"],
+    taskModeName: json["task_mode_name"],
     longitude: json["longitude"],
     isApproved: json["is_approved"],
     updatedAt: json["updated_at"],
     createdAt: DateTime.parse(json["created_at"]),
+    empFirstname: json["EmpFirstname"],
+    emplastname: json["Emplastname"],
+    companyName: json["CompanyName"],
+    clientfirstName: json["ClientfirstName"],
+    clientlastName: json["ClientlastName"],
+    countryname: json["Countryname"],
+    stateName: json["StateName"],
+    cityName: json["CityName"],
+    categoryName: json["CategoryName"],
+    taskAttachments: json["taskAttachments"],
+    taskpath: json["Taskpath"],
+    taskImagemode: json["taskImagemode"],
+    taskImage: json["taskImage"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    "log_id": logId,
+    "log_slug": logSlug,
+    "task_name": taskName,
     "task_id": taskId,
     "company_id": companyId,
     "client_id": clientId,
@@ -131,15 +181,29 @@ class Datum {
     "comp_messege": compMessege,
     "deadline_date": deadlineDate.toIso8601String(),
     "status": status,
-    "task_mode": taskMode,
     "assigned_date": assignedDate.toIso8601String(),
     "completed_date": completedDate,
     "is_qr_verify": isQrVerify,
     "qr_verify_time": qrVerifyTime,
     "latitude": latitude,
+    "task_mode": taskMode,
+    "task_mode_name": taskModeName,
     "longitude": longitude,
     "is_approved": isApproved,
     "updated_at": updatedAt,
     "created_at": createdAt.toIso8601String(),
+    "EmpFirstname": empFirstname,
+    "Emplastname": emplastname,
+    "CompanyName": companyName,
+    "ClientfirstName": clientfirstName,
+    "ClientlastName": clientlastName,
+    "Countryname": countryname,
+    "StateName": stateName,
+    "CityName": cityName,
+    "CategoryName": categoryName,
+    "taskAttachments": taskAttachments,
+    "Taskpath": taskpath,
+    "taskImagemode": taskImagemode,
+    "taskImage": taskImage,
   };
 }

@@ -34,19 +34,23 @@ class TaskDetailModel {
 
 class Data {
   Data({
+    this.attachmentIs,
     this.attechment,
     this.taskDetail,
   });
 
+  int attachmentIs;
   List<Attechment> attechment;
   TaskDetail taskDetail;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+    attachmentIs: json["attachment_is"],
     attechment: List<Attechment>.from(json["Attechment"].map((x) => Attechment.fromJson(x))),
     taskDetail: TaskDetail.fromJson(json["taskDetail"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "attachment_is": attachmentIs,
     "Attechment": List<dynamic>.from(attechment.map((x) => x.toJson())),
     "taskDetail": taskDetail.toJson(),
   };
@@ -160,7 +164,7 @@ class TaskDetail {
   String address;
   String message;
   DateTime assignedDate;
-  String completedDate;
+  DateTime completedDate;
   DateTime deadlineDate;
   String taskStatus;
   String isApproved;
@@ -191,7 +195,7 @@ class TaskDetail {
     address: json["address"],
     message: json["message"],
     assignedDate: DateTime.parse(json["assigned_date"]),
-    completedDate: json["completed_date"],
+    completedDate: DateTime.parse(json["completed_date"]),
     deadlineDate: DateTime.parse(json["deadline_date"]),
     taskStatus: json["taskStatus"],
     isApproved: json["is_approved"],
@@ -223,7 +227,7 @@ class TaskDetail {
     "address": address,
     "message": message,
     "assigned_date": assignedDate.toIso8601String(),
-    "completed_date": completedDate,
+    "completed_date": completedDate.toIso8601String(),
     "deadline_date": deadlineDate.toIso8601String(),
     "taskStatus": taskStatus,
     "is_approved": isApproved,

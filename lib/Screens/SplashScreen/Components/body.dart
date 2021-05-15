@@ -1,14 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:homecare/Screens/BottomNavigation/bottombar.dart';
 import 'package:homecare/Screens/Login/Login.dart';
-import 'package:homecare/Screens/SignUp/SignUpScreen.dart';
 import 'package:homecare/Screens/WelcomePages/Components/background.dart';
-import 'package:homecare/Screens/WelcomePages/WelcomeScreen.dart';
-import 'package:homecare/components/rounded_button.dart';
-import 'package:homecare/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

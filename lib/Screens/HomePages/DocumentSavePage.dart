@@ -1,58 +1,54 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:homecare/API/Api.dart';
+import 'package:homecare/Screens/HomePages/home.dart';
+import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
 import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
+import 'package:homecare/loading.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pdf_flutter/pdf_flutter.dart';
-import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
 
 class DocumentSaving extends StatefulWidget {
   String savingTaskEmpid;
   String savingTaskId;
-  DocumentSaving({this.savingTaskEmpid, this.savingTaskId});
+  int savingAttachmentId;
+
+  DocumentSaving(
+      {this.savingTaskEmpid, this.savingTaskId, this.savingAttachmentId});
 
   @override
   _DocumentSavingState createState() => _DocumentSavingState();
 }
 
 class _DocumentSavingState extends State<DocumentSaving> {
-// Declare this variable
   FocusNode focusNode = new FocusNode();
   int selectedRadioTile;
-  // File uploadPDFimage;
   File uploadBILLimage;
   bool showselectdoc = false;
-  var docu;
+  bool loading = false;
   static TextEditingController messageController = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
     selectedRadioTile = 0;
-    // setExtension();
   }
 
   setSelectedRadioTile(int val) {
     setState(() {
       selectedRadioTile = val;
+
     });
   }
 
-  setExtension() {
-    docu = uploadBILLimage.path;
-    final extension = p.extension(docu);
-    print("Extention----->" + extension);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: loading==true?Loading():SingleChildScrollView(
         child: Form(
           key: formkey,
           child: Column(
@@ -65,7 +61,7 @@ class _DocumentSavingState extends State<DocumentSaving> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 6.0, bottom: 4.0),
                     child: Text(
-                      "Upload Data",
+                      All_Lan().upload_date,
                       style: TextStyle(
                           fontSize: 25,
                           color: Colors.black54,
@@ -82,7 +78,7 @@ class _DocumentSavingState extends State<DocumentSaving> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        " Upload Document : ",
+                          All_Lan().upload_documents+": ",
                         style: TextStyle(fontSize: 20, color: Colors.black54),
                       ),
                     ),
@@ -92,42 +88,23 @@ class _DocumentSavingState extends State<DocumentSaving> {
               RadioListTile(
                 value: 1,
                 groupValue: selectedRadioTile,
-                title: Text("PDF"),
-                subtitle: Text("Want to upload pdf"),
+                title: Text(All_Lan().gallery),
+                subtitle: Text(All_Lan().want_to_upload_image),
                 onChanged: (val) async {
-                  print("Radio Tile pressed $val");
                   setSelectedRadioTile(val);
-                  // File pickedFile = await FilePicker.getFile(
-                  //     allowedExtensions: ['pdf'], type: FileType.custom);
-                  // setState(() {
-                  //   uploadBILLimage = pickedFile;
-                  // });
                 },
                 activeColor: Colors.orange,
-                /*secondary: OutlineButton(
-                  // child: Text("Say Hi"),
-                  onPressed: () {
-                    print("Say PDF");
-                  },
-                ),*/
                 selected: false,
               ),
               RadioListTile(
                 value: 2,
                 groupValue: selectedRadioTile,
-                title: Text("Camera"),
-                subtitle: Text("Want to upload picture"),
+                title: Text(All_Lan().camera),
+                subtitle: Text(All_Lan().want_to_upload_picture),
                 onChanged: (val) {
-                  print("Radio Tile pressed $val");
                   setSelectedRadioTile(val);
                 },
                 activeColor: Colors.orange,
-                /*secondary: OutlineButton(
-              // child: Text("Say Hi"),
-              onPressed: () {
-                print("Say Camera");
-              },
-            ),*/
                 selected: false,
               ),
               SizedBox(
@@ -156,7 +133,7 @@ class _DocumentSavingState extends State<DocumentSaving> {
                             if (selectedRadioTile == 1) {
                               setState(() {
                                 showselectdoc = false;
-                                selectPDF();
+                                selectGallery();
                               });
                             } else if (selectedRadioTile == 2) {
                               setState(() {
@@ -164,7 +141,6 @@ class _DocumentSavingState extends State<DocumentSaving> {
                                 selectCamera();
                               });
                             } else {
-                              print("HELLO-->");
                               setState(() {
                                 showselectdoc = true;
                               });
@@ -183,7 +159,7 @@ class _DocumentSavingState extends State<DocumentSaving> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               child: Text(
-                                "Select PDF OR Camera First",
+                                All_Lan().select_gallery_or_camera,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.red,
@@ -198,17 +174,8 @@ class _DocumentSavingState extends State<DocumentSaving> {
                         ? SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  child: uploadBILLimage != null
-                                      ? PDF.file(
-                                          uploadBILLimage,
-                                          height: 150,
-                                          width: 150,
-                                        )
-                                      : Text("Select PDF"),
-                                ),
                                 Container(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -246,15 +213,13 @@ class _DocumentSavingState extends State<DocumentSaving> {
                       Icons.message,
                       color: kSecondaryLightColor,
                     ),
-                    labelText: "Message",
-                    // labelText: "First Name",
+                    labelText:All_Lan().message,
                     border: InputBorder.none,
-
                   ),
                 ),
               ),
               Container(
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Align(
@@ -262,34 +227,34 @@ class _DocumentSavingState extends State<DocumentSaving> {
                       child: RaisedButton.icon(
                         color: kSecondaryLightColor,
                         label: Text(
-                          'Save',
-
-                          style: TextStyle(
-                              fontSize: 18.0, color: kPrimaryColor),
+                          All_Lan().save,
+                          style:
+                              TextStyle(fontSize: 18.0, color: kPrimaryColor),
                         ),
                         icon: Icon(
                           Icons.design_services,
                           size: 18.0,
                         ),
                         onPressed: () {
-                          SaveDocimage();
-                          // print("taskid & Empid For Doc Saving-->" + widget.empid+" == "+widget.taskid );
-                          /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DocumentSaving(savingTaskEmpid: widget.empid,savingTaskId: widget.taskid,)
-                              )
-                          );*/
-                          /* Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProjectTaskUpload(),
-                          )
-                      );*/
+                          if (formkey.currentState.validate()) {
+                            if(uploadBILLimage==null){
+                              FocusScope.of(context).requestFocus(focusNode);
+                              final snackBar = SnackBar(
+                                content: Text(
+                                  All_Lan().select_gallery,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: Colors.red,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }else{
+                              SaveDocimage();
+                            }
+
+                          }
                         },
                         shape: new RoundedRectangleBorder(
-                            borderRadius:
-                            new BorderRadius.circular(20.0)),
+                            borderRadius: new BorderRadius.circular(20.0)),
                       ),
                     ),
                     Align(
@@ -297,32 +262,19 @@ class _DocumentSavingState extends State<DocumentSaving> {
                       child: RaisedButton.icon(
                         color: kSecondaryLightColor,
                         label: Text(
-                          'Compeleted',
-                          style: TextStyle(
-                              fontSize: 18.0, color: kPrimaryColor),
+                          All_Lan().completed,
+                          style:
+                              TextStyle(fontSize: 18.0, color: kPrimaryColor),
                         ),
                         icon: Icon(
                           Icons.design_services,
                           size: 18.0,
                         ),
-                        onPressed: () {
-                          // print("taskid & Empid For Doc Saving-->" + widget.empid+" == "+widget.taskid );
-                          /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DocumentSaving(savingTaskEmpid: widget.empid,savingTaskId: widget.taskid,)
-                              )
-                          );*/
-                          /* Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProjectTaskUpload(),
-                          )
-                      );*/
-                        },
+                        onPressed: widget.savingAttachmentId==0? null: () {
+                                alertDialog(context);
+                              },
                         shape: new RoundedRectangleBorder(
-                            borderRadius:
-                            new BorderRadius.circular(20.0)),
+                            borderRadius: new BorderRadius.circular(20.0)),
                       ),
                     ),
                   ],
@@ -333,18 +285,55 @@ class _DocumentSavingState extends State<DocumentSaving> {
         ),
       ),
     );
-
-
-
   }
-  void SaveDocimage() async{
+
+  void alertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Alert"),
+          content: Text(
+            All_Lan().are_you_sure_you_want_to_complete,
+            style: TextStyle(fontSize: 14),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child:  Text(
+                All_Lan().cancel,
+                style: TextStyle(color: Colors.black54, fontSize: 15),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                All_Lan().accept,
+                style: TextStyle(color: Colors.orange, fontSize: 15),
+              ),
+              onPressed: () {
+                completetask();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void SaveDocimage() async {
+    setState(() {
+      loading=true;
+
+    });
     String username = All_API().keyuser;
     String password = All_API().keypassvalue;
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    print("taskdetail_basicAuth--> " + basicAuth);
     var saveDOC_url = All_API().baseurl + All_API().api_savedoc;
-    print("saveDOC_url_url -->" + saveDOC_url);
     Map<String, String> headers = {
       All_API().key: All_API().keyvalue,
       'authorization': basicAuth,
@@ -354,60 +343,80 @@ class _DocumentSavingState extends State<DocumentSaving> {
     request.fields.addAll({
       'employee_id': widget.savingTaskEmpid,
       'task_id': widget.savingTaskId,
-      'message':taskmessage,
+      'message': taskmessage,
     });
-    request.files.add(await http.MultipartFile.fromPath('file', uploadBILLimage.path));
+    request.files
+        .add(await http.MultipartFile.fromPath('file', uploadBILLimage.path));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-
-    print("Upload Document----->"+await response.stream.bytesToString());
-
+    var responsed = await http.Response.fromStream(response);
+    var jasonData = jsonDecode(responsed.body);
+    var msg = jasonData['message'];
     if (response.statusCode == 200) {
-      print("Upload Document----->"+await response.stream.bytesToString());
-      FocusScope.of(context).requestFocus(focusNode);
-      final snackBar = SnackBar(content: Text('Data Saved  ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    else {
-      print("Error---->"+response.reasonPhrase);
-      FocusScope.of(context).requestFocus(focusNode);
-      final snackBar = SnackBar(content: Text('Data Not Saved   ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      messageController.clear();
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TaskDetail(
+                empid: widget.savingTaskEmpid,
+                taskid: widget.savingTaskId,
+              )));
+      setState(() {
+        loading = false;
+        FocusScope.of(context).requestFocus(focusNode);
+        final snackBar = SnackBar(
+          content: Text(
+            msg,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.green,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // GetEmployeeProfileIMG();
+      });
+    } else {
+      messageController.clear();
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TaskDetail(
+                empid: widget.savingTaskEmpid,
+                taskid: widget.savingTaskId,
+              )));
+      setState(() {
+        loading = false;
+        FocusScope.of(context).requestFocus(focusNode);
+        final snackBar = SnackBar(
+          content: Text(
+            msg,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.red,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // GetEmployeeProfileIMG();
+      });
     }
   }
-  void selectPDF() async {
-    File pickedFile = await FilePicker.getFile(
-        allowedExtensions: ['pdf'], type: FileType.custom);
 
-    setState(() {
-      uploadBILLimage = pickedFile;
-      // setExtension();
-      print("uploadBILLimage" + uploadBILLimage.path);
-    });
-    /*var imagepicker = await ImagePicker.pickImage(source: ImageSource.gallery);
+  void selectGallery() async {
+    var imagepicker = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (imagepicker != null) {
       setState(() {
-        print("PDF_imagepicker--> " + imagepicker.path);
         uploadBILLimage = imagepicker;
-        //startUploading(uploadimage);
-        // profileUpload(uploadimage, context);
       });
     } else {
       Scaffold.of(context)
           .showSnackBar(SnackBar(content: Text('Please Select Bill Image !!')));
-    }*/
+    }
   }
 
   void selectCamera() async {
     var imagepicker = await ImagePicker.pickImage(source: ImageSource.camera);
     if (imagepicker != null) {
       setState(() {
-        print("Bill_imagepicker--> " + imagepicker.path);
         uploadBILLimage = imagepicker;
-        print("uploadBILLimage" + uploadBILLimage.path);
-        //startUploading(uploadimage);
-        // profileUpload(uploadimage, context);
       });
     } else {
       Scaffold.of(context)
@@ -415,6 +424,78 @@ class _DocumentSavingState extends State<DocumentSaving> {
     }
   }
 
+  void completetask() async {
+    setState(() {
+      loading=true;
+    });
+    String username = All_API().keyuser;
+    String password = All_API().keypassvalue;
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    var CompleteTask_url = All_API().baseurl + All_API().api_completed_task;
+
+    Map<String, String> headers = {
+      All_API().key: All_API().keyvalue,
+      'authorization': basicAuth,
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(CompleteTask_url));
+    request.fields.addAll({
+      'employee_id': widget.savingTaskEmpid,
+      'task_id': widget.savingTaskId
+    });
+
+    request.headers.addAll(headers);
+    http.StreamedResponse streamedResponse = await request.send();
+
+    var response = await http.Response.fromStream(streamedResponse);
+    var jasonData = jsonDecode(response.body);
+    var msg = jasonData['message'];
+    try {
+      if (response.statusCode == 200) {
+        setState(() {
+          loading = false;
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TaskDetail(
+                    empid: widget.savingTaskEmpid,
+                    taskid: widget.savingTaskId,
+                  )));
+          FocusScope.of(context).requestFocus(focusNode);
+          final snackBar = SnackBar(
+            content: Text(
+              msg,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.green,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          // GetEmployeeProfileIMG();
+        });
+      } else {
+        setState(() {
+          loading = false;
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TaskDetail(
+                    empid: widget.savingTaskEmpid,
+                    taskid: widget.savingTaskId,
+                  )));
+          FocusScope.of(context).requestFocus(focusNode);
+          final snackBar = SnackBar(
+            content: Text(
+              msg,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.red,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          // GetEmployeeProfileIMG();
+        });
+      }
+    } catch (e) {
+      return e;
+    }
+  }
 }
-
-

@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:homecare/API/Api.dart';
 import 'package:homecare/Screens/MessagingPages/models/FetchChatDataListModel.dart';
 import 'package:homecare/Screens/MessagingPages/models/SendChatDataModel.dart';
-import 'package:homecare/Screens/MessagingPages/models/message_model.dart';
-import 'package:homecare/Screens/MessagingPages/models/user_model.dart';
 import 'package:homecare/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 class ChatScreen extends StatefulWidget {
   String user;
   String EmpId;
+  String empprofile;
 
-  ChatScreen({this.user,this.EmpId});
+  ChatScreen({this.user,this.EmpId,this.empprofile});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -29,6 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController sendtextEditingController=TextEditingController() ;
   File uploadMessageimage;
+  String formattedDateString;
   List chatlist= new List();
   ScrollController scrollController = new ScrollController();
   @override
@@ -36,6 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // TODO: implement initState
     super.initState();
     getData();
+    getCurrentDate();
 
   }
   void insertSingleItem() {
@@ -46,6 +48,17 @@ class _ChatScreenState extends State<ChatScreen> {
         curve: Curves.easeOut
     );
   }
+  getCurrentDate() async {
+    getData();
+    String formatted = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    formattedDateString = formatted;
+    print("DateTime_Formate:--> " + formatted);
+
+    setState(() {
+      /*sharedPreferences.setString("dateCurrent", formatted);
+      print("Today Date : "+sharedPreferences.getString("dateCurrent"));*/
+    });
+  }
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
@@ -55,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
     // GetEmployeeProfile(employeeId);
   }
-  _chatBubble(fetchlist, bool isMe, bool isSameUser) {
+  _chatBubble(fetchlist,String date,String time, bool isMe, bool isSameUser) {
     if (isMe) {
       return Wrap(
         children: <Widget>[
@@ -66,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 maxWidth: MediaQuery.of(context).size.width * 0.80,
               ),
               padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
               decoration: BoxDecoration(
                 color: kSecondaryLightColor,
                 borderRadius: BorderRadius.circular(15),
@@ -78,20 +91,48 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
-              child: Text(
-                fetchlist,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+              child:Column(
+                children: [
+                  Text(
+                    fetchlist,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+
+                ],
               ),
+
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+
+              Text(
+                date==formattedDateString?time:date,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black45,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+
+
           !isSameUser
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "2:30 pm",
+                      time,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black45,
@@ -133,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 maxWidth: MediaQuery.of(context).size.width * 0.80,
               ),
               padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -156,27 +197,11 @@ class _ChatScreenState extends State<ChatScreen> {
           !isSameUser
               ? Row(
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          ),
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundImage: AssetImage(All_API().baseurl_img_default),
-                      ),
-                    ),
                     SizedBox(
                       width: 10,
                     ),
                     Text(
-                      "8:00AM",
+                      date==formattedDateString?time:date,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black45,
@@ -194,21 +219,22 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _sendMessageArea() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       height: 70,
       color: Colors.white,
       child: Form(
         key:formkey ,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            IconButton(
+           /* IconButton(
               icon: Icon(Icons.camera_alt_outlined),
               iconSize: 25,
               color: kSecondaryLightColor,
               onPressed: () {
                 selectCamera();
               },
-            ),
+            ),*/
             Expanded(
               child: TextFormField(
                 controller: sendtextEditingController,
@@ -220,7 +246,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   return null;
                 }),
                 decoration: InputDecoration.collapsed(
-                  hintText: 'Send a message..',
+                  hintText: All_Lan().send_message,
                 ),
                 textCapitalization: TextCapitalization.sentences,
               ),
@@ -251,35 +277,35 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         backgroundColor: kSecondaryLightColor,
         centerTitle: true,
-        title: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                  text: widget.user,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  )),
-              /*TextSpan(text: '\n'),
-              widget.user.isOnline ?
-              TextSpan(
-                text: 'Online',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
+        title: Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage(widget.empprofile==All_API().baseurl_img_error?
+              All_API().baseurl_img_default
+                  :widget.empprofile),
+            ),
+            SizedBox(width: 10,),
+            Column(
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                          text: widget.user,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          )),
+                    ],
+                  ),
                 ),
-              )
-              :
-              TextSpan(
-                text: 'Offline',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                ),
-              )*/
-            ],
-          ),
+                SizedBox(height: 5,),
+
+              ],
+            ),
+          ],
         ),
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -295,7 +321,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                           reverse: false,
+                           reverse: true,
                           shrinkWrap: true,
                           // padding: EdgeInsets.all(20),
                           controller: scrollController,
@@ -305,8 +331,13 @@ class _ChatScreenState extends State<ChatScreen> {
                             // final Message message = messages[index];
                             final bool isMe = chatlist[index]['fromId'] == employeeId;
                             final bool isSameUser = chatlist[index]['toId'] == widget.EmpId;
+                            var datetime =chatlist[index]['date'];
+                            var datess =datetime.split(" ");
+                            var reciver_date=datess[0];
+                            var reciver_time=datess[1];
+                            print("date_ Time-->"+reciver_date.toString()+" "+reciver_time.toString());
                             // prevUserId = message.sender.id;
-                            return _chatBubble(chatlist[index]['message'], isMe, isSameUser);
+                            return _chatBubble(chatlist[index]['message'], reciver_date,reciver_time,isMe, isSameUser);
                           },
                         ),
 
@@ -331,8 +362,8 @@ class _ChatScreenState extends State<ChatScreen> {
       'authorization': basicAuth,
     };
     var request = http.MultipartRequest('POST', Uri.parse(FetchChatDataList_url));
-    print("Sender ID---> "+senderEmpID);
-    print("Reciver ID---> "+widget.EmpId + " --<>-- "+widget.user);
+    print("Fetch Sender ID---> "+senderEmpID);
+    print("Fetch Reciver ID---> "+widget.EmpId + " --<>-- "+widget.user);
     var sender ="1";
     var reciver ="2";
     request.fields.addAll({
@@ -355,6 +386,7 @@ class _ChatScreenState extends State<ChatScreen> {
           chatlist=jasonData['data'];
           chatlist.forEach((element) {
             print("-----&&------>"+element['toId']);
+            print("-----&&------>"+element['fromId']);
           });
         });
 
@@ -364,9 +396,6 @@ class _ChatScreenState extends State<ChatScreen> {
       }
       else {
         print(response.reasonPhrase);
-        // FocusScope.of(context).requestFocus(focusNode);
-        // final snackBar = SnackBar(content: Text('$msg Not Update ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }catch(e){
       print( "Exception: --> "+e);
@@ -425,9 +454,6 @@ class _ChatScreenState extends State<ChatScreen> {
     try{
       if (response.statusCode == 200) {
         insertSingleItem();
-        // FocusScope.of(context).requestFocus(focusNode);
-        // final snackBar = SnackBar(content: Text('$msg Update ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
         FetchChatDataList(employeeId);
         return SendChatDataModel.fromJson(jasonData);
 
@@ -435,9 +461,6 @@ class _ChatScreenState extends State<ChatScreen> {
       }
       else {
         print(response.reasonPhrase);
-        // FocusScope.of(context).requestFocus(focusNode);
-        // final snackBar = SnackBar(content: Text('$msg Not Update ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }catch(e){
       print( "Exception: --> "+e);
@@ -452,8 +475,6 @@ class _ChatScreenState extends State<ChatScreen> {
         print("Bill_imagepicker--> " + imagepicker.path);
         uploadMessageimage = imagepicker;
         print("uploadMessageimage" + uploadMessageimage.path);
-        //startUploading(uploadimage);
-        // profileUpload(uploadimage, context);
       });
     } else {
       Scaffold.of(context)

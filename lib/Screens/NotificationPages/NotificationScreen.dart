@@ -33,35 +33,26 @@ class _NotificationScreensState extends State<NotificationScreens> {
   }
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         // brightness: Brightness.dark,
         backgroundColor: kSecondaryLightColor,
         elevation: 8,
-        /*leading: IconButton(
-        icon: Icon(Icons.menu),
-        color: Colors.white,
-        onPressed: () {},
-      ),*/
+
         title: Text(
-          'Notification',
+          All_Lan().notification,
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        actions: <Widget>[
-        /*IconButton(
-          icon: Icon(Icons.notification_important_outlined),
-          color: Colors.white,
-          onPressed: () {},
-        ),*/
-      ],
+
       ),
-      body:SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder<NotificationModel>(
+      body:Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<NotificationModel>(
               future: Notification(employeeId),
               // ignore: missing_return
               builder: (context, snapshot) {
@@ -81,52 +72,32 @@ class _NotificationScreensState extends State<NotificationScreens> {
                           var deadlinealotsplit =alot.split(" ");
                           var deadlinealot =deadlinealotsplit[0];
                           var timealot =deadlinealotsplit[1];
-
-                          print("datealot-->"+deadlinealot);
-                          // var pathimg =
-                          //     lasttask.path + lasttask.taskImage.toString();
-
-                          print("fivetask--> " + lasttask.toString());
-                          // print("pathimg--> " + pathimg);
                           return Card(
                             elevation: 8.0,
                             margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                             child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white54,
-                                  // color: Color.fromRGBO(64, 75, 96, .9),
                                   border: Border.all(
                                     color: kSecondaryLightColor, // red as border color
                                   ),
                                   borderRadius: BorderRadius.all(Radius.circular(5.0)
-                                    // topRight: Radius.circular(10.0),
-                                    // bottomRight: Radius.circular(10.0),
-                                    // topLeft: Radius.circular(10.0),
-                                    // bottomLeft: Radius.circular(10.0),
                                   ),
                                 ),
-
-                                // margin:const EdgeInsets.only(top: 5,left: 5,bottom: 5,right: 5),
                                 child:Column(
                                   children: [
                                     ListTile(
                                       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                     /* leading: Container(
-                                        padding: EdgeInsets.only(right: 12.0),
-                                        decoration: new BoxDecoration(
-                                            border: new Border(
-                                                right: new BorderSide(width: 1.0, color: Colors.white24))),
-                                        child: Image.network("https://images.pexels.com/photos/2167673/pexels-photo-2167673.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"),
-                                      ),*/
                                       title: Text(
                                         clientname,
                                         style: TextStyle(color: kSecondaryLightColor, fontWeight: FontWeight.bold),
                                       ),
-                                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
                                       subtitle: Row(
                                         children: <Widget>[
-                                          Text(lasttask.message, style: TextStyle(color: Colors.grey[400]),maxLines: 2,)
+                                          Container(
+                                                width:size.width * 0.8,
+                                              child: Text(lasttask.message, style: TextStyle(color: Colors.grey[400]),maxLines: 2,))
                                         ],
                                       ),
                                     ),
@@ -135,7 +106,7 @@ class _NotificationScreensState extends State<NotificationScreens> {
                                       child: Row(
                                         children: <Widget>[
                                           Text(
-                                            'Date:'+deadlinealot,
+                                            All_Lan().date+':'+deadlinealot,
                                             style: TextStyle(
                                               color: Colors.grey,
                                               fontSize: 14.0,
@@ -143,7 +114,7 @@ class _NotificationScreensState extends State<NotificationScreens> {
                                           ),
                                           Spacer(),
                                           Text(
-                                            'Time :'+timealot,
+                                            All_Lan().time+':'+timealot,
                                             style: TextStyle(
                                               color: Colors.grey,
                                               fontSize: 14.0,
@@ -166,7 +137,7 @@ class _NotificationScreensState extends State<NotificationScreens> {
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Text(
-                              All_API().no_task_found,
+                              All_Lan().no_result_found,
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.orange,
@@ -180,8 +151,8 @@ class _NotificationScreensState extends State<NotificationScreens> {
 
               },
             ),
-          ],
-        ),
+          ),
+        ],
       )
     );
   }
@@ -208,24 +179,10 @@ class _NotificationScreensState extends State<NotificationScreens> {
 
     var response = await http.Response.fromStream(streamedResponse);
     print("Dash_Field_body_response -->" + response.body);
-
-    /*var jasonData = jsonDecode(response.body);
-    // String msg = jasonData['message'];*/
-    // var jasonDataNotification = jsonDecode(response.body);
     try {
       if (response.statusCode == 200) {
         var jasonDataNotification = jsonDecode(response.body);
-        // progress = false;
-        // print("Dash_Field_MSG--> " + msg);
-        // var completetask=jasonDataNotification['data'][0]['CompleteTask'] ;
-        // var pendingtask=jasonDataNotification['data'][0]['pendingTask'] ;
-        // var TotalTask=jasonDataNotification['data'][0]['totalTask'] ;
-        // // List taskrel= jasonDataNotification['data'][0]['LastFiveTask'];
-        // print("LIST--->"+ taskrel[0]);
         return NotificationModel.fromJson(jasonDataNotification);
-
-        // print("compTASK_MSG--> " + completetask.toString());
-        // return null;
       } else {
         setState(() {
           progress = false;

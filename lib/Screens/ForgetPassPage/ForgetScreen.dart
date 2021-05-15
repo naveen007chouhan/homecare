@@ -10,15 +10,15 @@ import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
 import 'package:homecare/loading.dart';
 import 'package:http/http.dart' as http;
+
 class ForgetPassword extends StatefulWidget {
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-
   FocusNode focusNode = new FocusNode();
-  bool progress =false;
+  bool progress = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   static TextEditingController EmailidControlleruser = TextEditingController();
 
@@ -29,73 +29,60 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       body: Background(
         child: progress == true
             ? Loading()
-            :SingleChildScrollView(
-          child: Form(
-            key: formkey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Forget Password",
-                  // style: TextStyle(fontWeight: FontWeight.w400, fontSize: 35),
-                  style: TextStyle(fontSize: 30.0,
-                    fontWeight: FontWeight.w700,
-                    color: kPrimaryColor,),
-                  // style: Theme.of(context).textTheme.headline2,
-                ),
-                SizedBox(height: size.height * 0.03),
-                SvgPicture.asset(
-                  "assets/icons/login.svg",
-                  height: size.height * 0.25,
-                ),
-                SizedBox(height: size.height * 0.03),
-                TextFieldContainer(
-                  child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: EmailidControlleruser,
-                    validator: validateEmail,
-                    cursorColor: kSecondaryLightColor,
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.email_rounded,
-                        color: kSecondaryLightColor,
+            : SingleChildScrollView(
+                child: Form(
+                  key: formkey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Forget Password",
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w700,
+                          color: kPrimaryColor,
+                        ),
                       ),
-                      labelText: "Email Id",
-                      border: InputBorder.none,
-                    ),
+                      SizedBox(height: size.height * 0.03),
+                      SvgPicture.asset(
+                        "assets/icons/login.svg",
+                        height: size.height * 0.25,
+                      ),
+                      SizedBox(height: size.height * 0.03),
+                      TextFieldContainer(
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: EmailidControlleruser,
+                          validator: validateEmail,
+                          cursorColor: kSecondaryLightColor,
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.email_rounded,
+                              color: kSecondaryLightColor,
+                            ),
+                            labelText: "Email Id",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      RoundedButton(
+                          text: "Reset Password",
+                          press: () {
+                            if (formkey.currentState.validate()) {
+                              var emailforget = EmailidControlleruser.text;
+                              print("emailforget --> " + emailforget);
+                              SendResetEmail(emailforget);
+                            }
+                          }),
+                      SizedBox(height: size.height * 0.03),
+                    ],
                   ),
                 ),
-                RoundedButton(
-                    text: "Reset Password",
-                    press: () {
-                      if (formkey.currentState.validate()) {
-                        var emailforget = EmailidControlleruser.text;
-                        /*final snackbar =SnackBar(content: Text('Success',
-                        style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
-                      ScaffoldMessenger.of(context).showSnackBar(snackbar);*/
-
-                        /*FocusScope.of(context).requestFocus(focusNode);
-                      final snackBar = SnackBar(content: Text('Success Full Login',
-                        style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.orange,);
-
-
-                      // Find the ScaffoldMessenger in the widget tree
-                      // and use it to show a SnackBar.
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
-                        print("emailforget --> " + emailforget);
-                        SendResetEmail(emailforget);
-                      }
-                    }),
-                SizedBox(height: size.height * 0.03),
-
-
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
+
   String validateEmail(String value) {
     Pattern pattern =
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
@@ -129,7 +116,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     var request = http.MultipartRequest('POST', Uri.parse(forgetPassurl));
     request.fields.addAll({
       'email_id': emailforget,
-
     });
 
     request.headers.addAll(headers);
@@ -137,9 +123,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
     var response = await http.Response.fromStream(streamedResponse);
     print("forgetPass_response -->" + response.body);
-    /*Map<String, dynamic> map = json.decode(response.body);
-    var msg = map["message"];
-    print("REG_MSG--> "+msg);*/
     try {
       if (response.statusCode == 200) {
         setState(() {
@@ -157,8 +140,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(
-            "Now You Can Login"
-            /* 'Your Are Successfuly Register ,Now You Can Login'*/,
+            "Now You Can Login",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.green,
@@ -169,12 +151,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         setState(() {
           // pr.hide();
           progress = false;
-
         });
         FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(
-           "Email not register..",
+            "Email not register..",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.red,

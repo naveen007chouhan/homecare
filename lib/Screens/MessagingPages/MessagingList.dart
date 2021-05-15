@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:homecare/API/Api.dart';
 import 'package:homecare/Screens/MessagingPages/chat_screen.dart';
 import 'package:homecare/Screens/MessagingPages/models/GetChatListEmployeeModel.dart';
-import 'package:homecare/Screens/MessagingPages/models/message_model.dart';
 import 'package:homecare/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,27 +38,14 @@ class _ClientScreenState extends State<MessagingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // brightness: Brightness.dark,
         backgroundColor: kSecondaryLightColor,
         elevation: 8,
-        /*leading: IconButton(
-          icon: Icon(Icons.menu),
-          color: Colors.white,
-          onPressed: () {},
-        ),*/
         title: Text(
-          'Chat',
+          All_Lan().chat,
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        /*actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-        ],*/
       ),
       body: FutureBuilder<GetChatListEmployeeModel>(
         future:GetChatList(companyId),
@@ -77,17 +63,16 @@ class _ClientScreenState extends State<MessagingScreen> {
                 return ListView.builder(
                   itemCount: snapshot.data.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    // final Message chat = chats[index];
                     var chatlistdata=snapshot.data.data[index];
                     var empname = chatlistdata.employeeFirstname+" "+chatlistdata.employeeLastname;
-                    var empprofile = All_API().baseurl_img+chatlistdata.employeePath+"/"+chatlistdata.employeeProfile;
+                    var empprofiles = All_API().baseurl_img+chatlistdata.employeePath+"/"+chatlistdata.employeeProfile;
                     var Empid =chatlistdata.empId;
                     return Empid!=employeeId?GestureDetector(
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => ChatScreen(
-                            user: empname,EmpId: Empid,
+                            user: empname,EmpId: Empid,empprofile: empprofiles,
                           ),
                         ),
                       ),
@@ -115,21 +100,12 @@ class _ClientScreenState extends State<MessagingScreen> {
                                   ),
                                 ],
                               ),
-                                  /*: BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),*/
+
                               child: CircleAvatar(
                                 radius: 35,
-                                backgroundImage: NetworkImage(empprofile==All_API().baseurl_img_error?
+                                backgroundImage: NetworkImage(empprofiles==All_API().baseurl_img_error?
                                 All_API().baseurl_img_default
-                                    :empprofile),
+                                    :empprofiles),
                               ),
                             ),
                             Container(
@@ -151,38 +127,17 @@ class _ClientScreenState extends State<MessagingScreen> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          /*chat.sender.isOnline
-                                              ? Container(
-                                            margin: const EdgeInsets.only(left: 5),
-                                            width: 7,
-                                            height: 7,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                          )
-                                              : Container(
-                                            child: null,
-                                          ),*/
                                         ],
                                       ),
-                                      /*Text(
-                                        chat.time,
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black54,
-                                        ),
-                                      ),*/
                                     ],
                                   ),
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  /*Container(
+                                  Container(
                                     alignment: Alignment.topLeft,
                                     child: Text(
-                                      chat.text,
+                                      chatlistdata.employeeEmail,
                                       style: TextStyle(
                                         fontSize: 13,
                                         color: Colors.black54,
@@ -190,7 +145,22 @@ class _ClientScreenState extends State<MessagingScreen> {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                     ),
-                                  ),*/
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      chatlistdata.employeeMobile,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black54,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -208,7 +178,7 @@ class _ClientScreenState extends State<MessagingScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Text(
-                        "No Detail Found",
+                        All_Lan().no_result_found,
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.orange,
@@ -237,10 +207,6 @@ class _ClientScreenState extends State<MessagingScreen> {
       'authorization': basicAuth,
     };
     var request = http.MultipartRequest('GET', Uri.parse(ChatList_url));
-    /*request.fields.addAll({
-      'employee_id': emplyID,
-
-    });*/
 
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -252,19 +218,12 @@ class _ClientScreenState extends State<MessagingScreen> {
     var  msg=jasonData['message'];
     print("ChatList_get_msg -->" +msg);
     if (response.statusCode == 200) {
-
-      // FocusScope.of(context).requestFocus(focusNode);
-      // final snackBar = SnackBar(content: Text('$msg Update ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.green,);
-      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return GetChatListEmployeeModel.fromJson(jasonData);
 
 
     }
     else {
       print(response.reasonPhrase);
-      // FocusScope.of(context).requestFocus(focusNode);
-      // final snackBar = SnackBar(content: Text('$msg Not Update ',style: TextStyle(fontWeight: FontWeight.bold),),backgroundColor: Colors.red,);
-      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }

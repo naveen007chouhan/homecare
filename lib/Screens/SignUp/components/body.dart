@@ -13,7 +13,6 @@ import 'package:homecare/components/already_have_an_account_acheck.dart';
 import 'package:homecare/components/rounded_button.dart';
 import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -39,10 +38,6 @@ class _BodyState extends State<Body> {
   }
 
 
-  /*String dayLeave=null;
-  var dayLeaveID;
-  List DayTypeList=[{'id':'0','name':'select type'},{'id':'1','name':'Employee'},{'id':'2','name':'User'}];*/
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -64,34 +59,7 @@ class _BodyState extends State<Body> {
                   All_Lan().register,
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
                 ),
-                /*TextFieldContainer(
-              child: DropdownButton(
-                isExpanded: true,
-                hint: Text("Select Leave day",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold)),
-                value: dayLeave,
-                items: DayTypeList.map((explist) {
-                  return DropdownMenuItem(
-                    value: explist['name'],
-                    child: Text(explist['name']),
-                    onTap: (){
-                      dayLeaveID = explist['id'];
-                      print("leavess-->"+explist['id']);
-                    },
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    dayLeave = value;
-                    if(dayLeaveID==0){
-                      dayLeave = null;
-                    }
-                  });
-                },
-              ),
-            ),*/
+
                 TextFieldContainer(
                   child: TextFormField(
                     maxLength: 12,
@@ -141,10 +109,7 @@ class _BodyState extends State<Body> {
                             ),
                             // hintText: "First Name",
                             border: InputBorder.none,
-                            // border: OutlineInputBorder(
-                            //   borderRadius: BorderRadius.circular(0),
-                            // ),
-                            labelText: "First Name",
+                            labelText: All_Lan().firstname,
                           ),
                         ),
                       ),
@@ -166,8 +131,7 @@ class _BodyState extends State<Body> {
                               Icons.person,
                               color: kSecondaryLightColor,
                             ),
-                            labelText: "Last Name",
-                            // labelText: "First Name",
+                            labelText:All_Lan().lastname,
                             border: InputBorder.none,
                           ),
                         ),
@@ -186,7 +150,7 @@ class _BodyState extends State<Body> {
                         Icons.email_rounded,
                         color: kSecondaryLightColor,
                       ),
-                      labelText: "Email Id",
+                      labelText: All_Lan().emailid,
                       border: InputBorder.none,
                     ),
                   ),
@@ -212,7 +176,7 @@ class _BodyState extends State<Body> {
                         Icons.phone,
                         color: kSecondaryLightColor,
                       ),
-                      labelText: "Phone No",
+                      labelText:All_Lan().phoneno,
                       border: InputBorder.none,
                     ),
                   ),
@@ -229,7 +193,7 @@ class _BodyState extends State<Body> {
                     obscureText: hidepassword,
                     cursorColor: kSecondaryLightColor,
                     decoration: InputDecoration(
-                      labelText: "Password",
+                      labelText:All_Lan().password,
                       icon: Icon(
                         Icons.lock,
                         color: kSecondaryLightColor,
@@ -250,7 +214,7 @@ class _BodyState extends State<Body> {
                   ),
                 ),
                 RoundedButton(
-                  text: "SIGNUP",
+                  text: All_Lan().signup,
                   press: () {
                     if (formkey.currentState.validate()) {
                       var compcode = compCodeController.text;
@@ -259,12 +223,6 @@ class _BodyState extends State<Body> {
                       var email = emailController.text;
                       var phn = phnController.text;
                       var pass = passController.text;
-                      print("compcode --> " + compcode);
-                      print("First Name --> " + fname);
-                      print("Last Name --> " + lname);
-                      print("Email --> " + email);
-                      print("phn --> " + phn);
-                      print("pass --> " + pass);
                       SendRegisterData(
                           compcode, fname, lname, email, phn, pass);
                     }
@@ -285,24 +243,7 @@ class _BodyState extends State<Body> {
                   },
                 ),
                 SizedBox(height: size.height * 0.03),
-                /*OrDivider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SocalIcon(
-                  iconSrc: "assets/icons/facebook.svg",
-                  press: () {},
-                ),
-                SocalIcon(
-                  iconSrc: "assets/icons/twitter.svg",
-                  press: () {},
-                ),
-                SocalIcon(
-                  iconSrc: "assets/icons/google-plus.svg",
-                  press: () {},
-                ),
-              ],
-            )*/
+
               ],
             ),
           )),
@@ -343,12 +284,8 @@ class _BodyState extends State<Body> {
     String keypassword = All_API().keypassvalue;
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$keyusername:$keypassword'));
-    print("reg_basicAuth--> " + basicAuth);
 
     var regurl = All_API().baseurl + All_API().api_register;
-    print("reg_url -->" + regurl);
-
-    /*var body=jsonEncode({"firstname":fname,"lastname":lname,"email_id":email,"password":pass,"mobile_no":phn,"company_code":compcode});*/
 
     Map<String, String> headers = {
       All_API().key: All_API().keyvalue,
@@ -368,17 +305,8 @@ class _BodyState extends State<Body> {
     http.StreamedResponse streamedResponse = await request.send();
 
     var response = await http.Response.fromStream(streamedResponse);
-    print("reg_body_response -->" + response.body);
-    print("StatussssCode--> "+ response.statusCode.toString());
     Map<String, dynamic> map = json.decode(response.body);
     var msg = map["message"];
-    // print("REG_MSG--> "+msg);
-    /*Map jasonData = jsonDecode(response.body);
-            String msg = jasonData['message'];
-            print("MSG--> " + msg);*/
-    // final Map<String, String> jasonData = jsonDecode(response.body);
-    // String msg=jasonData['error'];
-    print("MSG--> "+ msg );
     try {
 
       if (response.statusCode == 200) {
@@ -397,8 +325,7 @@ class _BodyState extends State<Body> {
         FocusScope.of(context).requestFocus(focusNode);
         final snackBar = SnackBar(
           content: Text(
-            msg
-            /* 'Your Are Successfuly Register ,Now You Can Login'*/,
+            msg,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.green,
@@ -413,7 +340,7 @@ class _BodyState extends State<Body> {
             FocusScope.of(context).requestFocus(focusNode);
             final snackBar = SnackBar(
               content: Text(
-                msg/*"Your Are Not Register ,Plzz "*/,
+                msg,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               backgroundColor: Colors.red,
@@ -433,29 +360,6 @@ class _BodyState extends State<Body> {
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
-          /*else if( msg["message"] == "Mobile No is Alerday Exits"){
-            FocusScope.of(context).requestFocus(focusNode);
-            final snackBar = SnackBar(
-              content: Text(
-                msg["mobile"]*//*"Your Are Not Register ,Plzz "*//*,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              backgroundColor: Colors.red,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }else if( msg["email"] == "Email id is Alerday Exits"){
-            FocusScope.of(context).requestFocus(focusNode);
-            final snackBar = SnackBar(
-              content: Text(
-                msg["email"]*//*"Your Are Not Register ,Plzz "*//*,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              backgroundColor: Colors.red,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }*/
-
-
 
         });
       }

@@ -25,7 +25,7 @@ class All_API {
   String baseurl="https://technolite.in/staging/easyhomecare/api/";
   String baseurl_img="https://technolite.in/staging/easyhomecare/";
   String baseurl_img_error="https://technolite.in/staging/easyhomecare//0";
-  String baseurl_img_default="https://images.pexels.com/photos/2167673/pexels-photo-2167673.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
+  String baseurl_img_default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD5iROb1TgJ_rcl-6r-68v1yjtID052zxSkw&usqp=CAU";
 
   String api_login= "login_employee";
   String api_register= "employee_registration";
@@ -47,6 +47,9 @@ class All_API {
   String api_employeeBycompany= "employeeBycompany";
   String api_FetchChatData= "Chetdata";
   String api_SendChatData= "saveMessgae";
+  String api_getcountry= "getCountry";
+  String api_getstate= "getState";
+  String api_getcity= "getCity";
 
 
 }

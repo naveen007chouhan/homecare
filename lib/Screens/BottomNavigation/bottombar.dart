@@ -47,20 +47,16 @@ class _HomePageState extends State<BottomBar> {
       child: Container(
         width: MediaQuery.of(context).size.width / 5,
         height: 60,
-// color: Colors.red,
         decoration: index == _selectedItemIndex
             ? BoxDecoration(
 
             border:
             Border(bottom: BorderSide(width: 4, color: kSecondaryLightColor)),
-            // color: kPrimaryColor,
             gradient: LinearGradient(colors: [
               kSecondaryLightColor.withOpacity(0.3),
               kSecondaryLightColor.withOpacity(0.016),
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter))
-            : BoxDecoration(
-            // color: kPrimaryColor
-        ),
+            : BoxDecoration( ),
         child: Icon(
           icon,
           color: index == _selectedItemIndex ? kSecondaryLightColor : Colors.grey,

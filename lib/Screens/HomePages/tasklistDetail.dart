@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:homecare/API/Api.dart';
+import 'package:homecare/Screens/BottomNavigation/bottombar.dart';
 import 'package:homecare/Screens/HomePages/DocumentSavePage.dart';
 import 'package:homecare/Screens/HomePages/HomeModel/TaskDetailModel.dart';
 import 'package:homecare/Screens/HomePages/home.dart';
@@ -1024,7 +1025,7 @@ class _TaskDetailState extends State<TaskDetail> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return HomePage();
+              return BottomBar();
             },
           ),
         );

@@ -6,7 +6,7 @@ import 'package:homecare/Screens/WelcomePages/Components/background.dart';
 import 'package:homecare/components/rounded_button.dart';
 import 'package:homecare/constants.dart';
 
-
+import 'package:flutter/cupertino.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:homecare/API/Api.dart';
@@ -540,6 +541,7 @@ class _TaskDetailState extends State<TaskDetail> {
                                         size: 18.0,
                                       ),
                                       onPressed: () async{
+                                        print("printtt---> HELLO");
                                         if (permissionstorage ==
                                             PermissionStatus
                                                 .denied) {
@@ -549,12 +551,11 @@ class _TaskDetailState extends State<TaskDetail> {
                                                 .storage
                                           ]);
                                         } else {
-                                          String path = await ExtStorage
-                                              .getExternalStoragePublicDirectory(
-                                              ExtStorage
-                                                  .DIRECTORY_DOWNLOADS);
-                                          String fullpath =
-                                              "$path/EHC-tourdetail-$taskiddetail-$taskCategoryemp.pdf";
+                                          print("printtt---> HELLO 1");
+                                          String path = await ExtStorage.getExternalStoragePublicDirectory(
+                                              ExtStorage.DIRECTORY_DOWNLOADS);
+                                          String fullpath ="$path/EHC-tourdetail-$taskiddetail-$taskCategoryemp.pdf";
+                                          print("printtt---> HELLO 2");
                                           DownloadPDF(
                                               dio,
                                               taskAttachmentspdf,

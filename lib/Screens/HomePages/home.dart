@@ -438,191 +438,197 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.orange,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.orange
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.orange,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
                                             ),
-                                            height: 70,
-                                            width: 70,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 25, 10, 0),
-                                                  child: pendingtour == 0
-                                                      ? Text("0",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                      : Text(
-                                                          pendingtour
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                ),
-                                              ],
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.orange
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              height: 70,
+                                              width: 70,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            10, 25, 10, 0),
+                                                    child: pendingtour == 0
+                                                        ? Text("0",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))
+                                                        : Text(
+                                                            pendingtour
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().pending_tour,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().pending_tour,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 10),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.pink,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.pink
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.pink,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
                                             ),
-                                            height: 70,
-                                            width: 70,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 25, 10, 0),
-                                                  child: processingtour == 0
-                                                      ? Text("0",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                      : Text(
-                                                          processingtour
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                ),
-                                              ],
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.pink
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              height: 70,
+                                              width: 70,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            10, 25, 10, 0),
+                                                    child: processingtour == 0
+                                                        ? Text("0",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))
+                                                        : Text(
+                                                            processingtour
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().processing_tour,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().processing_tour,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 10),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.blue,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.blue
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.blue,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
                                             ),
-                                            height: 70,
-                                            width: 70,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 25, 10, 0),
-                                                  child: completetour == 0
-                                                      ? Text("0",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                      : Text(
-                                                          completetour
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                ),
-                                              ],
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.blue
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              height: 70,
+                                              width: 70,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            10, 25, 10, 0),
+                                                    child: completetour == 0
+                                                        ? Text("0",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))
+                                                        : Text(
+                                                            completetour
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().completed_tour,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().completed_tour,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 10),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -631,129 +637,133 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.green,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.green
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.green,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
                                             ),
-                                            height: 70,
-                                            width: 70,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 25, 10, 0),
-                                                  child: approvedtour == 0
-                                                      ? Text("0",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                      : Text(
-                                                          approvedtour
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                ),
-                                              ],
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.green
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              height: 70,
+                                              width: 70,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            10, 25, 10, 0),
+                                                    child: approvedtour == 0
+                                                        ? Text("0",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))
+                                                        : Text(
+                                                            approvedtour
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().approved_tour,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().approved_tour,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 10),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.red,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.red
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.red,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
                                             ),
-                                            height: 70,
-                                            width: 70,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 25, 10, 0),
-                                                  child: rejectedtour == 0
-                                                      ? Text("0",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                      : Text(
-                                                          rejectedtour
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                ),
-                                              ],
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.red
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              height: 70,
+                                              width: 70,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            10, 25, 10, 0),
+                                                    child: rejectedtour == 0
+                                                        ? Text("0",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold))
+                                                        : Text(
+                                                            rejectedtour
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().rejected_tour,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().rejected_tour,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 10),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

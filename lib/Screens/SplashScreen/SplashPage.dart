@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homecare/Screens/BottomNavigation/bottombar.dart';
 import 'package:homecare/Screens/SplashScreen/Components/body.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 class Splash extends StatefulWidget {
   @override

@@ -153,7 +153,7 @@ class _State extends State<Body> {
                             print("phn --> " + phn);
                             print("pass --> " + pass);
                             print("userdeviceId --> " + userdeviceId);
-                            print("fcm_Id --> " + fcmID);
+                            // print("fcm_Id --> " + fcmID);
                             SendLoginData(phn, pass, userdeviceId, fcmID);
                           }
                         }),
@@ -208,7 +208,7 @@ class _State extends State<Body> {
     setState(() {
       progress = true;
       // pr.show();
-      // fcmID="1234";
+      fcmID="1234";
     });
     String username = All_API().keyuser;
     String password = All_API().keypassvalue;

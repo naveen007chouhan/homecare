@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskListHistory extends StatefulWidget {
+  String ClientId;
+  TaskListHistory({this.ClientId});
   @override
   _TaskListHistoryState createState() => _TaskListHistoryState();
 }
@@ -18,7 +20,9 @@ class _TaskListHistoryState extends State<TaskListHistory> {
 
   String employeeId;
   String companyId;
-
+  String selectedtype;
+  String dateselected;
+  String clientids;
   String searchKey = "";
   var searchController = TextEditingController();
 
@@ -149,6 +153,11 @@ class _TaskListHistoryState extends State<TaskListHistory> {
                   ),
                 ),
               ),
+            ),
+          ),
+          new Container(
+            child: Row(
+              children: [],
             ),
           ),
           new Expanded(
@@ -479,11 +488,14 @@ class _TaskListHistoryState extends State<TaskListHistory> {
       'authorization': basicAuth,
     };
     var request = http.MultipartRequest('POST', Uri.parse(url));
-
+    clientids=widget.ClientId;
     print("all_LAST_task_empid--> " + employeeId);
     request.fields.addAll({
       'employee_id': employeeId,
       'search': searchKey,
+      'client_id': clientids,
+      'date_type': clientids,
+      'date': dateselected,
     });
     request.headers.addAll(headers);
     http.StreamedResponse streamedResponse = await request.send();

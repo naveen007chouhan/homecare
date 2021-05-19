@@ -17,6 +17,7 @@ class All_Lan{
   final deadline_date ="Abgabetermin";
   final date ="Datum";
   final client_details ="Kundendetail";
+  final client_area ="Kundenbereich";
   final tour_details ="Tour details";
   final category ="Kategorie";
   final description ="Beschreibung";
@@ -67,7 +68,7 @@ class All_Lan{
 
   final pleasewait="Warten Sie mal";
 
-  final last_5_tour="letzte 5 Tour";
+  final last_5_tour="Kommende 5 tour";
 
   final pending_tour="anstehende Tour";
   final rejected_tour="Tour abgelehnt";

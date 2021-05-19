@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:homecare/Screens/ClientPages/clientlist.dart';
 import 'package:homecare/Screens/HistoryTask/HistoryTaskList.dart';
 import 'package:homecare/Screens/HomePages/home.dart';
 import 'package:homecare/Screens/MessagingPages/MessagingList.dart';
@@ -16,6 +17,7 @@ class _HomePageState extends State<BottomBar> {
   int _selectedItemIndex = 0;
   final List pages = [
     HomePage(),
+    ClientDetail(),
     TaskListHistory(),
     MessagingScreen(),
     NotificationScreens(),
@@ -28,10 +30,11 @@ class _HomePageState extends State<BottomBar> {
         children: [
 
           buildNavBarItem(Icons.home, 0),
-          buildNavBarItem(Icons.history_edu_outlined, 1),
-          buildNavBarItem(Icons.camera, 2),
-          buildNavBarItem(Icons.notification_important, 3),
-          buildNavBarItem(Icons.person, 4),
+          buildNavBarItem(Icons.list, 1),
+          buildNavBarItem(Icons.history_edu_outlined, 2),
+          buildNavBarItem(Icons.camera, 3),
+          buildNavBarItem(Icons.notification_important, 4),
+          buildNavBarItem(Icons.person, 5),
         ],
       ),
       body: pages[_selectedItemIndex],
@@ -46,7 +49,7 @@ class _HomePageState extends State<BottomBar> {
         });
       },
       child: Container(
-        width: MediaQuery.of(context).size.width / 5,
+        width: MediaQuery.of(context).size.width / 6,
         height: 60,
         decoration: index == _selectedItemIndex
             ? BoxDecoration(

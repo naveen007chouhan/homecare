@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:homecare/API/Api.dart';
+import 'package:homecare/Screens/ClientPages/clientlist.dart';
+import 'package:homecare/Screens/HistoryTask/HistoryTaskList.dart';
 import 'package:homecare/Screens/HomePages/HomeModel/DashboardDetailProfileModel.dart';
 import 'package:homecare/Screens/HomePages/HomeModel/LastFiveTaskModel.dart';
 import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
@@ -295,126 +297,142 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.blue,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.blue
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
+                                    GestureDetector(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.blue,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
                                             ),
-                                            height: 110,
-                                            width: 110,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 35, 10, 0),
-                                                  child: totalcl == 0
-                                                      ? Text("0",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 35,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                      : Text(totalcl.toString(),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 35,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().total_client,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 15),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Card(
-                                          color: Colors.green,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(60),
-                                          ),
-                                          child: Container(
-                                            height: 110,
-                                            width: 110,
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.green
-                                                        .withOpacity(.2),
-                                                    blurRadius: 50,
-                                                    spreadRadius: 3)
-                                              ],
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Padding(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.blue
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              height: 110,
+                                              width: 110,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
                                                     padding:
                                                         const EdgeInsets.fromLTRB(
                                                             10, 35, 10, 0),
-                                                    child: totaltour == 0
+                                                    child: totalcl == 0
                                                         ? Text("0",
                                                             style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
+                                                                color:
+                                                                    Colors.white,
                                                                 fontSize: 35,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold))
-                                                        : Text(
-                                                            totaltour
-                                                                .toString(),
+                                                        : Text(totalcl.toString(),
                                                             style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
+                                                                color:
+                                                                    Colors.white,
                                                                 fontSize: 35,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .bold))),
-                                              ],
+                                                                        .bold)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            All_Lan().total_tour,
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 15),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().total_client,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 15),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                        onTap:(){
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => ClientDetail()));
+                                        }
+                                    ),
+                                    GestureDetector(
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            color: Colors.green,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
+                                            ),
+                                            child: Container(
+                                              height: 110,
+                                              width: 110,
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.green
+                                                          .withOpacity(.2),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 3)
+                                                ],
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                      padding:
+                                                          const EdgeInsets.fromLTRB(
+                                                              10, 35, 10, 0),
+                                                      child: totaltour == 0
+                                                          ? Text("0",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 35,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold))
+                                                          : Text(
+                                                              totaltour
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 35,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold))),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              All_Lan().total_tour,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 15),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                        onTap:(){
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => TaskListHistory()));
+                                        }
                                     ),
                                   ],
                                 ),

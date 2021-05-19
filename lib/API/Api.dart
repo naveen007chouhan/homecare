@@ -37,7 +37,8 @@ class All_API {
   String api_dashboard= "dashboad";
   String api_taskdetail= "taskDetails";
   String api_savedoc= "Savedoc";
-  String api_emp_Lastfivetask = "emp_Lastfivetask";
+  // String api_emp_Lastfivetask = "emp_Lastfivetask";
+  String api_emp_Lastfivetask = "emp_upcomming_task";
   String api_all_task_list= "all_task_list";
   String api_completed_task= "completed_task";
   String api_Employee_clients= "Employee_clients";
@@ -45,6 +46,7 @@ class All_API {
   String api_reset_password= "reset_password";
   String api_verify_reset_mail= "verify_reset_mail";
   String api_employeeBycompany= "employeeBycompany";
+  String api_clientBycompany= "clientBycompany";
   String api_FetchChatData= "Chetdata";
   String api_SendChatData= "saveMessgae";
   String api_getcountry= "getCountry";

@@ -67,6 +67,7 @@ class _ClientScreenState extends State<MessagingScreen> {
                     var empname = chatlistdata.employeeFirstname+" "+chatlistdata.employeeLastname;
                     var empprofiles = All_API().baseurl_img+chatlistdata.employeePath+"/"+chatlistdata.employeeProfile;
                     var Empid =chatlistdata.empId;
+                    print("message pic-->"+empprofiles);
                     return Empid!=employeeId?GestureDetector(
                       onTap: () => Navigator.push(
                         context,

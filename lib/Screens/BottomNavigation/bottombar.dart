@@ -30,9 +30,9 @@ class _HomePageState extends State<BottomBar> {
         children: [
 
           buildNavBarItem(Icons.home, 0),
-          buildNavBarItem(Icons.list, 1),
+          buildNavBarItem(Icons.all_inbox, 1),
           buildNavBarItem(Icons.history_edu_outlined, 2),
-          buildNavBarItem(Icons.camera, 3),
+          buildNavBarItem(Icons.message, 3),
           buildNavBarItem(Icons.notification_important, 4),
           buildNavBarItem(Icons.person, 5),
         ],

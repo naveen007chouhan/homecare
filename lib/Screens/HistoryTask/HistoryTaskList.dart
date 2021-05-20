@@ -23,6 +23,7 @@ class _TaskListHistoryState extends State<TaskListHistory> {
   String employeeId;
   String companyId;
   String selectedtypeid;
+  String selectedtypename;
   String dateselected="";
   String datesplit;
   String clientids;
@@ -185,7 +186,7 @@ class _TaskListHistoryState extends State<TaskListHistory> {
                     child: DropdownButton(
                       isExpanded: true,
                       underline: SizedBox(),
-                      hint: Text("Select Type",
+                      hint: Text(DayTypeList[0]['name'],
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold)),
@@ -196,6 +197,7 @@ class _TaskListHistoryState extends State<TaskListHistory> {
                           child: Text(explist['name']),
                           onTap: (){
                             selectedtypeid = explist['id'];
+                            selectedtypename = explist['name'];
                             print("selectedtype-->"+explist['id']);
                           },
                         );

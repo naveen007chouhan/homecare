@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:homecare/API/Api.dart';
 import 'package:homecare/Screens/HistoryTask/Model/AllTaskListModel.dart';
 import 'package:homecare/Screens/HomePages/tasklistDetail.dart';
+import 'package:homecare/components/text_field_container.dart';
 import 'package:homecare/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskListHistory extends StatefulWidget {
@@ -20,11 +22,14 @@ class _TaskListHistoryState extends State<TaskListHistory> {
 
   String employeeId;
   String companyId;
-  String selectedtype;
-  String dateselected;
+  String selectedtypeid;
+  String dateselected="";
+  String datesplit;
   String clientids;
   String searchKey = "";
   var searchController = TextEditingController();
+  String dayLeave=null;
+  List DayTypeList=[{'id':'0','name':'Assign Date'},{'id':'1','name':'Deadline Date'},];
 
   @override
   void initState() {
@@ -42,10 +47,26 @@ class _TaskListHistoryState extends State<TaskListHistory> {
       searchResult();
     });
   }
-
+  DateTime currentDate = DateTime.now();
+  Future<void> _selectDateFrom(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2021),
+        lastDate: DateTime(2100));
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+        var str = currentDate.toString();
+        var Strdate = str.split(" ");
+        datesplit = Strdate[0].trim();
+        DateTime formatteddate = DateTime.parse(datesplit);
+        dateselected = DateFormat("yyyy-MM-dd").format(formatteddate);
+        print("dateselected ON Pick :--> " + dateselected);
+      });
+  }
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kSecondaryLightColor,
@@ -157,7 +178,59 @@ class _TaskListHistoryState extends State<TaskListHistory> {
           ),
           new Container(
             child: Row(
-              children: [],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextFieldContainer(
+                    child: DropdownButton(
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      hint: Text("Select Type",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold)),
+                      value: dayLeave,
+                      items: DayTypeList.map((explist) {
+                        return DropdownMenuItem(
+                          value: explist['name'],
+                          child: Text(explist['name']),
+                          onTap: (){
+                            selectedtypeid = explist['id'];
+                            print("selectedtype-->"+explist['id']);
+                          },
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          dayLeave = value;
+                          if(selectedtypeid==0){
+                            dayLeave = null;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: TextFieldContainer(
+                    child: GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.calendar_today_outlined),
+                            Spacer(),
+                            Text(dateselected==""?"Select Date":dateselected),
+                          ],
+                        ),
+                      ),
+                      onTap: (){
+                        _selectDateFrom(context);
+                      },
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
           new Expanded(
@@ -173,303 +246,319 @@ class _TaskListHistoryState extends State<TaskListHistory> {
         future: searchResult(),
         // ignore: missing_return
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: snapshot.data.data.length,
-                itemBuilder: (context, index) {
-                  var lasttask = snapshot.data.data[index];
-                  var clientname =
-                      lasttask.clientfirstName + " " + lasttask.clientlastName;
-                  print("lst_FIVE_TASK-->" + lasttask.taskImagemode.toString());
-                  var alot = lasttask.deadlineDate.toString();
-                  var alot1 = lasttask.assignedDate.toString();
-                  var tourimg = All_API().baseurl_img +
-                      lasttask.taskpath +
-                      lasttask.taskImage;
-                  var defaultimg = All_API().baseurl_img + lasttask.taskImage;
-                  var omgtaskmode = lasttask.taskImagemode;
-                  var alotsplit = alot1.split(" ");
-                  var assigndatealot = alotsplit[0];
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return Text('Some error Found');
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            case ConnectionState.active:
+              return Text('Data Fill');
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: snapshot.data.data.length,
+                    itemBuilder: (context, index) {
+                      var lasttask = snapshot.data.data[index];
+                      var clientname =
+                          lasttask.clientfirstName + " " +
+                              lasttask.clientlastName;
+                      print("lst_FIVE_TASK-->" +
+                          lasttask.taskImagemode.toString());
+                      var alot = lasttask.deadlineDate.toString();
+                      var alot1 = lasttask.assignedDate.toString();
+                      var tourimg = All_API().baseurl_img +
+                          lasttask.taskpath +
+                          lasttask.taskImage;
+                      var defaultimg = All_API().baseurl_img +
+                          lasttask.taskImage;
+                      var omgtaskmode = lasttask.taskImagemode;
+                      var alotsplit = alot1.split(" ");
+                      var assigndatealot = alotsplit[0];
 
-                  var deadlinealotsplit = alot.split(" ");
-                  var deadlinealot = deadlinealotsplit[0];
+                      var deadlinealotsplit = alot.split(" ");
+                      var deadlinealot = deadlinealotsplit[0];
 
-                  print("datealot-->" + alot);
-                  print("datealot-->" + deadlinealot);
-                  print("datealot-->" + alot1);
-                  print("datealot-->" + assigndatealot);
-                  print("datealot-->" + tourimg);
-                  print("datealot-->" + defaultimg);
-                  print("datealot-->" + omgtaskmode.toString());
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TaskDetail(
-                                    empid: lasttask.employeeId,
-                                    taskid: lasttask.taskId,
-                                  )));
-                    },
-                    child: Card(
-                      elevation: 4.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Stack(
-                        children: <Widget>[
-                          Column(
+                      print("datealot-->" + alot);
+                      print("datealot-->" + deadlinealot);
+                      print("datealot-->" + alot1);
+                      print("datealot-->" + assigndatealot);
+                      print("datealot-->" + tourimg);
+                      print("datealot-->" + defaultimg);
+                      print("datealot-->" + omgtaskmode.toString());
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TaskDetail(
+                                        empid: lasttask.employeeId,
+                                        taskid: lasttask.taskId,
+                                      )));
+                        },
+                        child: Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Stack(
                             children: <Widget>[
-                              Container(
-                                height: 200.0,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10.0),
-                                      topRight: Radius.circular(10.0),
-                                    ),
-                                    image: DecorationImage(
-                                      image: omgtaskmode == 0
-                                          ? NetworkImage(defaultimg)
-                                          : NetworkImage(tourimg),
-                                      fit: BoxFit.cover,
-                                    )),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: Padding(
-                                  // padding: const EdgeInsets.all(16.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
-                                  child: Text(
-                                    lasttask.taskName,
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
+                              Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 200.0,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0),
+                                        ),
+                                        image: DecorationImage(
+                                          image: omgtaskmode == 0
+                                              ? NetworkImage(defaultimg)
+                                              : NetworkImage(tourimg),
+                                          fit: BoxFit.cover,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(
+                                      // padding: const EdgeInsets.all(16.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: Text(
+                                        lasttask.taskName,
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          WidgetSpan(
-                                            child: Padding(
-                                              padding:
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              WidgetSpan(
+                                                child: Padding(
+                                                  padding:
                                                   const EdgeInsets.fromLTRB(
                                                       1, 1, 5, 0),
-                                              child: Icon(
-                                                Icons.category,
-                                                size: 14,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: lasttask.categoryName,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 12.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          WidgetSpan(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      10, 1, 1, 0),
-                                              child: Icon(
-                                                Icons.person,
-                                                size: 14,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: clientname,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 12.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 20.0),
-                            ],
-                          ),
-                          Positioned(
-                            top: 10,
-                            left: 20.0,
-                            child: lasttask.status == "pending"
-                                ? Container(
-                                    color: Colors.orange,
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      lasttask.status,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  )
-                                : lasttask.status == "processing"
-                                    ? Container(
-                                        color: Colors.pink,
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Text(
-                                          lasttask.status,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                      )
-                                    : lasttask.status == "completed" &&
-                                            lasttask.isApproved == "2"
-                                        ? Container(
-                                            color: Colors.red,
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Text(
-                                              "Rejected",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12.0,
-                                              ),
-                                            ),
-                                          )
-                                        : lasttask.status == "completed" &&
-                                                lasttask.isApproved == "1"
-                                            ? Container(
-                                                color: Colors.green,
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  "Approved",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12.0,
+                                                  child: Icon(
+                                                    Icons.category,
+                                                    size: 14,
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
-                                              )
-                                            : lasttask.status == "completed" &&
-                                                    lasttask.isApproved == "0"
-                                                ? Container(
-                                                    color: Colors.blue,
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Text(
-                                                      "Completed",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12.0,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(),
-                          ),
-                          Positioned(
-                            top: 10,
-                            right: 20.0,
-                            child: Container(
-                              color: Colors.blue,
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                lasttask.taskModeName,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
+                                              ),
+                                              TextSpan(
+                                                text: lasttask.categoryName,
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              WidgetSpan(
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 1, 1, 0),
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    size: 14,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: clientname,
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                ],
+                              ),
+                              Positioned(
+                                top: 10,
+                                left: 20.0,
+                                child: lasttask.status == "pending"
+                                    ? Container(
+                                  color: Colors.orange,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    lasttask.status,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                )
+                                    : lasttask.status == "processing"
+                                    ? Container(
+                                  color: Colors.pink,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    lasttask.status,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                )
+                                    : lasttask.status == "completed" &&
+                                    lasttask.isApproved == "2"
+                                    ? Container(
+                                  color: Colors.red,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    "Rejected",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                )
+                                    : lasttask.status == "completed" &&
+                                    lasttask.isApproved == "1"
+                                    ? Container(
+                                  color: Colors.green,
+                                  padding:
+                                  const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    "Approved",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                )
+                                    : lasttask.status == "completed" &&
+                                    lasttask.isApproved == "0"
+                                    ? Container(
+                                  color: Colors.blue,
+                                  padding:
+                                  const EdgeInsets.all(
+                                      4.0),
+                                  child: Text(
+                                    "Completed",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                )
+                                    : Container(),
+                              ),
+                              Positioned(
+                                top: 10,
+                                right: 20.0,
+                                child: Container(
+                                  color: Colors.blue,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    lasttask.taskModeName,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 170,
-                            left: 5.0,
-                            child: Container(
-                              color: Colors.orange,
-                              padding: const EdgeInsets.all(4.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                  All_Lan().date+":" + assigndatealot.toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14.0,
-                                    ),
+                              Positioned(
+                                top: 170,
+                                left: 5.0,
+                                child: Container(
+                                  color: Colors.orange,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        All_Lan().date + ":" +
+                                            assigndatealot.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 170,
-                            right: 5.0,
-                            child: Container(
-                              color: Colors.orange,
-                              padding: const EdgeInsets.all(4.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    All_Lan().deadline_date+": " + deadlinealot.toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14.0,
-                                    ),
+                              Positioned(
+                                top: 170,
+                                right: 5.0,
+                                child: Container(
+                                  color: Colors.orange,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        All_Lan().deadline_date + ": " +
+                                            deadlinealot.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return Center(
+                  child: Card(
+                    color: Colors.blue[1000],
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        All_API().no_result_found,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.orange,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  );
-                },
-              ),
-            );
-          } else {
-            return Center(
-              child: Card(
-                color: Colors.blue[1000],
-                elevation: 10,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
-                    All_API().no_result_found,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.orange,
-                    ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-            );
+                );
+              }
           }
         });
   }
@@ -488,14 +577,28 @@ class _TaskListHistoryState extends State<TaskListHistory> {
       'authorization': basicAuth,
     };
     var request = http.MultipartRequest('POST', Uri.parse(url));
-    clientids=widget.ClientId;
+
+    if(widget.ClientId==null){
+      clientids="";
+    }else{
+      clientids=widget.ClientId;
+    }
+    if(selectedtypeid==null){
+      selectedtypeid="";
+    }else{
+      selectedtypeid;
+    }
+     print("all_LAST_selectedtypeid--> " + selectedtypeid);
+    print("all_LAST_Dateselected--> " + dateselected);
     print("all_LAST_task_empid--> " + employeeId);
+    print("all_LAST_clientid--> " + clientids);
+
     request.fields.addAll({
       'employee_id': employeeId,
       'search': searchKey,
       'client_id': clientids,
-      'date_type': clientids,
-      'date': dateselected,
+      'date_type': selectedtypeid,
+      'date':dateselected,
     });
     request.headers.addAll(headers);
     http.StreamedResponse streamedResponse = await request.send();

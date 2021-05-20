@@ -67,6 +67,7 @@ class _ClientListState extends State<ClientDetail> {
                    var clientid =chatlistdata.clientId;
                    var email=chatlistdata.clientEmail;
                    var mob=chatlistdata.clientMobile;
+                   print("all_clientid-> " + clientid);
                    return GestureDetector(
                      onTap: () {
                        Navigator.push(

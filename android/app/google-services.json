@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:247498854912:android:932324cbfe9a2c93d37ee5",
+        "mobilesdk_app_id": "1:247498854912:android:87edc4770b7513d0d37ee5",
         "android_client_info": {
-          "package_name": "com.example.homecare"
+          "package_name": "com.adiyogi.homecare"
         }
       },
       "oauth_client": [

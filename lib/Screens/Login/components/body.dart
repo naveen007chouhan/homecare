@@ -51,7 +51,7 @@ class _State extends State<Body> {
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      fcmID = sharedPreferences.getString("fcmID");
+      fcmID = "12345";
       print("User_fcmID -->" + fcmID);
     });
   }

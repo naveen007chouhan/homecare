@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:homecare/Screens/SplashScreen/SplashPage.dart';
@@ -36,6 +38,9 @@ class _MyAppState extends State<MyApp> {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
       print('on message $message');
+      if(Platform.isIOS){
+        message = message;
+      }
 
       showDialog(
         context: context,
@@ -89,6 +94,9 @@ class _MyAppState extends State<MyApp> {
       setState(() => _message = message["notification"]["title"]);
     }, onResume: (Map<String, dynamic> message) async {
       print('on resume $message');
+      if(Platform.isIOS){
+        message = message;
+      }
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -141,6 +149,9 @@ class _MyAppState extends State<MyApp> {
       setState(() => _message = message["notification"]["title"]);
     }, onLaunch: (Map<String, dynamic> message) async {
       print('on launch $message');
+      if(Platform.isIOS){
+        message = message;
+      }
       showDialog(
         context: context,
         builder: (BuildContext context) {
